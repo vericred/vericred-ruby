@@ -143,11 +143,11 @@ module VericredClient
     attr_accessor :state_id
 
     # Is the state containing this county active for consumers?
-                  *deprecated in favor of last_date_for_individual
+*deprecated in favor of last_date_for_individual
     attr_accessor :state_live
 
     # Is the state containing this county active for business?
-                  *deprecated in favor of last_date_for_shop
+*deprecated in favor of last_date_for_shop
     attr_accessor :state_live_for_business
 
     # Attribute mapping from ruby-style variable name to JSON key.

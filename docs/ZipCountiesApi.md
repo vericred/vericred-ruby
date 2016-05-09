@@ -12,15 +12,6 @@ Method | HTTP request | Description
 
 Find Zip Counties by Zip Code
 
-### Finding Zip Code and Fips Code
-
-Our `Plan` endpoints require a zip code and a fips (county) code.  This is
-because plan pricing requires both of these elements.  Users are unlikely to
-know their fips code, so we provide this endpoint to look up a `ZipCounty` by
-zip code and return both the selected zip and fips codes.
-
-
-
 ### Example
 ```ruby
 # load the gem

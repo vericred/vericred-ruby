@@ -13,22 +13,6 @@ Method | HTTP request | Description
 
 Find providers by term and zip code
 
-All `Provider` searches require a `zip_code`, which we use for weighting
-the search results to favor `Provider`s that are near the user.  For example,
-we would want "Dr. John Smith" who is 5 miles away to appear before
-"Dr. John Smith" who is 100 miles away.
-
-The weighting also allows for non-exact matches.  In our prior example, we
-would want "Dr. Jon Smith" who is 2 miles away to appear before the exact
-match "Dr. John Smith" who is 100 miles away because it is more likely that
-the user just entered an incorrect name.
-
-The free text search also supports Specialty name search and "body part"
-Specialty name search.  So, searching "John Smith nose" would return
-"Dr. John Smith", the ENT Specialist before "Dr. John Smith" the Internist.
-
-
-
 ### Example
 ```ruby
 # load the gem
@@ -41,7 +25,7 @@ search_term = "search_term_example" # String | String to search by
 zip_code = "zip_code_example" # String | Zip Code to search near
 
 opts = { 
-  accepts_insurance: "accepts_insurance_example", # String | Limit results to Providers who accept at least one insurance plan.  Note that the inverse of this filter is not supported and any value will evaluate to true
+  accepts_insurance: "accepts_insurance_example", # String | Limit results to Providers who accept at least one insurance?
   hios_ids: ["hios_ids_example"], # Array<String> | HIOS id of one or more plans
   page: "page_example", # String | Page number
   per_page: "per_page_example", # String | Number of records to return per page
@@ -63,7 +47,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **search_term** | **String**| String to search by | 
  **zip_code** | **String**| Zip Code to search near | 
- **accepts_insurance** | **String**| Limit results to Providers who accept at least one insurance plan.  Note that the inverse of this filter is not supported and any value will evaluate to true | [optional] 
+ **accepts_insurance** | **String**| Limit results to Providers who accept at least one insurance? | [optional] 
  **hios_ids** | [**Array&lt;String&gt;**](String.md)| HIOS id of one or more plans | [optional] 
  **page** | **String**| Page number | [optional] 
  **per_page** | **String**| Number of records to return per page | [optional] 
@@ -88,10 +72,6 @@ No authorization required
 > InlineResponse2001 providers_npi_get(npi)
 
 Find a specific Provider
-
-To retrieve a specific provider, just perform a GET using his NPI number
-
-
 
 ### Example
 ```ruby

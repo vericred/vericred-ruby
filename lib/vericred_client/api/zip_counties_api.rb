@@ -134,14 +134,7 @@ module VericredClient
     end
 
     # Find Zip Counties by Zip Code
-    # ### Finding Zip Code and Fips Code
-
-Our `Plan` endpoints require a zip code and a fips (county) code.  This is
-because plan pricing requires both of these elements.  Users are unlikely to
-know their fips code, so we provide this endpoint to look up a `ZipCounty` by
-zip code and return both the selected zip and fips codes.
-
-
+    # 
     # @param zip_prefix Partial five-digit Zip
     # @param [Hash] opts the optional parameters
     # @return [InlineResponse2002]
@@ -151,14 +144,7 @@ zip code and return both the selected zip and fips codes.
     end
 
     # Find Zip Counties by Zip Code
-    # ### Finding Zip Code and Fips Code
-
-Our &#x60;Plan&#x60; endpoints require a zip code and a fips (county) code.  This is
-because plan pricing requires both of these elements.  Users are unlikely to
-know their fips code, so we provide this endpoint to look up a &#x60;ZipCounty&#x60; by
-zip code and return both the selected zip and fips codes.
-
-
+    # 
     # @param zip_prefix Partial five-digit Zip
     # @param [Hash] opts the optional parameters
     # @return [Array<(InlineResponse2002, Fixnum, Hash)>] InlineResponse2002 data, response status code and response headers
