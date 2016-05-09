@@ -134,25 +134,11 @@ module VericredClient
     end
 
     # Find providers by term and zip code
-    # All `Provider` searches require a `zip_code`, which we use for weighting
-the search results to favor `Provider`s that are near the user.  For example,
-we would want "Dr. John Smith" who is 5 miles away to appear before
-"Dr. John Smith" who is 100 miles away.
-
-The weighting also allows for non-exact matches.  In our prior example, we
-would want "Dr. Jon Smith" who is 2 miles away to appear before the exact
-match "Dr. John Smith" who is 100 miles away because it is more likely that
-the user just entered an incorrect name.
-
-The free text search also supports Specialty name search and "body part"
-Specialty name search.  So, searching "John Smith nose" would return
-"Dr. John Smith", the ENT Specialist before "Dr. John Smith" the Internist.
-
-
+    # 
     # @param search_term String to search by
     # @param zip_code Zip Code to search near
     # @param [Hash] opts the optional parameters
-    # @option opts [String] :accepts_insurance Limit results to Providers who accept at least one insurance plan.  Note that the inverse of this filter is not supported and any value will evaluate to true
+    # @option opts [String] :accepts_insurance Limit results to Providers who accept at least one insurance?
     # @option opts [Array<String>] :hios_ids HIOS id of one or more plans
     # @option opts [String] :page Page number
     # @option opts [String] :per_page Number of records to return per page
@@ -164,25 +150,11 @@ Specialty name search.  So, searching "John Smith nose" would return
     end
 
     # Find providers by term and zip code
-    # All &#x60;Provider&#x60; searches require a &#x60;zip_code&#x60;, which we use for weighting
-the search results to favor &#x60;Provider&#x60;s that are near the user.  For example,
-we would want &quot;Dr. John Smith&quot; who is 5 miles away to appear before
-&quot;Dr. John Smith&quot; who is 100 miles away.
-
-The weighting also allows for non-exact matches.  In our prior example, we
-would want &quot;Dr. Jon Smith&quot; who is 2 miles away to appear before the exact
-match &quot;Dr. John Smith&quot; who is 100 miles away because it is more likely that
-the user just entered an incorrect name.
-
-The free text search also supports Specialty name search and &quot;body part&quot;
-Specialty name search.  So, searching &quot;John Smith nose&quot; would return
-&quot;Dr. John Smith&quot;, the ENT Specialist before &quot;Dr. John Smith&quot; the Internist.
-
-
+    # 
     # @param search_term String to search by
     # @param zip_code Zip Code to search near
     # @param [Hash] opts the optional parameters
-    # @option opts [String] :accepts_insurance Limit results to Providers who accept at least one insurance plan.  Note that the inverse of this filter is not supported and any value will evaluate to true
+    # @option opts [String] :accepts_insurance Limit results to Providers who accept at least one insurance?
     # @option opts [Array<String>] :hios_ids HIOS id of one or more plans
     # @option opts [String] :page Page number
     # @option opts [String] :per_page Number of records to return per page
@@ -240,9 +212,7 @@ Specialty name search.  So, searching &quot;John Smith nose&quot; would return
     end
 
     # Find a specific Provider
-    # To retrieve a specific provider, just perform a GET using his NPI number
-
-
+    # 
     # @param npi NPI number
     # @param [Hash] opts the optional parameters
     # @return [InlineResponse2001]
@@ -252,9 +222,7 @@ Specialty name search.  So, searching &quot;John Smith nose&quot; would return
     end
 
     # Find a specific Provider
-    # To retrieve a specific provider, just perform a GET using his NPI number
-
-
+    # 
     # @param npi NPI number
     # @param [Hash] opts the optional parameters
     # @return [Array<(InlineResponse2001, Fixnum, Hash)>] InlineResponse2001 data, response status code and response headers

@@ -12,12 +12,6 @@ Method | HTTP request | Description
 
 Find Drug Coverages for a given NDC
 
-Drug Coverages are the specific tier level, quantity limit, prior authorization
-and step therapy for a given Drug/Plan combination.  This endpoint returns
-all DrugCoverages for a given Drug
-
-
-
 ### Example
 ```ruby
 # load the gem
