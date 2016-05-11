@@ -4,13 +4,13 @@ All URIs are relative to *https://api.vericred.com/*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**plans_find_post**](PlansApi.md#plans_find_post) | **POST** /plans/find | Find a set of plans for a Zip Code and County
+[**post_plans_find**](PlansApi.md#post_plans_find) | **POST** /plans/find | 
 
 
-# **plans_find_post**
-> Array&lt;Plan&gt; plans_find_post(query)
+# **post_plans_find**
+> PlanFindResponse post_plans_find(opts)
 
-Find a set of plans for a Zip Code and County
+
 
 ### Example
 ```ruby
@@ -19,15 +19,15 @@ require 'vericred_client'
 
 api_instance = VericredClient::PlansApi.new
 
-query = VericredClient::Query.new # Query | Plan query
-
+opts = { 
+  body: VericredClient::RequestPlanFind.new # RequestPlanFind | 
+}
 
 begin
-  #Find a set of plans for a Zip Code and County
-  result = api_instance.plans_find_post(query)
+  result = api_instance.post_plans_find(opts)
   p result
 rescue VericredClient::ApiError => e
-  puts "Exception when calling PlansApi->plans_find_post: #{e}"
+  puts "Exception when calling PlansApi->post_plans_find: #{e}"
 end
 ```
 
@@ -35,11 +35,11 @@ end
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **query** | [**Query**](Query.md)| Plan query | 
+ **body** | [**RequestPlanFind**](RequestPlanFind.md)|  | [optional] 
 
 ### Return type
 
-[**Array&lt;Plan&gt;**](Plan.md)
+[**PlanFindResponse**](PlanFindResponse.md)
 
 ### Authorization
 

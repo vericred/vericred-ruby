@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **Integer** | Primary key | [optional] 
-**state_id** | **Integer** | Foreign key to state | [optional] 
+**id** | **String** | Name of the Rating Area | [optional] 
+**state_id** | **String** | State Code | [optional] 
 
 

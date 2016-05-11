@@ -4,14 +4,14 @@ All URIs are relative to *https://api.vericred.com/*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**providers_get**](ProvidersApi.md#providers_get) | **GET** /providers | Find providers by term and zip code
-[**providers_npi_get**](ProvidersApi.md#providers_npi_get) | **GET** /providers/{npi} | Find a specific Provider
+[**get_providers**](ProvidersApi.md#get_providers) | **GET** /providers | 
+[**get_providers_npi**](ProvidersApi.md#get_providers_npi) | **GET** /providers/{npi} | 
 
 
-# **providers_get**
-> InlineResponse200 providers_get(search_term, zip_code, opts)
+# **get_providers**
+> ProviderResponse get_providers(search_term, zip_code, opts)
 
-Find providers by term and zip code
+
 
 ### Example
 ```ruby
@@ -25,19 +25,18 @@ search_term = "search_term_example" # String | String to search by
 zip_code = "zip_code_example" # String | Zip Code to search near
 
 opts = { 
-  accepts_insurance: "accepts_insurance_example", # String | Limit results to Providers who accept at least one insurance?
-  hios_ids: ["hios_ids_example"], # Array<String> | HIOS id of one or more plans
+  accepts_insurance: "accepts_insurance_example", # String | Limit results to Providers who accept at least one insurance plan.  Note that the inverse of this filter is not supported and any value will evaluate to true
   page: "page_example", # String | Page number
   per_page: "per_page_example", # String | Number of records to return per page
-  radius: "radius_example" # String | Radius (in miles) to use to limit results
+  radius: "radius_example", # String | Radius (in miles) to use to limit results
+  type: "type_example" # String | Either organization or individual
 }
 
 begin
-  #Find providers by term and zip code
-  result = api_instance.providers_get(search_term, zip_code, opts)
+  result = api_instance.get_providers(search_term, zip_code, opts)
   p result
 rescue VericredClient::ApiError => e
-  puts "Exception when calling ProvidersApi->providers_get: #{e}"
+  puts "Exception when calling ProvidersApi->get_providers: #{e}"
 end
 ```
 
@@ -47,15 +46,15 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **search_term** | **String**| String to search by | 
  **zip_code** | **String**| Zip Code to search near | 
- **accepts_insurance** | **String**| Limit results to Providers who accept at least one insurance? | [optional] 
- **hios_ids** | [**Array&lt;String&gt;**](String.md)| HIOS id of one or more plans | [optional] 
+ **accepts_insurance** | **String**| Limit results to Providers who accept at least one insurance plan.  Note that the inverse of this filter is not supported and any value will evaluate to true | [optional] 
  **page** | **String**| Page number | [optional] 
  **per_page** | **String**| Number of records to return per page | [optional] 
  **radius** | **String**| Radius (in miles) to use to limit results | [optional] 
+ **type** | **String**| Either organization or individual | [optional] 
 
 ### Return type
 
-[**InlineResponse200**](InlineResponse200.md)
+[**ProviderResponse**](ProviderResponse.md)
 
 ### Authorization
 
@@ -68,10 +67,10 @@ No authorization required
 
 
 
-# **providers_npi_get**
-> InlineResponse2001 providers_npi_get(npi)
+# **get_providers_npi**
+> ProviderResponse get_providers_npi(npi)
 
-Find a specific Provider
+
 
 ### Example
 ```ruby
@@ -84,11 +83,10 @@ npi = "npi_example" # String | NPI number
 
 
 begin
-  #Find a specific Provider
-  result = api_instance.providers_npi_get(npi)
+  result = api_instance.get_providers_npi(npi)
   p result
 rescue VericredClient::ApiError => e
-  puts "Exception when calling ProvidersApi->providers_npi_get: #{e}"
+  puts "Exception when calling ProvidersApi->get_providers_npi: #{e}"
 end
 ```
 
@@ -100,7 +98,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2001**](InlineResponse2001.md)
+[**ProviderResponse**](ProviderResponse.md)
 
 ### Authorization
 
