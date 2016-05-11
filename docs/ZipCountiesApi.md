@@ -4,13 +4,13 @@ All URIs are relative to *https://api.vericred.com/*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**zip_counties_get**](ZipCountiesApi.md#zip_counties_get) | **GET** /zip_counties | Find Zip Counties by Zip Code
+[**get_zip_counties**](ZipCountiesApi.md#get_zip_counties) | **GET** /zip_counties | 
 
 
-# **zip_counties_get**
-> InlineResponse2002 zip_counties_get(zip_prefix)
+# **get_zip_counties**
+> ZipCountyResponse get_zip_counties(zip_prefix)
 
-Find Zip Counties by Zip Code
+
 
 ### Example
 ```ruby
@@ -23,11 +23,10 @@ zip_prefix = "zip_prefix_example" # String | Partial five-digit Zip
 
 
 begin
-  #Find Zip Counties by Zip Code
-  result = api_instance.zip_counties_get(zip_prefix)
+  result = api_instance.get_zip_counties(zip_prefix)
   p result
 rescue VericredClient::ApiError => e
-  puts "Exception when calling ZipCountiesApi->zip_counties_get: #{e}"
+  puts "Exception when calling ZipCountiesApi->get_zip_counties: #{e}"
 end
 ```
 
@@ -39,7 +38,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2002**](InlineResponse2002.md)
+[**ZipCountyResponse**](ZipCountyResponse.md)
 
 ### Authorization
 

@@ -1,8 +1,8 @@
-# VericredClient::InlineResponse2001
+# VericredClient::Base
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**provider** | [**Provider**](Provider.md) |  | [optional] 
+**meta** | [**Meta**](Meta.md) | Metadata for query | [optional] 
 
 

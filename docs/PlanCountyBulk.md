@@ -1,10 +1,10 @@
-# VericredClient::Carrier
+# VericredClient::PlanCountyBulk
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**county_id** | **Integer** | Foreign key to county | [optional] 
 **id** | **Integer** | Primary key | [optional] 
-**logo_path** | **String** | URL for the Carrier&#39;s logo | [optional] 
-**name** | **String** | Name of the Carrier | [optional] 
+**plan_id** | **Integer** | Foreign key to plan | [optional] 
 
 
