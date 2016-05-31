@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -127,11 +127,11 @@ require 'date'
 
 module VericredClient
   class County
-    # State FIPS code
-    attr_accessor :fips_code
-
     # Primary key
     attr_accessor :id
+
+    # State FIPS code
+    attr_accessor :fips_code
 
     # Human-readable name
     attr_accessor :name
@@ -151,8 +151,8 @@ module VericredClient
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'fips_code' => :'fips_code',
         :'id' => :'id',
+        :'fips_code' => :'fips_code',
         :'name' => :'name',
         :'state_code' => :'state_code',
         :'state_id' => :'state_id',
@@ -164,8 +164,8 @@ module VericredClient
     # Attribute type mapping.
     def self.swagger_types
       {
-        :'fips_code' => :'String',
         :'id' => :'Integer',
+        :'fips_code' => :'String',
         :'name' => :'String',
         :'state_code' => :'String',
         :'state_id' => :'Integer',
@@ -182,12 +182,12 @@ module VericredClient
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}){|(k,v), h| h[k.to_sym] = v}
 
-      if attributes.has_key?(:'fips_code')
-        self.fips_code = attributes[:'fips_code']
-      end
-
       if attributes.has_key?(:'id')
         self.id = attributes[:'id']
+      end
+
+      if attributes.has_key?(:'fips_code')
+        self.fips_code = attributes[:'fips_code']
       end
 
       if attributes.has_key?(:'name')
@@ -204,14 +204,10 @@ module VericredClient
 
       if attributes.has_key?(:'state_live')
         self.state_live = attributes[:'state_live']
-      else
-        self.state_live = false
       end
 
       if attributes.has_key?(:'state_live_for_business')
         self.state_live_for_business = attributes[:'state_live_for_business']
-      else
-        self.state_live_for_business = false
       end
 
     end
@@ -233,8 +229,8 @@ module VericredClient
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          fips_code == o.fips_code &&
           id == o.id &&
+          fips_code == o.fips_code &&
           name == o.name &&
           state_code == o.state_code &&
           state_id == o.state_id &&
@@ -251,7 +247,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [fips_code, id, name, state_code, state_id, state_live, state_live_for_business].hash
+      [id, fips_code, name, state_code, state_id, state_live, state_live_for_business].hash
     end
 
     # Builds the object from hash

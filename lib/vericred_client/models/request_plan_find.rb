@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -133,6 +133,9 @@ module VericredClient
     # Date of enrollment
     attr_accessor :enrollment_date
 
+    # National Drug Code Package Id
+    attr_accessor :drug_packages
+
     # County code to determine eligibility
     attr_accessor :fips_code
 
@@ -156,6 +159,7 @@ module VericredClient
       {
         :'applicants' => :'applicants',
         :'enrollment_date' => :'enrollment_date',
+        :'drug_packages' => :'drug_packages',
         :'fips_code' => :'fips_code',
         :'household_income' => :'household_income',
         :'household_size' => :'household_size',
@@ -168,13 +172,14 @@ module VericredClient
     # Attribute type mapping.
     def self.swagger_types
       {
-        :'applicants' => :'Array<Applicant>',
+        :'applicants' => :'Array<RequestPlanFindApplicant>',
         :'enrollment_date' => :'String',
+        :'drug_packages' => :'Array<DrugPackage>',
         :'fips_code' => :'String',
         :'household_income' => :'Integer',
         :'household_size' => :'Integer',
         :'market' => :'String',
-        :'providers' => :'Array<Provider>',
+        :'providers' => :'Array<RequestPlanFindProvider>',
         :'zip_code' => :'String'
       }
     end
@@ -195,6 +200,12 @@ module VericredClient
 
       if attributes.has_key?(:'enrollment_date')
         self.enrollment_date = attributes[:'enrollment_date']
+      end
+
+      if attributes.has_key?(:'drug_packages')
+        if (value = attributes[:'drug_packages']).is_a?(Array)
+          self.drug_packages = value
+        end
       end
 
       if attributes.has_key?(:'fips_code')
@@ -244,6 +255,7 @@ module VericredClient
       self.class == o.class &&
           applicants == o.applicants &&
           enrollment_date == o.enrollment_date &&
+          drug_packages == o.drug_packages &&
           fips_code == o.fips_code &&
           household_income == o.household_income &&
           household_size == o.household_size &&
@@ -261,7 +273,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [applicants, enrollment_date, fips_code, household_income, household_size, market, providers, zip_code].hash
+      [applicants, enrollment_date, drug_packages, fips_code, household_income, household_size, market, providers, zip_code].hash
     end
 
     # Builds the object from hash

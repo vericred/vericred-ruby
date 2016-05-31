@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -127,45 +127,45 @@ require 'date'
 
 module VericredClient
   class DrugCoverage
-    # NDC package code
-    attr_accessor :ndc_package_code
-
     # Health Insurance Oversight System id
     attr_accessor :plan_id
 
-    # Prior authorization required
-    attr_accessor :prior_authorization
-
-    # Quantity limit exists
-    attr_accessor :quantity_limit
-
-    # Step Treatment required
-    attr_accessor :step_therapy
+    # NDC package code
+    attr_accessor :drug_package_id
 
     # Tier Name
     attr_accessor :tier
 
+    # Quantity limit exists
+    attr_accessor :quantity_limit
+
+    # Prior authorization required
+    attr_accessor :prior_authorization
+
+    # Step Treatment required
+    attr_accessor :step_therapy
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'ndc_package_code' => :'ndc_package_code',
         :'plan_id' => :'plan_id',
-        :'prior_authorization' => :'prior_authorization',
+        :'drug_package_id' => :'drug_package_id',
+        :'tier' => :'tier',
         :'quantity_limit' => :'quantity_limit',
-        :'step_therapy' => :'step_therapy',
-        :'tier' => :'tier'
+        :'prior_authorization' => :'prior_authorization',
+        :'step_therapy' => :'step_therapy'
       }
     end
 
     # Attribute type mapping.
     def self.swagger_types
       {
-        :'ndc_package_code' => :'String',
         :'plan_id' => :'String',
-        :'prior_authorization' => :'BOOLEAN',
+        :'drug_package_id' => :'String',
+        :'tier' => :'String',
         :'quantity_limit' => :'BOOLEAN',
-        :'step_therapy' => :'BOOLEAN',
-        :'tier' => :'String'
+        :'prior_authorization' => :'BOOLEAN',
+        :'step_therapy' => :'BOOLEAN'
       }
     end
 
@@ -177,34 +177,28 @@ module VericredClient
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}){|(k,v), h| h[k.to_sym] = v}
 
-      if attributes.has_key?(:'ndc_package_code')
-        self.ndc_package_code = attributes[:'ndc_package_code']
-      end
-
       if attributes.has_key?(:'plan_id')
         self.plan_id = attributes[:'plan_id']
       end
 
-      if attributes.has_key?(:'prior_authorization')
-        self.prior_authorization = attributes[:'prior_authorization']
-      else
-        self.prior_authorization = false
-      end
-
-      if attributes.has_key?(:'quantity_limit')
-        self.quantity_limit = attributes[:'quantity_limit']
-      else
-        self.quantity_limit = false
-      end
-
-      if attributes.has_key?(:'step_therapy')
-        self.step_therapy = attributes[:'step_therapy']
-      else
-        self.step_therapy = false
+      if attributes.has_key?(:'drug_package_id')
+        self.drug_package_id = attributes[:'drug_package_id']
       end
 
       if attributes.has_key?(:'tier')
         self.tier = attributes[:'tier']
+      end
+
+      if attributes.has_key?(:'quantity_limit')
+        self.quantity_limit = attributes[:'quantity_limit']
+      end
+
+      if attributes.has_key?(:'prior_authorization')
+        self.prior_authorization = attributes[:'prior_authorization']
+      end
+
+      if attributes.has_key?(:'step_therapy')
+        self.step_therapy = attributes[:'step_therapy']
       end
 
     end
@@ -226,12 +220,12 @@ module VericredClient
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          ndc_package_code == o.ndc_package_code &&
           plan_id == o.plan_id &&
-          prior_authorization == o.prior_authorization &&
+          drug_package_id == o.drug_package_id &&
+          tier == o.tier &&
           quantity_limit == o.quantity_limit &&
-          step_therapy == o.step_therapy &&
-          tier == o.tier
+          prior_authorization == o.prior_authorization &&
+          step_therapy == o.step_therapy
     end
 
     # @see the `==` method
@@ -243,7 +237,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [ndc_package_code, plan_id, prior_authorization, quantity_limit, step_therapy, tier].hash
+      [plan_id, drug_package_id, tier, quantity_limit, prior_authorization, step_therapy].hash
     end
 
     # Builds the object from hash

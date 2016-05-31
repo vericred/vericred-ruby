@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -127,13 +127,13 @@ require 'date'
 
 module VericredClient
   class Applicant
-    # Date of Birth
-    attr_accessor :dob
-
     # Primary key
     attr_accessor :id
 
-    # Foreign key to members
+    # Date of Birth
+    attr_accessor :dob
+
+    # Member token
     attr_accessor :member_id
 
     # Full name of the Applicant
@@ -151,8 +151,8 @@ module VericredClient
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'dob' => :'dob',
         :'id' => :'id',
+        :'dob' => :'dob',
         :'member_id' => :'member_id',
         :'name' => :'name',
         :'relationship' => :'relationship',
@@ -164,8 +164,8 @@ module VericredClient
     # Attribute type mapping.
     def self.swagger_types
       {
-        :'dob' => :'Date',
         :'id' => :'Integer',
+        :'dob' => :'Date',
         :'member_id' => :'String',
         :'name' => :'String',
         :'relationship' => :'String',
@@ -182,12 +182,12 @@ module VericredClient
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}){|(k,v), h| h[k.to_sym] = v}
 
-      if attributes.has_key?(:'dob')
-        self.dob = attributes[:'dob']
-      end
-
       if attributes.has_key?(:'id')
         self.id = attributes[:'id']
+      end
+
+      if attributes.has_key?(:'dob')
+        self.dob = attributes[:'dob']
       end
 
       if attributes.has_key?(:'member_id')
@@ -204,8 +204,6 @@ module VericredClient
 
       if attributes.has_key?(:'smoker')
         self.smoker = attributes[:'smoker']
-      else
-        self.smoker = false
       end
 
       if attributes.has_key?(:'ssn')
@@ -231,8 +229,8 @@ module VericredClient
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          dob == o.dob &&
           id == o.id &&
+          dob == o.dob &&
           member_id == o.member_id &&
           name == o.name &&
           relationship == o.relationship &&
@@ -249,7 +247,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [dob, id, member_id, name, relationship, smoker, ssn].hash
+      [id, dob, member_id, name, relationship, smoker, ssn].hash
     end
 
     # Builds the object from hash

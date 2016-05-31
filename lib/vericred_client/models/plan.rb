@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -145,14 +145,17 @@ module VericredClient
     # Does the plan provide dental coverage for children?
     attr_accessor :child_dental
 
-    # Child eye exam benefits summary
-    attr_accessor :child_eye_exam
-
     # Child eyewear benefits summary
     attr_accessor :child_eyewear
 
+    # Child eye exam benefits summary
+    attr_accessor :child_eye_exam
+
     # Phone number to contact the insurance carrier
     attr_accessor :customer_service_phone_number
+
+    # Benefits summary for durable medical equipment
+    attr_accessor :durable_medical_equipment
 
     # Diagnostic tests benefit summary
     attr_accessor :diagnostic_test
@@ -160,17 +163,14 @@ module VericredClient
     # Link to the summary of drug benefits for the plan
     attr_accessor :drug_formulary_url
 
-    # Benefits summary for durable medical equipment
-    attr_accessor :durable_medical_equipment
-
     # Effective date of coverage.
     attr_accessor :effective_date
 
-    # Description of costs when visiting the ER
-    attr_accessor :emergency_room
-
     # Expiration date of coverage.
     attr_accessor :expiration_date
+
+    # Description of costs when visiting the ER
+    attr_accessor :emergency_room
 
     # Deductible for drugs when a family is on the plan.
     attr_accessor :family_drug_deductible
@@ -250,11 +250,11 @@ module VericredClient
     # Cost under the plan for non-preferred brand drugs
     attr_accessor :non_preferred_brand_drugs
 
-    # Is the plan off-market?
-    attr_accessor :off_market
-
     # Is the plan on-market?
     attr_accessor :on_market
+
+    # Is the plan off-market?
+    attr_accessor :off_market
 
     # Does this plan provide any out of network coverage?
     attr_accessor :out_of_network_coverage
@@ -283,17 +283,17 @@ module VericredClient
     # Cost under the plan for perferred brand drugs
     attr_accessor :preferred_brand_drugs
 
-    # Cumulative premium amount
-    attr_accessor :premium
-
-    # Cumulative premium amount after subsidy
-    attr_accessor :premium_subsidized
-
     # Inpatient substance abuse benefits summary
     attr_accessor :prenatal_postnatal_care
 
     # Benefits summary for preventative care
     attr_accessor :preventative_care
+
+    # Cumulative premium amount after subsidy
+    attr_accessor :premium_subsidized
+
+    # Cumulative premium amount
+    attr_accessor :premium
 
     # Cost under the plan to visit a Primary Care Physician
     attr_accessor :primary_care_physician
@@ -322,15 +322,15 @@ module VericredClient
         :'buy_link' => :'buy_link',
         :'carrier_name' => :'carrier_name',
         :'child_dental' => :'child_dental',
-        :'child_eye_exam' => :'child_eye_exam',
         :'child_eyewear' => :'child_eyewear',
+        :'child_eye_exam' => :'child_eye_exam',
         :'customer_service_phone_number' => :'customer_service_phone_number',
+        :'durable_medical_equipment' => :'durable_medical_equipment',
         :'diagnostic_test' => :'diagnostic_test',
         :'drug_formulary_url' => :'drug_formulary_url',
-        :'durable_medical_equipment' => :'durable_medical_equipment',
         :'effective_date' => :'effective_date',
-        :'emergency_room' => :'emergency_room',
         :'expiration_date' => :'expiration_date',
+        :'emergency_room' => :'emergency_room',
         :'family_drug_deductible' => :'family_drug_deductible',
         :'family_drug_moop' => :'family_drug_moop',
         :'family_medical_deductible' => :'family_medical_deductible',
@@ -357,8 +357,8 @@ module VericredClient
         :'name' => :'name',
         :'network_size' => :'network_size',
         :'non_preferred_brand_drugs' => :'non_preferred_brand_drugs',
-        :'off_market' => :'off_market',
         :'on_market' => :'on_market',
+        :'off_market' => :'off_market',
         :'out_of_network_coverage' => :'out_of_network_coverage',
         :'out_of_network_ids' => :'out_of_network_ids',
         :'outpatient_facility' => :'outpatient_facility',
@@ -368,10 +368,10 @@ module VericredClient
         :'plan_market' => :'plan_market',
         :'plan_type' => :'plan_type',
         :'preferred_brand_drugs' => :'preferred_brand_drugs',
-        :'premium' => :'premium',
-        :'premium_subsidized' => :'premium_subsidized',
         :'prenatal_postnatal_care' => :'prenatal_postnatal_care',
         :'preventative_care' => :'preventative_care',
+        :'premium_subsidized' => :'premium_subsidized',
+        :'premium' => :'premium',
         :'primary_care_physician' => :'primary_care_physician',
         :'rehabilitation_services' => :'rehabilitation_services',
         :'skilled_nursing' => :'skilled_nursing',
@@ -390,15 +390,15 @@ module VericredClient
         :'buy_link' => :'String',
         :'carrier_name' => :'String',
         :'child_dental' => :'BOOLEAN',
-        :'child_eye_exam' => :'String',
         :'child_eyewear' => :'String',
+        :'child_eye_exam' => :'String',
         :'customer_service_phone_number' => :'String',
+        :'durable_medical_equipment' => :'String',
         :'diagnostic_test' => :'String',
         :'drug_formulary_url' => :'String',
-        :'durable_medical_equipment' => :'String',
         :'effective_date' => :'String',
-        :'emergency_room' => :'String',
         :'expiration_date' => :'String',
+        :'emergency_room' => :'String',
         :'family_drug_deductible' => :'String',
         :'family_drug_moop' => :'String',
         :'family_medical_deductible' => :'String',
@@ -425,8 +425,8 @@ module VericredClient
         :'name' => :'String',
         :'network_size' => :'Integer',
         :'non_preferred_brand_drugs' => :'String',
-        :'off_market' => :'BOOLEAN',
         :'on_market' => :'BOOLEAN',
+        :'off_market' => :'BOOLEAN',
         :'out_of_network_coverage' => :'BOOLEAN',
         :'out_of_network_ids' => :'Array<Integer>',
         :'outpatient_facility' => :'String',
@@ -436,10 +436,10 @@ module VericredClient
         :'plan_market' => :'String',
         :'plan_type' => :'String',
         :'preferred_brand_drugs' => :'String',
-        :'premium' => :'Float',
-        :'premium_subsidized' => :'Float',
         :'prenatal_postnatal_care' => :'String',
         :'preventative_care' => :'String',
+        :'premium_subsidized' => :'Float',
+        :'premium' => :'Float',
         :'primary_care_physician' => :'String',
         :'rehabilitation_services' => :'String',
         :'skilled_nursing' => :'String',
@@ -459,8 +459,6 @@ module VericredClient
 
       if attributes.has_key?(:'adult_dental')
         self.adult_dental = attributes[:'adult_dental']
-      else
-        self.adult_dental = false
       end
 
       if attributes.has_key?(:'ambulance')
@@ -481,20 +479,22 @@ module VericredClient
 
       if attributes.has_key?(:'child_dental')
         self.child_dental = attributes[:'child_dental']
-      else
-        self.child_dental = false
-      end
-
-      if attributes.has_key?(:'child_eye_exam')
-        self.child_eye_exam = attributes[:'child_eye_exam']
       end
 
       if attributes.has_key?(:'child_eyewear')
         self.child_eyewear = attributes[:'child_eyewear']
       end
 
+      if attributes.has_key?(:'child_eye_exam')
+        self.child_eye_exam = attributes[:'child_eye_exam']
+      end
+
       if attributes.has_key?(:'customer_service_phone_number')
         self.customer_service_phone_number = attributes[:'customer_service_phone_number']
+      end
+
+      if attributes.has_key?(:'durable_medical_equipment')
+        self.durable_medical_equipment = attributes[:'durable_medical_equipment']
       end
 
       if attributes.has_key?(:'diagnostic_test')
@@ -505,20 +505,16 @@ module VericredClient
         self.drug_formulary_url = attributes[:'drug_formulary_url']
       end
 
-      if attributes.has_key?(:'durable_medical_equipment')
-        self.durable_medical_equipment = attributes[:'durable_medical_equipment']
-      end
-
       if attributes.has_key?(:'effective_date')
         self.effective_date = attributes[:'effective_date']
       end
 
-      if attributes.has_key?(:'emergency_room')
-        self.emergency_room = attributes[:'emergency_room']
-      end
-
       if attributes.has_key?(:'expiration_date')
         self.expiration_date = attributes[:'expiration_date']
+      end
+
+      if attributes.has_key?(:'emergency_room')
+        self.emergency_room = attributes[:'emergency_room']
       end
 
       if attributes.has_key?(:'family_drug_deductible')
@@ -627,22 +623,16 @@ module VericredClient
         self.non_preferred_brand_drugs = attributes[:'non_preferred_brand_drugs']
       end
 
-      if attributes.has_key?(:'off_market')
-        self.off_market = attributes[:'off_market']
-      else
-        self.off_market = false
-      end
-
       if attributes.has_key?(:'on_market')
         self.on_market = attributes[:'on_market']
-      else
-        self.on_market = false
+      end
+
+      if attributes.has_key?(:'off_market')
+        self.off_market = attributes[:'off_market']
       end
 
       if attributes.has_key?(:'out_of_network_coverage')
         self.out_of_network_coverage = attributes[:'out_of_network_coverage']
-      else
-        self.out_of_network_coverage = false
       end
 
       if attributes.has_key?(:'out_of_network_ids')
@@ -679,20 +669,20 @@ module VericredClient
         self.preferred_brand_drugs = attributes[:'preferred_brand_drugs']
       end
 
-      if attributes.has_key?(:'premium')
-        self.premium = attributes[:'premium']
-      end
-
-      if attributes.has_key?(:'premium_subsidized')
-        self.premium_subsidized = attributes[:'premium_subsidized']
-      end
-
       if attributes.has_key?(:'prenatal_postnatal_care')
         self.prenatal_postnatal_care = attributes[:'prenatal_postnatal_care']
       end
 
       if attributes.has_key?(:'preventative_care')
         self.preventative_care = attributes[:'preventative_care']
+      end
+
+      if attributes.has_key?(:'premium_subsidized')
+        self.premium_subsidized = attributes[:'premium_subsidized']
+      end
+
+      if attributes.has_key?(:'premium')
+        self.premium = attributes[:'premium']
       end
 
       if attributes.has_key?(:'primary_care_physician')
@@ -744,15 +734,15 @@ module VericredClient
           buy_link == o.buy_link &&
           carrier_name == o.carrier_name &&
           child_dental == o.child_dental &&
-          child_eye_exam == o.child_eye_exam &&
           child_eyewear == o.child_eyewear &&
+          child_eye_exam == o.child_eye_exam &&
           customer_service_phone_number == o.customer_service_phone_number &&
+          durable_medical_equipment == o.durable_medical_equipment &&
           diagnostic_test == o.diagnostic_test &&
           drug_formulary_url == o.drug_formulary_url &&
-          durable_medical_equipment == o.durable_medical_equipment &&
           effective_date == o.effective_date &&
-          emergency_room == o.emergency_room &&
           expiration_date == o.expiration_date &&
+          emergency_room == o.emergency_room &&
           family_drug_deductible == o.family_drug_deductible &&
           family_drug_moop == o.family_drug_moop &&
           family_medical_deductible == o.family_medical_deductible &&
@@ -779,8 +769,8 @@ module VericredClient
           name == o.name &&
           network_size == o.network_size &&
           non_preferred_brand_drugs == o.non_preferred_brand_drugs &&
-          off_market == o.off_market &&
           on_market == o.on_market &&
+          off_market == o.off_market &&
           out_of_network_coverage == o.out_of_network_coverage &&
           out_of_network_ids == o.out_of_network_ids &&
           outpatient_facility == o.outpatient_facility &&
@@ -790,10 +780,10 @@ module VericredClient
           plan_market == o.plan_market &&
           plan_type == o.plan_type &&
           preferred_brand_drugs == o.preferred_brand_drugs &&
-          premium == o.premium &&
-          premium_subsidized == o.premium_subsidized &&
           prenatal_postnatal_care == o.prenatal_postnatal_care &&
           preventative_care == o.preventative_care &&
+          premium_subsidized == o.premium_subsidized &&
+          premium == o.premium &&
           primary_care_physician == o.primary_care_physician &&
           rehabilitation_services == o.rehabilitation_services &&
           skilled_nursing == o.skilled_nursing &&
@@ -811,7 +801,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [adult_dental, ambulance, benefits_summary_url, buy_link, carrier_name, child_dental, child_eye_exam, child_eyewear, customer_service_phone_number, diagnostic_test, drug_formulary_url, durable_medical_equipment, effective_date, emergency_room, expiration_date, family_drug_deductible, family_drug_moop, family_medical_deductible, family_medical_moop, generic_drugs, habilitation_services, hios_issuer_id, home_health_care, hospice_service, id, imaging, in_network_ids, individual_drug_deductible, individual_drug_moop, individual_medical_deductible, individual_medical_moop, inpatient_birth, inpatient_facility, inpatient_mental_health, inpatient_physician, inpatient_substance, level, logo_url, name, network_size, non_preferred_brand_drugs, off_market, on_market, out_of_network_coverage, out_of_network_ids, outpatient_facility, outpatient_mental_health, outpatient_physician, outpatient_substance, plan_market, plan_type, preferred_brand_drugs, premium, premium_subsidized, prenatal_postnatal_care, preventative_care, primary_care_physician, rehabilitation_services, skilled_nursing, specialist, specialty_drugs, urgent_care].hash
+      [adult_dental, ambulance, benefits_summary_url, buy_link, carrier_name, child_dental, child_eyewear, child_eye_exam, customer_service_phone_number, durable_medical_equipment, diagnostic_test, drug_formulary_url, effective_date, expiration_date, emergency_room, family_drug_deductible, family_drug_moop, family_medical_deductible, family_medical_moop, generic_drugs, habilitation_services, hios_issuer_id, home_health_care, hospice_service, id, imaging, in_network_ids, individual_drug_deductible, individual_drug_moop, individual_medical_deductible, individual_medical_moop, inpatient_birth, inpatient_facility, inpatient_mental_health, inpatient_physician, inpatient_substance, level, logo_url, name, network_size, non_preferred_brand_drugs, on_market, off_market, out_of_network_coverage, out_of_network_ids, outpatient_facility, outpatient_mental_health, outpatient_physician, outpatient_substance, plan_market, plan_type, preferred_brand_drugs, prenatal_postnatal_care, preventative_care, premium_subsidized, premium, primary_care_physician, rehabilitation_services, skilled_nursing, specialist, specialty_drugs, urgent_care].hash
     end
 
     # Builds the object from hash

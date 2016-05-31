@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -145,19 +145,14 @@ describe 'ProvidersApi' do
     end
   end
 
-  # unit tests for get_providers
-  # 
-  # 
-  # @param search_term String to search by
-  # @param zip_code Zip Code to search near
+  # unit tests for get_provider
+  # Find a Provider
+  # To retrieve a specific provider, just perform a GET using his NPI number
+  # @param npi NPI number
   # @param [Hash] opts the optional parameters
-  # @option opts [String] :accepts_insurance Limit results to Providers who accept at least one insurance plan.  Note that the inverse of this filter is not supported and any value will evaluate to true
-  # @option opts [String] :page Page number
-  # @option opts [String] :per_page Number of records to return per page
-  # @option opts [String] :radius Radius (in miles) to use to limit results
-  # @option opts [String] :type Either organization or individual
-  # @return [ProviderResponse]
-  describe 'get_providers test' do
+  # @option opts [String] :vericred_api_key API Key
+  # @return [Provider]
+  describe 'get_provider test' do
     it "should work" do
       # assertion here
       # should be_a()
@@ -167,13 +162,26 @@ describe 'ProvidersApi' do
     end
   end
 
-  # unit tests for get_providers_npi
-  # 
-  # 
-  # @param npi NPI number
+  # unit tests for get_providers
+  # Find Providers
+  # All &#x60;Provider&#x60; searches require a &#x60;zip_code&#x60;, which we use for weighting
+the search results to favor &#x60;Provider&#x60;s that are near the user.  For example,
+we would want &quot;Dr. John Smith&quot; who is 5 miles away to appear before
+&quot;Dr. John Smith&quot; who is 100 miles away.
+
+The weighting also allows for non-exact matches.  In our prior example, we
+would want &quot;Dr. Jon Smith&quot; who is 2 miles away to appear before the exact
+match &quot;Dr. John Smith&quot; who is 100 miles away because it is more likely that
+the user just entered an incorrect name.
+
+The free text search also supports Specialty name search and &quot;body part&quot;
+Specialty name search.  So, searching &quot;John Smith nose&quot; would return
+&quot;Dr. John Smith&quot;, the ENT Specialist before &quot;Dr. John Smith&quot; the Internist.
+
   # @param [Hash] opts the optional parameters
-  # @return [ProviderResponse]
-  describe 'get_providers_npi test' do
+  # @option opts [RequestProvidersSearch] :body 
+  # @return [ProvidersSearchResponse]
+  describe 'get_providers test' do
     it "should work" do
       # assertion here
       # should be_a()

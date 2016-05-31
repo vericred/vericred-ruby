@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -127,25 +127,30 @@ require 'date'
 
 module VericredClient
   class DrugSearchResponse
+    # Metadata for query
+    attr_accessor :meta
+
     # Drugs found in query
     attr_accessor :drugs
 
-    # Metadata for query
-    attr_accessor :meta
+    # DrugPackages
+    attr_accessor :drug_packages
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
+        :'meta' => :'meta',
         :'drugs' => :'drugs',
-        :'meta' => :'meta'
+        :'drug_packages' => :'drug_packages'
       }
     end
 
     # Attribute type mapping.
     def self.swagger_types
       {
+        :'meta' => :'Meta',
         :'drugs' => :'Array<Drug>',
-        :'meta' => :'Meta'
+        :'drug_packages' => :'Array<DrugPackage>'
       }
     end
 
@@ -157,14 +162,20 @@ module VericredClient
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}){|(k,v), h| h[k.to_sym] = v}
 
+      if attributes.has_key?(:'meta')
+        self.meta = attributes[:'meta']
+      end
+
       if attributes.has_key?(:'drugs')
         if (value = attributes[:'drugs']).is_a?(Array)
           self.drugs = value
         end
       end
 
-      if attributes.has_key?(:'meta')
-        self.meta = attributes[:'meta']
+      if attributes.has_key?(:'drug_packages')
+        if (value = attributes[:'drug_packages']).is_a?(Array)
+          self.drug_packages = value
+        end
       end
 
     end
@@ -186,8 +197,9 @@ module VericredClient
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
+          meta == o.meta &&
           drugs == o.drugs &&
-          meta == o.meta
+          drug_packages == o.drug_packages
     end
 
     # @see the `==` method
@@ -199,7 +211,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [drugs, meta].hash
+      [meta, drugs, drug_packages].hash
     end
 
     # Builds the object from hash

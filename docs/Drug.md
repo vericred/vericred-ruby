@@ -3,9 +3,9 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ndc** | **String** | National Drug Code ID | [optional] 
-**non_proprietary_name** | **String** | Non-proprietary name of drug | [optional] 
-**packages** | [**Array&lt;DrugPackage&gt;**](DrugPackage.md) | Available retail/prescription packages for this drug | [optional] 
+**id** | **String** | National Drug Code ID | [optional] 
 **proprietary_name** | **String** | Proprietary name of drug | [optional] 
+**non_proprietary_name** | **String** | Non-proprietary name of drug | [optional] 
+**drug_package_ids** | **Array&lt;String&gt;** | Array of drug package Ids | [optional] 
 
 

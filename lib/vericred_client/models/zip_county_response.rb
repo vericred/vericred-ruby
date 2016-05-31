@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -130,18 +130,22 @@ module VericredClient
     # Counties that exist in the provided zip prefix.
     attr_accessor :counties
 
+    # States that exist in the provided zip prefix.
+    attr_accessor :states
+
     # ZipCodes that exist in the provided zip prefix.
     attr_accessor :zip_codes
 
-    # ZipCounties that exist in the provided zip prefix.
-    attr_accessor :zip_counties
+    # ZipCounty data
+    attr_accessor :zip_county
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'counties' => :'counties',
+        :'states' => :'states',
         :'zip_codes' => :'zip_codes',
-        :'zip_counties' => :'zip_counties'
+        :'zip_county' => :'zip_county'
       }
     end
 
@@ -149,8 +153,9 @@ module VericredClient
     def self.swagger_types
       {
         :'counties' => :'Array<County>',
+        :'states' => :'Array<State>',
         :'zip_codes' => :'Array<ZipCode>',
-        :'zip_counties' => :'Array<ZipCounty>'
+        :'zip_county' => :'ZipCounty'
       }
     end
 
@@ -168,16 +173,20 @@ module VericredClient
         end
       end
 
+      if attributes.has_key?(:'states')
+        if (value = attributes[:'states']).is_a?(Array)
+          self.states = value
+        end
+      end
+
       if attributes.has_key?(:'zip_codes')
         if (value = attributes[:'zip_codes']).is_a?(Array)
           self.zip_codes = value
         end
       end
 
-      if attributes.has_key?(:'zip_counties')
-        if (value = attributes[:'zip_counties']).is_a?(Array)
-          self.zip_counties = value
-        end
+      if attributes.has_key?(:'zip_county')
+        self.zip_county = attributes[:'zip_county']
       end
 
     end
@@ -200,8 +209,9 @@ module VericredClient
       return true if self.equal?(o)
       self.class == o.class &&
           counties == o.counties &&
+          states == o.states &&
           zip_codes == o.zip_codes &&
-          zip_counties == o.zip_counties
+          zip_county == o.zip_county
     end
 
     # @see the `==` method
@@ -213,7 +223,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [counties, zip_codes, zip_counties].hash
+      [counties, states, zip_codes, zip_county].hash
     end
 
     # Builds the object from hash

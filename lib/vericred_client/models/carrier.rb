@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -130,18 +130,18 @@ module VericredClient
     # Primary key
     attr_accessor :id
 
-    # URL for the Carrier's logo
-    attr_accessor :logo_path
-
     # Name of the Carrier
     attr_accessor :name
+
+    # URL for the Carrier's logo
+    attr_accessor :logo_path
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'id' => :'id',
-        :'logo_path' => :'logo_path',
-        :'name' => :'name'
+        :'name' => :'name',
+        :'logo_path' => :'logo_path'
       }
     end
 
@@ -149,8 +149,8 @@ module VericredClient
     def self.swagger_types
       {
         :'id' => :'Integer',
-        :'logo_path' => :'String',
-        :'name' => :'String'
+        :'name' => :'String',
+        :'logo_path' => :'String'
       }
     end
 
@@ -166,12 +166,12 @@ module VericredClient
         self.id = attributes[:'id']
       end
 
-      if attributes.has_key?(:'logo_path')
-        self.logo_path = attributes[:'logo_path']
-      end
-
       if attributes.has_key?(:'name')
         self.name = attributes[:'name']
+      end
+
+      if attributes.has_key?(:'logo_path')
+        self.logo_path = attributes[:'logo_path']
       end
 
     end
@@ -194,8 +194,8 @@ module VericredClient
       return true if self.equal?(o)
       self.class == o.class &&
           id == o.id &&
-          logo_path == o.logo_path &&
-          name == o.name
+          name == o.name &&
+          logo_path == o.logo_path
     end
 
     # @see the `==` method
@@ -207,7 +207,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [id, logo_path, name].hash
+      [id, name, logo_path].hash
     end
 
     # Builds the object from hash

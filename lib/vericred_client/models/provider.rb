@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -148,11 +148,11 @@ module VericredClient
     # Primary email address to contact the provider.
     attr_accessor :email
 
-    # Given name for the provider.
-    attr_accessor :first_name
-
     # Provider's gender (M or F)
     attr_accessor :gender
+
+    # Given name for the provider.
+    attr_accessor :first_name
 
     # List of HIOS ids for this provider
     attr_accessor :hios_ids
@@ -171,6 +171,9 @@ module VericredClient
 
     # Middle name for the provider.
     attr_accessor :middle_name
+
+    # Array of network ids
+    attr_accessor :network_ids
 
     # Personal contact phone for the provider.
     attr_accessor :personal_phone
@@ -218,14 +221,15 @@ module VericredClient
         :'accepting_referral_patients' => :'accepting_referral_patients',
         :'city' => :'city',
         :'email' => :'email',
-        :'first_name' => :'first_name',
         :'gender' => :'gender',
+        :'first_name' => :'first_name',
         :'hios_ids' => :'hios_ids',
         :'id' => :'id',
         :'last_name' => :'last_name',
         :'latitude' => :'latitude',
         :'longitude' => :'longitude',
         :'middle_name' => :'middle_name',
+        :'network_ids' => :'network_ids',
         :'personal_phone' => :'personal_phone',
         :'phone' => :'phone',
         :'presentation_name' => :'presentation_name',
@@ -251,14 +255,15 @@ module VericredClient
         :'accepting_referral_patients' => :'BOOLEAN',
         :'city' => :'String',
         :'email' => :'String',
-        :'first_name' => :'String',
         :'gender' => :'String',
+        :'first_name' => :'String',
         :'hios_ids' => :'Array<String>',
         :'id' => :'Integer',
         :'last_name' => :'String',
         :'latitude' => :'Float',
         :'longitude' => :'Float',
         :'middle_name' => :'String',
+        :'network_ids' => :'Array<Integer>',
         :'personal_phone' => :'String',
         :'phone' => :'String',
         :'presentation_name' => :'String',
@@ -284,32 +289,22 @@ module VericredClient
 
       if attributes.has_key?(:'accepting_change_of_payor_patients')
         self.accepting_change_of_payor_patients = attributes[:'accepting_change_of_payor_patients']
-      else
-        self.accepting_change_of_payor_patients = false
       end
 
       if attributes.has_key?(:'accepting_medicaid_patients')
         self.accepting_medicaid_patients = attributes[:'accepting_medicaid_patients']
-      else
-        self.accepting_medicaid_patients = false
       end
 
       if attributes.has_key?(:'accepting_medicare_patients')
         self.accepting_medicare_patients = attributes[:'accepting_medicare_patients']
-      else
-        self.accepting_medicare_patients = false
       end
 
       if attributes.has_key?(:'accepting_private_patients')
         self.accepting_private_patients = attributes[:'accepting_private_patients']
-      else
-        self.accepting_private_patients = false
       end
 
       if attributes.has_key?(:'accepting_referral_patients')
         self.accepting_referral_patients = attributes[:'accepting_referral_patients']
-      else
-        self.accepting_referral_patients = false
       end
 
       if attributes.has_key?(:'city')
@@ -320,12 +315,12 @@ module VericredClient
         self.email = attributes[:'email']
       end
 
-      if attributes.has_key?(:'first_name')
-        self.first_name = attributes[:'first_name']
-      end
-
       if attributes.has_key?(:'gender')
         self.gender = attributes[:'gender']
+      end
+
+      if attributes.has_key?(:'first_name')
+        self.first_name = attributes[:'first_name']
       end
 
       if attributes.has_key?(:'hios_ids')
@@ -352,6 +347,12 @@ module VericredClient
 
       if attributes.has_key?(:'middle_name')
         self.middle_name = attributes[:'middle_name']
+      end
+
+      if attributes.has_key?(:'network_ids')
+        if (value = attributes[:'network_ids']).is_a?(Array)
+          self.network_ids = value
+        end
       end
 
       if attributes.has_key?(:'personal_phone')
@@ -428,14 +429,15 @@ module VericredClient
           accepting_referral_patients == o.accepting_referral_patients &&
           city == o.city &&
           email == o.email &&
-          first_name == o.first_name &&
           gender == o.gender &&
+          first_name == o.first_name &&
           hios_ids == o.hios_ids &&
           id == o.id &&
           last_name == o.last_name &&
           latitude == o.latitude &&
           longitude == o.longitude &&
           middle_name == o.middle_name &&
+          network_ids == o.network_ids &&
           personal_phone == o.personal_phone &&
           phone == o.phone &&
           presentation_name == o.presentation_name &&
@@ -459,7 +461,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [accepting_change_of_payor_patients, accepting_medicaid_patients, accepting_medicare_patients, accepting_private_patients, accepting_referral_patients, city, email, first_name, gender, hios_ids, id, last_name, latitude, longitude, middle_name, personal_phone, phone, presentation_name, specialty, state, state_id, street_line_1, street_line_2, suffix, title, type, zip_code].hash
+      [accepting_change_of_payor_patients, accepting_medicaid_patients, accepting_medicare_patients, accepting_private_patients, accepting_referral_patients, city, email, gender, first_name, hios_ids, id, last_name, latitude, longitude, middle_name, network_ids, personal_phone, phone, presentation_name, specialty, state, state_id, street_line_1, street_line_2, suffix, title, type, zip_code].hash
     end
 
     # Builds the object from hash

@@ -4,14 +4,16 @@ All URIs are relative to *https://api.vericred.com/*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_providers**](ProvidersApi.md#get_providers) | **GET** /providers | 
-[**get_providers_npi**](ProvidersApi.md#get_providers_npi) | **GET** /providers/{npi} | 
+[**get_provider**](ProvidersApi.md#get_provider) | **GET** /providers/{npi} | Find a Provider
+[**get_providers**](ProvidersApi.md#get_providers) | **POST** /providers/search | Find Providers
 
 
-# **get_providers**
-> ProviderResponse get_providers(search_term, zip_code, opts)
+# **get_provider**
+> Provider get_provider(npi, opts)
 
+Find a Provider
 
+To retrieve a specific provider, just perform a GET using his NPI number
 
 ### Example
 ```ruby
@@ -20,23 +22,18 @@ require 'vericred_client'
 
 api_instance = VericredClient::ProvidersApi.new
 
-search_term = "search_term_example" # String | String to search by
-
-zip_code = "zip_code_example" # String | Zip Code to search near
+npi = "1234567890" # String | NPI number
 
 opts = { 
-  accepts_insurance: "accepts_insurance_example", # String | Limit results to Providers who accept at least one insurance plan.  Note that the inverse of this filter is not supported and any value will evaluate to true
-  page: "page_example", # String | Page number
-  per_page: "per_page_example", # String | Number of records to return per page
-  radius: "radius_example", # String | Radius (in miles) to use to limit results
-  type: "type_example" # String | Either organization or individual
+  vericred_api_key: "api-doc-key" # String | API Key
 }
 
 begin
-  result = api_instance.get_providers(search_term, zip_code, opts)
+  #Find a Provider
+  result = api_instance.get_provider(npi, opts)
   p result
 rescue VericredClient::ApiError => e
-  puts "Exception when calling ProvidersApi->get_providers: #{e}"
+  puts "Exception when calling ProvidersApi->get_provider: #{e}"
 end
 ```
 
@@ -44,17 +41,12 @@ end
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **search_term** | **String**| String to search by | 
- **zip_code** | **String**| Zip Code to search near | 
- **accepts_insurance** | **String**| Limit results to Providers who accept at least one insurance plan.  Note that the inverse of this filter is not supported and any value will evaluate to true | [optional] 
- **page** | **String**| Page number | [optional] 
- **per_page** | **String**| Number of records to return per page | [optional] 
- **radius** | **String**| Radius (in miles) to use to limit results | [optional] 
- **type** | **String**| Either organization or individual | [optional] 
+ **npi** | **String**| NPI number | 
+ **vericred_api_key** | **String**| API Key | [optional] 
 
 ### Return type
 
-[**ProviderResponse**](ProviderResponse.md)
+[**Provider**](Provider.md)
 
 ### Authorization
 
@@ -67,9 +59,24 @@ No authorization required
 
 
 
-# **get_providers_npi**
-> ProviderResponse get_providers_npi(npi)
+# **get_providers**
+> ProvidersSearchResponse get_providers(opts)
 
+Find Providers
+
+All `Provider` searches require a `zip_code`, which we use for weighting
+the search results to favor `Provider`s that are near the user.  For example,
+we would want "Dr. John Smith" who is 5 miles away to appear before
+"Dr. John Smith" who is 100 miles away.
+
+The weighting also allows for non-exact matches.  In our prior example, we
+would want "Dr. Jon Smith" who is 2 miles away to appear before the exact
+match "Dr. John Smith" who is 100 miles away because it is more likely that
+the user just entered an incorrect name.
+
+The free text search also supports Specialty name search and "body part"
+Specialty name search.  So, searching "John Smith nose" would return
+"Dr. John Smith", the ENT Specialist before "Dr. John Smith" the Internist.
 
 
 ### Example
@@ -79,14 +86,16 @@ require 'vericred_client'
 
 api_instance = VericredClient::ProvidersApi.new
 
-npi = "npi_example" # String | NPI number
-
+opts = { 
+  body: VericredClient::RequestProvidersSearch.new # RequestProvidersSearch | 
+}
 
 begin
-  result = api_instance.get_providers_npi(npi)
+  #Find Providers
+  result = api_instance.get_providers(opts)
   p result
 rescue VericredClient::ApiError => e
-  puts "Exception when calling ProvidersApi->get_providers_npi: #{e}"
+  puts "Exception when calling ProvidersApi->get_providers: #{e}"
 end
 ```
 
@@ -94,11 +103,11 @@ end
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **npi** | **String**| NPI number | 
+ **body** | [**RequestProvidersSearch**](RequestProvidersSearch.md)|  | [optional] 
 
 ### Return type
 
-[**ProviderResponse**](ProviderResponse.md)
+[**ProvidersSearchResponse**](ProvidersSearchResponse.md)
 
 ### Authorization
 

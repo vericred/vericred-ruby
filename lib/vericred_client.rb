@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -142,24 +142,31 @@ require 'vericred_client/models/drug_coverage_response'
 require 'vericred_client/models/drug_package'
 require 'vericred_client/models/drug_search_response'
 require 'vericred_client/models/meta'
+require 'vericred_client/models/network'
+require 'vericred_client/models/network_search_response'
 require 'vericred_client/models/plan'
 require 'vericred_client/models/plan_county'
 require 'vericred_client/models/plan_county_bulk'
-require 'vericred_client/models/plan_find_response'
+require 'vericred_client/models/plan_search_response'
 require 'vericred_client/models/plan_search_result'
 require 'vericred_client/models/pricing'
 require 'vericred_client/models/provider'
-require 'vericred_client/models/provider_response'
+require 'vericred_client/models/providers_search_response'
 require 'vericred_client/models/rating_area'
 require 'vericred_client/models/request_plan_find'
+require 'vericred_client/models/request_plan_find_applicant'
+require 'vericred_client/models/request_plan_find_provider'
+require 'vericred_client/models/request_providers_search'
 require 'vericred_client/models/state'
 require 'vericred_client/models/zip_code'
+require 'vericred_client/models/zip_counties_response'
 require 'vericred_client/models/zip_county'
 require 'vericred_client/models/zip_county_bulk'
 require 'vericred_client/models/zip_county_response'
 
 # APIs
 require 'vericred_client/api/drugs_api'
+require 'vericred_client/api/networks_api'
 require 'vericred_client/api/plans_api'
 require 'vericred_client/api/providers_api'
 require 'vericred_client/api/zip_counties_api'

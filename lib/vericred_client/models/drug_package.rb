@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -127,25 +127,25 @@ require 'date'
 
 module VericredClient
   class DrugPackage
+    # National Drug Code ID (Package)
+    attr_accessor :id
+
     # Package description
     attr_accessor :description
-
-    # National Drug Code ID (Package)
-    attr_accessor :ndc_package_code
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'description' => :'description',
-        :'ndc_package_code' => :'ndc_package_code'
+        :'id' => :'id',
+        :'description' => :'description'
       }
     end
 
     # Attribute type mapping.
     def self.swagger_types
       {
-        :'description' => :'String',
-        :'ndc_package_code' => :'String'
+        :'id' => :'String',
+        :'description' => :'String'
       }
     end
 
@@ -157,12 +157,12 @@ module VericredClient
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}){|(k,v), h| h[k.to_sym] = v}
 
-      if attributes.has_key?(:'description')
-        self.description = attributes[:'description']
+      if attributes.has_key?(:'id')
+        self.id = attributes[:'id']
       end
 
-      if attributes.has_key?(:'ndc_package_code')
-        self.ndc_package_code = attributes[:'ndc_package_code']
+      if attributes.has_key?(:'description')
+        self.description = attributes[:'description']
       end
 
     end
@@ -184,8 +184,8 @@ module VericredClient
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          description == o.description &&
-          ndc_package_code == o.ndc_package_code
+          id == o.id &&
+          description == o.description
     end
 
     # @see the `==` method
@@ -197,7 +197,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [description, ndc_package_code].hash
+      [id, description].hash
     end
 
     # Builds the object from hash

@@ -1,8 +1,8 @@
-# VericredClient::Meta
+# VericredClient::RequestPlanFindApplicant
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**total** | **Integer** | Number of entities returned | [optional] 
+**age** | **Integer** | Age of applicant to search for | [optional] 
 
 

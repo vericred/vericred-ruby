@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -133,20 +133,22 @@ module VericredClient
       @api_client = api_client
     end
 
-    # 
-    # 
+    # Search for Zip Counties
+    # Our `Plan` endpoints require a zip code and a fips (county) code.  This is because plan pricing requires both of these elements.  Users are unlikely to know their fips code, so we provide this endpoint to look up a `ZipCounty` by zip code and return both the selected zip and fips codes.
     # @param zip_prefix Partial five-digit Zip
     # @param [Hash] opts the optional parameters
+    # @option opts [String] :vericred_api_key API Key
     # @return [ZipCountyResponse]
     def get_zip_counties(zip_prefix, opts = {})
       data, _status_code, _headers = get_zip_counties_with_http_info(zip_prefix, opts)
       return data
     end
 
-    # 
-    # 
+    # Search for Zip Counties
+    # Our &#x60;Plan&#x60; endpoints require a zip code and a fips (county) code.  This is because plan pricing requires both of these elements.  Users are unlikely to know their fips code, so we provide this endpoint to look up a &#x60;ZipCounty&#x60; by zip code and return both the selected zip and fips codes.
     # @param zip_prefix Partial five-digit Zip
     # @param [Hash] opts the optional parameters
+    # @option opts [String] :vericred_api_key API Key
     # @return [Array<(ZipCountyResponse, Fixnum, Hash)>] ZipCountyResponse data, response status code and response headers
     def get_zip_counties_with_http_info(zip_prefix, opts = {})
       if @api_client.config.debugging
@@ -171,6 +173,7 @@ module VericredClient
       # HTTP header 'Content-Type'
       local_header_content_type = []
       header_params['Content-Type'] = @api_client.select_header_content_type(local_header_content_type)
+      header_params[:'Vericred-Api-Key'] = opts[:'vericred_api_key'] if opts[:'vericred_api_key']
 
       # form parameters
       form_params = {}

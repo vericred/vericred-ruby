@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -133,37 +133,47 @@ module VericredClient
       @api_client = api_client
     end
 
-    # Drug Coverages are the specific tier level, quantity limit, prior authorization and step therapy for a given Drug/Plan
-    # Drug Coverages are the specific tier level, quantity limit, prior authorization and step therapy for a given Drug/Plan combination. This endpoint returns all DrugCoverages for a given Drug
+    # Search for DrugCoverages
+    # Drug Coverages are the specific tier level, quantity limit, prior
+authorization and step therapy for a given Drug/Plan combination. This endpoint
+returns all DrugCoverages for a given Drug
     # @param ndc_package_code NDC package code
+    # @param audience Two-character state code
     # @param state_code Two-character state code
     # @param [Hash] opts the optional parameters
+    # @option opts [String] :vericred_api_key API Key
     # @return [DrugCoverageResponse]
-    def get_drugs_coverages_ndc(ndc_package_code, state_code, opts = {})
-      data, _status_code, _headers = get_drugs_coverages_ndc_with_http_info(ndc_package_code, state_code, opts)
+    def get_drug_coverages(ndc_package_code, audience, state_code, opts = {})
+      data, _status_code, _headers = get_drug_coverages_with_http_info(ndc_package_code, audience, state_code, opts)
       return data
     end
 
-    # Drug Coverages are the specific tier level, quantity limit, prior authorization and step therapy for a given Drug/Plan
-    # Drug Coverages are the specific tier level, quantity limit, prior authorization and step therapy for a given Drug/Plan combination. This endpoint returns all DrugCoverages for a given Drug
+    # Search for DrugCoverages
+    # Drug Coverages are the specific tier level, quantity limit, prior
+authorization and step therapy for a given Drug/Plan combination. This endpoint
+returns all DrugCoverages for a given Drug
     # @param ndc_package_code NDC package code
+    # @param audience Two-character state code
     # @param state_code Two-character state code
     # @param [Hash] opts the optional parameters
+    # @option opts [String] :vericred_api_key API Key
     # @return [Array<(DrugCoverageResponse, Fixnum, Hash)>] DrugCoverageResponse data, response status code and response headers
-    def get_drugs_coverages_ndc_with_http_info(ndc_package_code, state_code, opts = {})
+    def get_drug_coverages_with_http_info(ndc_package_code, audience, state_code, opts = {})
       if @api_client.config.debugging
-        @api_client.config.logger.debug "Calling API: DrugsApi.get_drugs_coverages_ndc ..."
+        @api_client.config.logger.debug "Calling API: DrugsApi.get_drug_coverages ..."
       end
       # verify the required parameter 'ndc_package_code' is set
-      fail ArgumentError, "Missing the required parameter 'ndc_package_code' when calling DrugsApi.get_drugs_coverages_ndc" if ndc_package_code.nil?
+      fail ArgumentError, "Missing the required parameter 'ndc_package_code' when calling DrugsApi.get_drug_coverages" if ndc_package_code.nil?
+      # verify the required parameter 'audience' is set
+      fail ArgumentError, "Missing the required parameter 'audience' when calling DrugsApi.get_drug_coverages" if audience.nil?
       # verify the required parameter 'state_code' is set
-      fail ArgumentError, "Missing the required parameter 'state_code' when calling DrugsApi.get_drugs_coverages_ndc" if state_code.nil?
+      fail ArgumentError, "Missing the required parameter 'state_code' when calling DrugsApi.get_drug_coverages" if state_code.nil?
       # resource path
-      local_var_path = "/drugs/coverages".sub('{format}','json')
+      local_var_path = "/drug_packages/{ndc_package_code}/coverages".sub('{format}','json').sub('{' + 'ndc_package_code' + '}', ndc_package_code.to_s)
 
       # query parameters
       query_params = {}
-      query_params[:'ndc_package_code'] = ndc_package_code
+      query_params[:'audience'] = audience
       query_params[:'state_code'] = state_code
 
       # header parameters
@@ -176,6 +186,7 @@ module VericredClient
       # HTTP header 'Content-Type'
       local_header_content_type = []
       header_params['Content-Type'] = @api_client.select_header_content_type(local_header_content_type)
+      header_params[:'Vericred-Api-Key'] = opts[:'vericred_api_key'] if opts[:'vericred_api_key']
 
       # form parameters
       form_params = {}
@@ -191,7 +202,68 @@ module VericredClient
         :auth_names => auth_names,
         :return_type => 'DrugCoverageResponse')
       if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: DrugsApi#get_drugs_coverages_ndc\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+        @api_client.config.logger.debug "API called: DrugsApi#get_drug_coverages\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # Drug Search
+    # Search for drugs by proprietary name
+    # @param search_term Full or partial proprietary name of drug
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :vericred_api_key API Key
+    # @return [DrugSearchResponse]
+    def list_drugs(search_term, opts = {})
+      data, _status_code, _headers = list_drugs_with_http_info(search_term, opts)
+      return data
+    end
+
+    # Drug Search
+    # Search for drugs by proprietary name
+    # @param search_term Full or partial proprietary name of drug
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :vericred_api_key API Key
+    # @return [Array<(DrugSearchResponse, Fixnum, Hash)>] DrugSearchResponse data, response status code and response headers
+    def list_drugs_with_http_info(search_term, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "Calling API: DrugsApi.list_drugs ..."
+      end
+      # verify the required parameter 'search_term' is set
+      fail ArgumentError, "Missing the required parameter 'search_term' when calling DrugsApi.list_drugs" if search_term.nil?
+      # resource path
+      local_var_path = "/drugs".sub('{format}','json')
+
+      # query parameters
+      query_params = {}
+      query_params[:'search_term'] = search_term
+
+      # header parameters
+      header_params = {}
+
+      # HTTP header 'Accept' (if needed)
+      local_header_accept = ['application/json']
+      local_header_accept_result = @api_client.select_header_accept(local_header_accept) and header_params['Accept'] = local_header_accept_result
+
+      # HTTP header 'Content-Type'
+      local_header_content_type = ['application/json']
+      header_params['Content-Type'] = @api_client.select_header_content_type(local_header_content_type)
+      header_params[:'Vericred-Api-Key'] = opts[:'vericred_api_key'] if opts[:'vericred_api_key']
+
+      # form parameters
+      form_params = {}
+
+      # http body (model)
+      post_body = nil
+            auth_names = []
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path,
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => 'DrugSearchResponse')
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: DrugsApi#list_drugs\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end
