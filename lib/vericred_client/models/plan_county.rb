@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -127,30 +127,30 @@ require 'date'
 
 module VericredClient
   class PlanCounty
-    # Foreign key to county
-    attr_accessor :county_id
-
     # Primary key
     attr_accessor :id
 
     # Foreign key to plan
     attr_accessor :plan_id
 
+    # Foreign key to county
+    attr_accessor :county_id
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'county_id' => :'county_id',
         :'id' => :'id',
-        :'plan_id' => :'plan_id'
+        :'plan_id' => :'plan_id',
+        :'county_id' => :'county_id'
       }
     end
 
     # Attribute type mapping.
     def self.swagger_types
       {
-        :'county_id' => :'Integer',
         :'id' => :'Integer',
-        :'plan_id' => :'Integer'
+        :'plan_id' => :'Integer',
+        :'county_id' => :'Integer'
       }
     end
 
@@ -162,16 +162,16 @@ module VericredClient
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}){|(k,v), h| h[k.to_sym] = v}
 
-      if attributes.has_key?(:'county_id')
-        self.county_id = attributes[:'county_id']
-      end
-
       if attributes.has_key?(:'id')
         self.id = attributes[:'id']
       end
 
       if attributes.has_key?(:'plan_id')
         self.plan_id = attributes[:'plan_id']
+      end
+
+      if attributes.has_key?(:'county_id')
+        self.county_id = attributes[:'county_id']
       end
 
     end
@@ -193,9 +193,9 @@ module VericredClient
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          county_id == o.county_id &&
           id == o.id &&
-          plan_id == o.plan_id
+          plan_id == o.plan_id &&
+          county_id == o.county_id
     end
 
     # @see the `==` method
@@ -207,7 +207,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [county_id, id, plan_id].hash
+      [id, plan_id, county_id].hash
     end
 
     # Builds the object from hash

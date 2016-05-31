@@ -1,8 +1,8 @@
-# VericredClient::Meta
+# VericredClient::RequestPlanFindProvider
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**total** | **Integer** | Number of entities returned | [optional] 
+**npi** | **Integer** | NPI of provider to search for | [optional] 
 
 

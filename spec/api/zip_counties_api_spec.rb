@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -146,10 +146,11 @@ describe 'ZipCountiesApi' do
   end
 
   # unit tests for get_zip_counties
-  # 
-  # 
+  # Search for Zip Counties
+  # Our &#x60;Plan&#x60; endpoints require a zip code and a fips (county) code.  This is because plan pricing requires both of these elements.  Users are unlikely to know their fips code, so we provide this endpoint to look up a &#x60;ZipCounty&#x60; by zip code and return both the selected zip and fips codes.
   # @param zip_prefix Partial five-digit Zip
   # @param [Hash] opts the optional parameters
+  # @option opts [String] :vericred_api_key API Key
   # @return [ZipCountyResponse]
   describe 'get_zip_counties test' do
     it "should work" do

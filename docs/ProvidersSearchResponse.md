@@ -1,4 +1,4 @@
-# VericredClient::ProviderResponse
+# VericredClient::ProvidersSearchResponse
 
 ## Properties
 Name | Type | Description | Notes

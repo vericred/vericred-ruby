@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -128,34 +128,34 @@ require 'date'
 module VericredClient
   class Drug
     # National Drug Code ID
-    attr_accessor :ndc
-
-    # Non-proprietary name of drug
-    attr_accessor :non_proprietary_name
-
-    # Available retail/prescription packages for this drug
-    attr_accessor :packages
+    attr_accessor :id
 
     # Proprietary name of drug
     attr_accessor :proprietary_name
 
+    # Non-proprietary name of drug
+    attr_accessor :non_proprietary_name
+
+    # Array of drug package Ids
+    attr_accessor :drug_package_ids
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'ndc' => :'ndc',
+        :'id' => :'id',
+        :'proprietary_name' => :'proprietary_name',
         :'non_proprietary_name' => :'non_proprietary_name',
-        :'packages' => :'packages',
-        :'proprietary_name' => :'proprietary_name'
+        :'drug_package_ids' => :'drug_package_ids'
       }
     end
 
     # Attribute type mapping.
     def self.swagger_types
       {
-        :'ndc' => :'String',
+        :'id' => :'String',
+        :'proprietary_name' => :'String',
         :'non_proprietary_name' => :'String',
-        :'packages' => :'Array<DrugPackage>',
-        :'proprietary_name' => :'String'
+        :'drug_package_ids' => :'Array<String>'
       }
     end
 
@@ -167,22 +167,22 @@ module VericredClient
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}){|(k,v), h| h[k.to_sym] = v}
 
-      if attributes.has_key?(:'ndc')
-        self.ndc = attributes[:'ndc']
+      if attributes.has_key?(:'id')
+        self.id = attributes[:'id']
+      end
+
+      if attributes.has_key?(:'proprietary_name')
+        self.proprietary_name = attributes[:'proprietary_name']
       end
 
       if attributes.has_key?(:'non_proprietary_name')
         self.non_proprietary_name = attributes[:'non_proprietary_name']
       end
 
-      if attributes.has_key?(:'packages')
-        if (value = attributes[:'packages']).is_a?(Array)
-          self.packages = value
+      if attributes.has_key?(:'drug_package_ids')
+        if (value = attributes[:'drug_package_ids']).is_a?(Array)
+          self.drug_package_ids = value
         end
-      end
-
-      if attributes.has_key?(:'proprietary_name')
-        self.proprietary_name = attributes[:'proprietary_name']
       end
 
     end
@@ -204,10 +204,10 @@ module VericredClient
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          ndc == o.ndc &&
+          id == o.id &&
+          proprietary_name == o.proprietary_name &&
           non_proprietary_name == o.non_proprietary_name &&
-          packages == o.packages &&
-          proprietary_name == o.proprietary_name
+          drug_package_ids == o.drug_package_ids
     end
 
     # @see the `==` method
@@ -219,7 +219,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [ndc, non_proprietary_name, packages, proprietary_name].hash
+      [id, proprietary_name, non_proprietary_name, drug_package_ids].hash
     end
 
     # Builds the object from hash

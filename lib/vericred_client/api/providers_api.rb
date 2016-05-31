@@ -6,7 +6,7 @@ accepts.
 
 ## Getting Started
 
-Visit our [Developer Portal](https://vericred.3scale.net/access_code?access_code=vericred&cms_token=3545ca52af07bde85b7c0c3aa9d1985e) to
+Visit our [Developer Portal](https://vericred.3scale.net) to
 create an account.
 
 Once you have created an account, you can create one Application for
@@ -133,105 +133,29 @@ module VericredClient
       @api_client = api_client
     end
 
-    # 
-    # 
-    # @param search_term String to search by
-    # @param zip_code Zip Code to search near
+    # Find a Provider
+    # To retrieve a specific provider, just perform a GET using his NPI number
+    # @param npi NPI number
     # @param [Hash] opts the optional parameters
-    # @option opts [String] :accepts_insurance Limit results to Providers who accept at least one insurance plan.  Note that the inverse of this filter is not supported and any value will evaluate to true
-    # @option opts [String] :page Page number
-    # @option opts [String] :per_page Number of records to return per page
-    # @option opts [String] :radius Radius (in miles) to use to limit results
-    # @option opts [String] :type Either organization or individual
-    # @return [ProviderResponse]
-    def get_providers(search_term, zip_code, opts = {})
-      data, _status_code, _headers = get_providers_with_http_info(search_term, zip_code, opts)
+    # @option opts [String] :vericred_api_key API Key
+    # @return [Provider]
+    def get_provider(npi, opts = {})
+      data, _status_code, _headers = get_provider_with_http_info(npi, opts)
       return data
     end
 
-    # 
-    # 
-    # @param search_term String to search by
-    # @param zip_code Zip Code to search near
-    # @param [Hash] opts the optional parameters
-    # @option opts [String] :accepts_insurance Limit results to Providers who accept at least one insurance plan.  Note that the inverse of this filter is not supported and any value will evaluate to true
-    # @option opts [String] :page Page number
-    # @option opts [String] :per_page Number of records to return per page
-    # @option opts [String] :radius Radius (in miles) to use to limit results
-    # @option opts [String] :type Either organization or individual
-    # @return [Array<(ProviderResponse, Fixnum, Hash)>] ProviderResponse data, response status code and response headers
-    def get_providers_with_http_info(search_term, zip_code, opts = {})
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "Calling API: ProvidersApi.get_providers ..."
-      end
-      # verify the required parameter 'search_term' is set
-      fail ArgumentError, "Missing the required parameter 'search_term' when calling ProvidersApi.get_providers" if search_term.nil?
-      # verify the required parameter 'zip_code' is set
-      fail ArgumentError, "Missing the required parameter 'zip_code' when calling ProvidersApi.get_providers" if zip_code.nil?
-      # resource path
-      local_var_path = "/providers".sub('{format}','json')
-
-      # query parameters
-      query_params = {}
-      query_params[:'search_term'] = search_term
-      query_params[:'zip_code'] = zip_code
-      query_params[:'accepts_insurance'] = opts[:'accepts_insurance'] if opts[:'accepts_insurance']
-      query_params[:'page'] = opts[:'page'] if opts[:'page']
-      query_params[:'per_page'] = opts[:'per_page'] if opts[:'per_page']
-      query_params[:'radius'] = opts[:'radius'] if opts[:'radius']
-      query_params[:'type'] = opts[:'type'] if opts[:'type']
-
-      # header parameters
-      header_params = {}
-
-      # HTTP header 'Accept' (if needed)
-      local_header_accept = []
-      local_header_accept_result = @api_client.select_header_accept(local_header_accept) and header_params['Accept'] = local_header_accept_result
-
-      # HTTP header 'Content-Type'
-      local_header_content_type = []
-      header_params['Content-Type'] = @api_client.select_header_content_type(local_header_content_type)
-
-      # form parameters
-      form_params = {}
-
-      # http body (model)
-      post_body = nil
-            auth_names = []
-      data, status_code, headers = @api_client.call_api(:GET, local_var_path,
-        :header_params => header_params,
-        :query_params => query_params,
-        :form_params => form_params,
-        :body => post_body,
-        :auth_names => auth_names,
-        :return_type => 'ProviderResponse')
-      if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: ProvidersApi#get_providers\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
-      end
-      return data, status_code, headers
-    end
-
-    # 
-    # 
+    # Find a Provider
+    # To retrieve a specific provider, just perform a GET using his NPI number
     # @param npi NPI number
     # @param [Hash] opts the optional parameters
-    # @return [ProviderResponse]
-    def get_providers_npi(npi, opts = {})
-      data, _status_code, _headers = get_providers_npi_with_http_info(npi, opts)
-      return data
-    end
-
-    # 
-    # 
-    # @param npi NPI number
-    # @param [Hash] opts the optional parameters
-    # @return [Array<(ProviderResponse, Fixnum, Hash)>] ProviderResponse data, response status code and response headers
-    def get_providers_npi_with_http_info(npi, opts = {})
+    # @option opts [String] :vericred_api_key API Key
+    # @return [Array<(Provider, Fixnum, Hash)>] Provider data, response status code and response headers
+    def get_provider_with_http_info(npi, opts = {})
       if @api_client.config.debugging
-        @api_client.config.logger.debug "Calling API: ProvidersApi.get_providers_npi ..."
+        @api_client.config.logger.debug "Calling API: ProvidersApi.get_provider ..."
       end
       # verify the required parameter 'npi' is set
-      fail ArgumentError, "Missing the required parameter 'npi' when calling ProvidersApi.get_providers_npi" if npi.nil?
+      fail ArgumentError, "Missing the required parameter 'npi' when calling ProvidersApi.get_provider" if npi.nil?
       # resource path
       local_var_path = "/providers/{npi}".sub('{format}','json').sub('{' + 'npi' + '}', npi.to_s)
 
@@ -248,6 +172,7 @@ module VericredClient
       # HTTP header 'Content-Type'
       local_header_content_type = []
       header_params['Content-Type'] = @api_client.select_header_content_type(local_header_content_type)
+      header_params[:'Vericred-Api-Key'] = opts[:'vericred_api_key'] if opts[:'vericred_api_key']
 
       # form parameters
       form_params = {}
@@ -261,9 +186,90 @@ module VericredClient
         :form_params => form_params,
         :body => post_body,
         :auth_names => auth_names,
-        :return_type => 'ProviderResponse')
+        :return_type => 'Provider')
       if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: ProvidersApi#get_providers_npi\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+        @api_client.config.logger.debug "API called: ProvidersApi#get_provider\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # Find Providers
+    # All `Provider` searches require a `zip_code`, which we use for weighting
+the search results to favor `Provider`s that are near the user.  For example,
+we would want "Dr. John Smith" who is 5 miles away to appear before
+"Dr. John Smith" who is 100 miles away.
+
+The weighting also allows for non-exact matches.  In our prior example, we
+would want "Dr. Jon Smith" who is 2 miles away to appear before the exact
+match "Dr. John Smith" who is 100 miles away because it is more likely that
+the user just entered an incorrect name.
+
+The free text search also supports Specialty name search and "body part"
+Specialty name search.  So, searching "John Smith nose" would return
+"Dr. John Smith", the ENT Specialist before "Dr. John Smith" the Internist.
+
+    # @param [Hash] opts the optional parameters
+    # @option opts [RequestProvidersSearch] :body 
+    # @return [ProvidersSearchResponse]
+    def get_providers(opts = {})
+      data, _status_code, _headers = get_providers_with_http_info(opts)
+      return data
+    end
+
+    # Find Providers
+    # All &#x60;Provider&#x60; searches require a &#x60;zip_code&#x60;, which we use for weighting
+the search results to favor &#x60;Provider&#x60;s that are near the user.  For example,
+we would want &quot;Dr. John Smith&quot; who is 5 miles away to appear before
+&quot;Dr. John Smith&quot; who is 100 miles away.
+
+The weighting also allows for non-exact matches.  In our prior example, we
+would want &quot;Dr. Jon Smith&quot; who is 2 miles away to appear before the exact
+match &quot;Dr. John Smith&quot; who is 100 miles away because it is more likely that
+the user just entered an incorrect name.
+
+The free text search also supports Specialty name search and &quot;body part&quot;
+Specialty name search.  So, searching &quot;John Smith nose&quot; would return
+&quot;Dr. John Smith&quot;, the ENT Specialist before &quot;Dr. John Smith&quot; the Internist.
+
+    # @param [Hash] opts the optional parameters
+    # @option opts [RequestProvidersSearch] :body 
+    # @return [Array<(ProvidersSearchResponse, Fixnum, Hash)>] ProvidersSearchResponse data, response status code and response headers
+    def get_providers_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "Calling API: ProvidersApi.get_providers ..."
+      end
+      # resource path
+      local_var_path = "/providers/search".sub('{format}','json')
+
+      # query parameters
+      query_params = {}
+
+      # header parameters
+      header_params = {}
+
+      # HTTP header 'Accept' (if needed)
+      local_header_accept = []
+      local_header_accept_result = @api_client.select_header_accept(local_header_accept) and header_params['Accept'] = local_header_accept_result
+
+      # HTTP header 'Content-Type'
+      local_header_content_type = []
+      header_params['Content-Type'] = @api_client.select_header_content_type(local_header_content_type)
+
+      # form parameters
+      form_params = {}
+
+      # http body (model)
+      post_body = @api_client.object_to_http_body(opts[:'body'])
+      auth_names = []
+      data, status_code, headers = @api_client.call_api(:POST, local_var_path,
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => 'ProvidersSearchResponse')
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: ProvidersApi#get_providers\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end
