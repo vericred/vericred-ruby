@@ -151,7 +151,7 @@ describe 'ProvidersApi' do
   # @param npi NPI number
   # @param [Hash] opts the optional parameters
   # @option opts [String] :vericred_api_key API Key
-  # @return [Provider]
+  # @return [ProviderShowResponse]
   describe 'get_provider test' do
     it "should work" do
       # assertion here
