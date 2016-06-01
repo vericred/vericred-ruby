@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 
 # **get_provider**
-> Provider get_provider(npi, opts)
+> ProviderShowResponse get_provider(npi, opts)
 
 Find a Provider
 
@@ -46,7 +46,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Provider**](Provider.md)
+[**ProviderShowResponse**](ProviderShowResponse.md)
 
 ### Authorization
 

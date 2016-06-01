@@ -138,7 +138,7 @@ module VericredClient
     # @param npi NPI number
     # @param [Hash] opts the optional parameters
     # @option opts [String] :vericred_api_key API Key
-    # @return [Provider]
+    # @return [ProviderShowResponse]
     def get_provider(npi, opts = {})
       data, _status_code, _headers = get_provider_with_http_info(npi, opts)
       return data
@@ -149,7 +149,7 @@ module VericredClient
     # @param npi NPI number
     # @param [Hash] opts the optional parameters
     # @option opts [String] :vericred_api_key API Key
-    # @return [Array<(Provider, Fixnum, Hash)>] Provider data, response status code and response headers
+    # @return [Array<(ProviderShowResponse, Fixnum, Hash)>] ProviderShowResponse data, response status code and response headers
     def get_provider_with_http_info(npi, opts = {})
       if @api_client.config.debugging
         @api_client.config.logger.debug "Calling API: ProvidersApi.get_provider ..."
@@ -186,7 +186,7 @@ module VericredClient
         :form_params => form_params,
         :body => post_body,
         :auth_names => auth_names,
-        :return_type => 'Provider')
+        :return_type => 'ProviderShowResponse')
       if @api_client.config.debugging
         @api_client.config.logger.debug "API called: ProvidersApi#get_provider\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
