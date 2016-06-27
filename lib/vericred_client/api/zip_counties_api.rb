@@ -31,17 +31,12 @@ The current version is `v3`.  Previous versions are `v1` and `v2`.
 
 ## Pagination
 
-Most endpoints are not paginated.  It will be noted in the documentation if/when
-an endpoint is paginated.
+Endpoints that accept `page` and `per_page` parameters are paginated. They expose
+four additional fields that contain data about your position in the response,
+namely `Total`, `Per-Page`, `Link`, and `Page` as described in [RFC-5988](https://tools.ietf.org/html/rfc5988).
 
-When pagination is present, a `meta` stanza will be present in the response
-with the total number of records
-
-```
-{
-  things: [{ id: 1 }, { id: 2 }],
-  meta: { total: 500 }
-}
+For example, to display 5 results per page and view the second page of a
+`GET` to `/networks`, your final request would be `GET /networks?....page=2&per_page=5`.
 ```
 
 ## Sideloading
@@ -137,7 +132,6 @@ module VericredClient
     # Our `Plan` endpoints require a zip code and a fips (county) code.  This is because plan pricing requires both of these elements.  Users are unlikely to know their fips code, so we provide this endpoint to look up a `ZipCounty` by zip code and return both the selected zip and fips codes.
     # @param zip_prefix Partial five-digit Zip
     # @param [Hash] opts the optional parameters
-    # @option opts [String] :vericred_api_key API Key
     # @return [ZipCountyResponse]
     def get_zip_counties(zip_prefix, opts = {})
       data, _status_code, _headers = get_zip_counties_with_http_info(zip_prefix, opts)
@@ -148,7 +142,6 @@ module VericredClient
     # Our &#x60;Plan&#x60; endpoints require a zip code and a fips (county) code.  This is because plan pricing requires both of these elements.  Users are unlikely to know their fips code, so we provide this endpoint to look up a &#x60;ZipCounty&#x60; by zip code and return both the selected zip and fips codes.
     # @param zip_prefix Partial five-digit Zip
     # @param [Hash] opts the optional parameters
-    # @option opts [String] :vericred_api_key API Key
     # @return [Array<(ZipCountyResponse, Fixnum, Hash)>] ZipCountyResponse data, response status code and response headers
     def get_zip_counties_with_http_info(zip_prefix, opts = {})
       if @api_client.config.debugging
@@ -173,14 +166,13 @@ module VericredClient
       # HTTP header 'Content-Type'
       local_header_content_type = []
       header_params['Content-Type'] = @api_client.select_header_content_type(local_header_content_type)
-      header_params[:'Vericred-Api-Key'] = opts[:'vericred_api_key'] if opts[:'vericred_api_key']
 
       # form parameters
       form_params = {}
 
       # http body (model)
       post_body = nil
-            auth_names = []
+            auth_names = ['Vericred-Api-Key']
       data, status_code, headers = @api_client.call_api(:GET, local_var_path,
         :header_params => header_params,
         :query_params => query_params,

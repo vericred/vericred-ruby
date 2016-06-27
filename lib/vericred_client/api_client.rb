@@ -31,17 +31,12 @@ The current version is `v3`.  Previous versions are `v1` and `v2`.
 
 ## Pagination
 
-Most endpoints are not paginated.  It will be noted in the documentation if/when
-an endpoint is paginated.
+Endpoints that accept `page` and `per_page` parameters are paginated. They expose
+four additional fields that contain data about your position in the response,
+namely `Total`, `Per-Page`, `Link`, and `Page` as described in [RFC-5988](https://tools.ietf.org/html/rfc5988).
 
-When pagination is present, a `meta` stanza will be present in the response
-with the total number of records
-
-```
-{
-  things: [{ id: 1 }, { id: 2 }],
-  meta: { total: 500 }
-}
+For example, to display 5 results per page and view the second page of a
+`GET` to `/networks`, your final request would be `GET /networks?....page=2&per_page=5`.
 ```
 
 ## Sideloading
@@ -199,6 +194,7 @@ module VericredClient
       query_params = opts[:query_params] || {}
       form_params = opts[:form_params] || {}
 
+      update_params_for_auth! header_params, query_params, opts[:auth_names]
 
       req_opts = {
         :method => http_method,

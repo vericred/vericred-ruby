@@ -31,17 +31,12 @@ The current version is `v3`.  Previous versions are `v1` and `v2`.
 
 ## Pagination
 
-Most endpoints are not paginated.  It will be noted in the documentation if/when
-an endpoint is paginated.
+Endpoints that accept `page` and `per_page` parameters are paginated. They expose
+four additional fields that contain data about your position in the response,
+namely `Total`, `Per-Page`, `Link`, and `Page` as described in [RFC-5988](https://tools.ietf.org/html/rfc5988).
 
-When pagination is present, a `meta` stanza will be present in the response
-with the total number of records
-
-```
-{
-  things: [{ id: 1 }, { id: 2 }],
-  meta: { total: 500 }
-}
+For example, to display 5 results per page and view the second page of a
+`GET` to `/networks`, your final request would be `GET /networks?....page=2&per_page=5`.
 ```
 
 ## Sideloading
@@ -138,7 +133,7 @@ module VericredClient
 
 Searching for a set of plans requires a `zip_code` and `fips_code`
 code.  These are used to determine pricing and availabity
-of health plans.
+of health plans. This endpoint is paginated.
 
 Optionally, you may provide a list of Applicants or Providers
 
@@ -195,6 +190,14 @@ and return it for each plan.  If no values are provided, the
 
 `GET /plans?zip_code=07451&fips_code=33025&household_size=4&household_income=40000`
 
+
+### Sorting
+
+Plans can be sorted by the `premium`, `carrier_name`, `level`, and `plan_type` fields,
+by either ascending (as `asc`) or descending (as `dsc) sort under the `sort` field.
+
+For example, to sort plans by level, the sort parameter would be `level:asc`.
+
     # @param [Hash] opts the optional parameters
     # @option opts [RequestPlanFind] :body 
     # @return [PlanSearchResponse]
@@ -208,7 +211,7 @@ and return it for each plan.  If no values are provided, the
 
 Searching for a set of plans requires a &#x60;zip_code&#x60; and &#x60;fips_code&#x60;
 code.  These are used to determine pricing and availabity
-of health plans.
+of health plans. This endpoint is paginated.
 
 Optionally, you may provide a list of Applicants or Providers
 
@@ -265,6 +268,14 @@ and return it for each plan.  If no values are provided, the
 
 &#x60;GET /plans?zip_code&#x3D;07451&amp;fips_code&#x3D;33025&amp;household_size&#x3D;4&amp;household_income&#x3D;40000&#x60;
 
+
+### Sorting
+
+Plans can be sorted by the &#x60;premium&#x60;, &#x60;carrier_name&#x60;, &#x60;level&#x60;, and &#x60;plan_type&#x60; fields,
+by either ascending (as &#x60;asc&#x60;) or descending (as &#x60;dsc) sort under the &#x60;sort&#x60; field.
+
+For example, to sort plans by level, the sort parameter would be &#x60;level:asc&#x60;.
+
     # @param [Hash] opts the optional parameters
     # @option opts [RequestPlanFind] :body 
     # @return [Array<(PlanSearchResponse, Fixnum, Hash)>] PlanSearchResponse data, response status code and response headers
@@ -294,7 +305,7 @@ and return it for each plan.  If no values are provided, the
 
       # http body (model)
       post_body = @api_client.object_to_http_body(opts[:'body'])
-      auth_names = []
+      auth_names = ['Vericred-Api-Key']
       data, status_code, headers = @api_client.call_api(:POST, local_var_path,
         :header_params => header_params,
         :query_params => query_params,

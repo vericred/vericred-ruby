@@ -31,17 +31,12 @@ The current version is `v3`.  Previous versions are `v1` and `v2`.
 
 ## Pagination
 
-Most endpoints are not paginated.  It will be noted in the documentation if/when
-an endpoint is paginated.
+Endpoints that accept `page` and `per_page` parameters are paginated. They expose
+four additional fields that contain data about your position in the response,
+namely `Total`, `Per-Page`, `Link`, and `Page` as described in [RFC-5988](https://tools.ietf.org/html/rfc5988).
 
-When pagination is present, a `meta` stanza will be present in the response
-with the total number of records
-
-```
-{
-  things: [{ id: 1 }, { id: 2 }],
-  meta: { total: 500 }
-}
+For example, to display 5 results per page and view the second page of a
+`GET` to `/networks`, your final request would be `GET /networks?....page=2&per_page=5`.
 ```
 
 ## Sideloading
@@ -141,7 +136,6 @@ returns all DrugCoverages for a given Drug
     # @param audience Two-character state code
     # @param state_code Two-character state code
     # @param [Hash] opts the optional parameters
-    # @option opts [String] :vericred_api_key API Key
     # @return [DrugCoverageResponse]
     def get_drug_coverages(ndc_package_code, audience, state_code, opts = {})
       data, _status_code, _headers = get_drug_coverages_with_http_info(ndc_package_code, audience, state_code, opts)
@@ -156,7 +150,6 @@ returns all DrugCoverages for a given Drug
     # @param audience Two-character state code
     # @param state_code Two-character state code
     # @param [Hash] opts the optional parameters
-    # @option opts [String] :vericred_api_key API Key
     # @return [Array<(DrugCoverageResponse, Fixnum, Hash)>] DrugCoverageResponse data, response status code and response headers
     def get_drug_coverages_with_http_info(ndc_package_code, audience, state_code, opts = {})
       if @api_client.config.debugging
@@ -186,14 +179,13 @@ returns all DrugCoverages for a given Drug
       # HTTP header 'Content-Type'
       local_header_content_type = []
       header_params['Content-Type'] = @api_client.select_header_content_type(local_header_content_type)
-      header_params[:'Vericred-Api-Key'] = opts[:'vericred_api_key'] if opts[:'vericred_api_key']
 
       # form parameters
       form_params = {}
 
       # http body (model)
       post_body = nil
-            auth_names = []
+            auth_names = ['Vericred-Api-Key']
       data, status_code, headers = @api_client.call_api(:GET, local_var_path,
         :header_params => header_params,
         :query_params => query_params,
@@ -211,7 +203,6 @@ returns all DrugCoverages for a given Drug
     # Search for drugs by proprietary name
     # @param search_term Full or partial proprietary name of drug
     # @param [Hash] opts the optional parameters
-    # @option opts [String] :vericred_api_key API Key
     # @return [DrugSearchResponse]
     def list_drugs(search_term, opts = {})
       data, _status_code, _headers = list_drugs_with_http_info(search_term, opts)
@@ -222,7 +213,6 @@ returns all DrugCoverages for a given Drug
     # Search for drugs by proprietary name
     # @param search_term Full or partial proprietary name of drug
     # @param [Hash] opts the optional parameters
-    # @option opts [String] :vericred_api_key API Key
     # @return [Array<(DrugSearchResponse, Fixnum, Hash)>] DrugSearchResponse data, response status code and response headers
     def list_drugs_with_http_info(search_term, opts = {})
       if @api_client.config.debugging
@@ -247,14 +237,13 @@ returns all DrugCoverages for a given Drug
       # HTTP header 'Content-Type'
       local_header_content_type = ['application/json']
       header_params['Content-Type'] = @api_client.select_header_content_type(local_header_content_type)
-      header_params[:'Vericred-Api-Key'] = opts[:'vericred_api_key'] if opts[:'vericred_api_key']
 
       # form parameters
       form_params = {}
 
       # http body (model)
       post_body = nil
-            auth_names = []
+            auth_names = ['Vericred-Api-Key']
       data, status_code, headers = @api_client.call_api(:GET, local_var_path,
         :header_params => header_params,
         :query_params => query_params,

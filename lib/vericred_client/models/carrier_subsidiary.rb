@@ -31,17 +31,12 @@ The current version is `v3`.  Previous versions are `v1` and `v2`.
 
 ## Pagination
 
-Most endpoints are not paginated.  It will be noted in the documentation if/when
-an endpoint is paginated.
+Endpoints that accept `page` and `per_page` parameters are paginated. They expose
+four additional fields that contain data about your position in the response,
+namely `Total`, `Per-Page`, `Link`, and `Page` as described in [RFC-5988](https://tools.ietf.org/html/rfc5988).
 
-When pagination is present, a `meta` stanza will be present in the response
-with the total number of records
-
-```
-{
-  things: [{ id: 1 }, { id: 2 }],
-  meta: { total: 500 }
-}
+For example, to display 5 results per page and view the second page of a
+`GET` to `/networks`, your final request would be `GET /networks?....page=2&per_page=5`.
 ```
 
 ## Sideloading
@@ -133,11 +128,15 @@ module VericredClient
     # Subsidiary name
     attr_accessor :name
 
+    # Parent Carrier Name
+    attr_accessor :alternate_name
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'id' => :'id',
-        :'name' => :'name'
+        :'name' => :'name',
+        :'alternate_name' => :'alternate_name'
       }
     end
 
@@ -145,7 +144,8 @@ module VericredClient
     def self.swagger_types
       {
         :'id' => :'Integer',
-        :'name' => :'String'
+        :'name' => :'String',
+        :'alternate_name' => :'String'
       }
     end
 
@@ -163,6 +163,10 @@ module VericredClient
 
       if attributes.has_key?(:'name')
         self.name = attributes[:'name']
+      end
+
+      if attributes.has_key?(:'alternate_name')
+        self.alternate_name = attributes[:'alternate_name']
       end
 
     end
@@ -185,7 +189,8 @@ module VericredClient
       return true if self.equal?(o)
       self.class == o.class &&
           id == o.id &&
-          name == o.name
+          name == o.name &&
+          alternate_name == o.alternate_name
     end
 
     # @see the `==` method
@@ -197,7 +202,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [id, name].hash
+      [id, name, alternate_name].hash
     end
 
     # Builds the object from hash

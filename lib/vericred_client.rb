@@ -31,17 +31,12 @@ The current version is `v3`.  Previous versions are `v1` and `v2`.
 
 ## Pagination
 
-Most endpoints are not paginated.  It will be noted in the documentation if/when
-an endpoint is paginated.
+Endpoints that accept `page` and `per_page` parameters are paginated. They expose
+four additional fields that contain data about your position in the response,
+namely `Total`, `Per-Page`, `Link`, and `Page` as described in [RFC-5988](https://tools.ietf.org/html/rfc5988).
 
-When pagination is present, a `meta` stanza will be present in the response
-with the total number of records
-
-```
-{
-  things: [{ id: 1 }, { id: 2 }],
-  meta: { total: 500 }
-}
+For example, to display 5 results per page and view the second page of a
+`GET` to `/networks`, your final request would be `GET /networks?....page=2&per_page=5`.
 ```
 
 ## Sideloading
@@ -149,6 +144,7 @@ require 'vericred_client/models/plan_county'
 require 'vericred_client/models/plan_county_bulk'
 require 'vericred_client/models/plan_search_response'
 require 'vericred_client/models/plan_search_result'
+require 'vericred_client/models/plan_zip_county'
 require 'vericred_client/models/pricing'
 require 'vericred_client/models/provider'
 require 'vericred_client/models/provider_show_response'
