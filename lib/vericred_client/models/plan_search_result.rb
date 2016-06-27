@@ -31,17 +31,12 @@ The current version is `v3`.  Previous versions are `v1` and `v2`.
 
 ## Pagination
 
-Most endpoints are not paginated.  It will be noted in the documentation if/when
-an endpoint is paginated.
+Endpoints that accept `page` and `per_page` parameters are paginated. They expose
+four additional fields that contain data about your position in the response,
+namely `Total`, `Per-Page`, `Link`, and `Page` as described in [RFC-5988](https://tools.ietf.org/html/rfc5988).
 
-When pagination is present, a `meta` stanza will be present in the response
-with the total number of records
-
-```
-{
-  things: [{ id: 1 }, { id: 2 }],
-  meta: { total: 500 }
-}
+For example, to display 5 results per page and view the second page of a
+`GET` to `/networks`, your final request would be `GET /networks?....page=2&per_page=5`.
 ```
 
 ## Sideloading
@@ -130,6 +125,9 @@ module VericredClient
     # Does the plan provide dental coverage for adults?
     attr_accessor :adult_dental
 
+    # 
+    attr_accessor :age29_rider
+
     # Benefits string for ambulance coverage
     attr_accessor :ambulance
 
@@ -160,6 +158,9 @@ module VericredClient
     # Diagnostic tests benefit summary
     attr_accessor :diagnostic_test
 
+    # Is this a domestic plan?
+    attr_accessor :dp_rider
+
     # Link to the summary of drug benefits for the plan
     attr_accessor :drug_formulary_url
 
@@ -183,6 +184,9 @@ module VericredClient
 
     # Maximum out-of-pocket when a family is on the plan
     attr_accessor :family_medical_moop
+
+    # Is this a family plan?
+    attr_accessor :fp_rider
 
     # Cost for generic drugs
     attr_accessor :generic_drugs
@@ -326,6 +330,7 @@ module VericredClient
     def self.attribute_map
       {
         :'adult_dental' => :'adult_dental',
+        :'age29_rider' => :'age29_rider',
         :'ambulance' => :'ambulance',
         :'benefits_summary_url' => :'benefits_summary_url',
         :'buy_link' => :'buy_link',
@@ -336,6 +341,7 @@ module VericredClient
         :'customer_service_phone_number' => :'customer_service_phone_number',
         :'durable_medical_equipment' => :'durable_medical_equipment',
         :'diagnostic_test' => :'diagnostic_test',
+        :'dp_rider' => :'dp_rider',
         :'drug_formulary_url' => :'drug_formulary_url',
         :'effective_date' => :'effective_date',
         :'expiration_date' => :'expiration_date',
@@ -344,6 +350,7 @@ module VericredClient
         :'family_drug_moop' => :'family_drug_moop',
         :'family_medical_deductible' => :'family_medical_deductible',
         :'family_medical_moop' => :'family_medical_moop',
+        :'fp_rider' => :'fp_rider',
         :'generic_drugs' => :'generic_drugs',
         :'habilitation_services' => :'habilitation_services',
         :'hios_issuer_id' => :'hios_issuer_id',
@@ -397,6 +404,7 @@ module VericredClient
     def self.swagger_types
       {
         :'adult_dental' => :'BOOLEAN',
+        :'age29_rider' => :'BOOLEAN',
         :'ambulance' => :'String',
         :'benefits_summary_url' => :'String',
         :'buy_link' => :'String',
@@ -407,6 +415,7 @@ module VericredClient
         :'customer_service_phone_number' => :'String',
         :'durable_medical_equipment' => :'String',
         :'diagnostic_test' => :'String',
+        :'dp_rider' => :'BOOLEAN',
         :'drug_formulary_url' => :'String',
         :'effective_date' => :'String',
         :'expiration_date' => :'String',
@@ -415,6 +424,7 @@ module VericredClient
         :'family_drug_moop' => :'String',
         :'family_medical_deductible' => :'String',
         :'family_medical_moop' => :'String',
+        :'fp_rider' => :'BOOLEAN',
         :'generic_drugs' => :'String',
         :'habilitation_services' => :'String',
         :'hios_issuer_id' => :'String',
@@ -476,6 +486,10 @@ module VericredClient
         self.adult_dental = attributes[:'adult_dental']
       end
 
+      if attributes.has_key?(:'age29_rider')
+        self.age29_rider = attributes[:'age29_rider']
+      end
+
       if attributes.has_key?(:'ambulance')
         self.ambulance = attributes[:'ambulance']
       end
@@ -516,6 +530,10 @@ module VericredClient
         self.diagnostic_test = attributes[:'diagnostic_test']
       end
 
+      if attributes.has_key?(:'dp_rider')
+        self.dp_rider = attributes[:'dp_rider']
+      end
+
       if attributes.has_key?(:'drug_formulary_url')
         self.drug_formulary_url = attributes[:'drug_formulary_url']
       end
@@ -546,6 +564,10 @@ module VericredClient
 
       if attributes.has_key?(:'family_medical_moop')
         self.family_medical_moop = attributes[:'family_medical_moop']
+      end
+
+      if attributes.has_key?(:'fp_rider')
+        self.fp_rider = attributes[:'fp_rider']
       end
 
       if attributes.has_key?(:'generic_drugs')
@@ -756,6 +778,7 @@ module VericredClient
       return true if self.equal?(o)
       self.class == o.class &&
           adult_dental == o.adult_dental &&
+          age29_rider == o.age29_rider &&
           ambulance == o.ambulance &&
           benefits_summary_url == o.benefits_summary_url &&
           buy_link == o.buy_link &&
@@ -766,6 +789,7 @@ module VericredClient
           customer_service_phone_number == o.customer_service_phone_number &&
           durable_medical_equipment == o.durable_medical_equipment &&
           diagnostic_test == o.diagnostic_test &&
+          dp_rider == o.dp_rider &&
           drug_formulary_url == o.drug_formulary_url &&
           effective_date == o.effective_date &&
           expiration_date == o.expiration_date &&
@@ -774,6 +798,7 @@ module VericredClient
           family_drug_moop == o.family_drug_moop &&
           family_medical_deductible == o.family_medical_deductible &&
           family_medical_moop == o.family_medical_moop &&
+          fp_rider == o.fp_rider &&
           generic_drugs == o.generic_drugs &&
           habilitation_services == o.habilitation_services &&
           hios_issuer_id == o.hios_issuer_id &&
@@ -831,7 +856,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [adult_dental, ambulance, benefits_summary_url, buy_link, carrier_name, child_dental, child_eyewear, child_eye_exam, customer_service_phone_number, durable_medical_equipment, diagnostic_test, drug_formulary_url, effective_date, expiration_date, emergency_room, family_drug_deductible, family_drug_moop, family_medical_deductible, family_medical_moop, generic_drugs, habilitation_services, hios_issuer_id, home_health_care, hospice_service, id, imaging, in_network_ids, individual_drug_deductible, individual_drug_moop, individual_medical_deductible, individual_medical_moop, inpatient_birth, inpatient_facility, inpatient_mental_health, inpatient_physician, inpatient_substance, level, logo_url, name, non_preferred_brand_drugs, on_market, off_market, out_of_network_coverage, out_of_network_ids, outpatient_facility, outpatient_mental_health, outpatient_physician, outpatient_substance, plan_market, plan_type, preferred_brand_drugs, prenatal_postnatal_care, preventative_care, premium_subsidized, premium, primary_care_physician, rehabilitation_services, skilled_nursing, specialist, specialty_drugs, urgent_care, match_percentage, perfect_match_percentage, employee_premium, dependent_premium].hash
+      [adult_dental, age29_rider, ambulance, benefits_summary_url, buy_link, carrier_name, child_dental, child_eyewear, child_eye_exam, customer_service_phone_number, durable_medical_equipment, diagnostic_test, dp_rider, drug_formulary_url, effective_date, expiration_date, emergency_room, family_drug_deductible, family_drug_moop, family_medical_deductible, family_medical_moop, fp_rider, generic_drugs, habilitation_services, hios_issuer_id, home_health_care, hospice_service, id, imaging, in_network_ids, individual_drug_deductible, individual_drug_moop, individual_medical_deductible, individual_medical_moop, inpatient_birth, inpatient_facility, inpatient_mental_health, inpatient_physician, inpatient_substance, level, logo_url, name, non_preferred_brand_drugs, on_market, off_market, out_of_network_coverage, out_of_network_ids, outpatient_facility, outpatient_mental_health, outpatient_physician, outpatient_substance, plan_market, plan_type, preferred_brand_drugs, prenatal_postnatal_care, preventative_care, premium_subsidized, premium, primary_care_physician, rehabilitation_services, skilled_nursing, specialist, specialty_drugs, urgent_care, match_percentage, perfect_match_percentage, employee_premium, dependent_premium].hash
     end
 
     # Builds the object from hash

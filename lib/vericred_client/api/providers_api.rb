@@ -31,17 +31,12 @@ The current version is `v3`.  Previous versions are `v1` and `v2`.
 
 ## Pagination
 
-Most endpoints are not paginated.  It will be noted in the documentation if/when
-an endpoint is paginated.
+Endpoints that accept `page` and `per_page` parameters are paginated. They expose
+four additional fields that contain data about your position in the response,
+namely `Total`, `Per-Page`, `Link`, and `Page` as described in [RFC-5988](https://tools.ietf.org/html/rfc5988).
 
-When pagination is present, a `meta` stanza will be present in the response
-with the total number of records
-
-```
-{
-  things: [{ id: 1 }, { id: 2 }],
-  meta: { total: 500 }
-}
+For example, to display 5 results per page and view the second page of a
+`GET` to `/networks`, your final request would be `GET /networks?....page=2&per_page=5`.
 ```
 
 ## Sideloading
@@ -137,7 +132,6 @@ module VericredClient
     # To retrieve a specific provider, just perform a GET using his NPI number
     # @param npi NPI number
     # @param [Hash] opts the optional parameters
-    # @option opts [String] :vericred_api_key API Key
     # @return [ProviderShowResponse]
     def get_provider(npi, opts = {})
       data, _status_code, _headers = get_provider_with_http_info(npi, opts)
@@ -148,7 +142,6 @@ module VericredClient
     # To retrieve a specific provider, just perform a GET using his NPI number
     # @param npi NPI number
     # @param [Hash] opts the optional parameters
-    # @option opts [String] :vericred_api_key API Key
     # @return [Array<(ProviderShowResponse, Fixnum, Hash)>] ProviderShowResponse data, response status code and response headers
     def get_provider_with_http_info(npi, opts = {})
       if @api_client.config.debugging
@@ -172,14 +165,13 @@ module VericredClient
       # HTTP header 'Content-Type'
       local_header_content_type = []
       header_params['Content-Type'] = @api_client.select_header_content_type(local_header_content_type)
-      header_params[:'Vericred-Api-Key'] = opts[:'vericred_api_key'] if opts[:'vericred_api_key']
 
       # form parameters
       form_params = {}
 
       # http body (model)
       post_body = nil
-            auth_names = []
+            auth_names = ['Vericred-Api-Key']
       data, status_code, headers = @api_client.call_api(:GET, local_var_path,
         :header_params => header_params,
         :query_params => query_params,
@@ -260,7 +252,7 @@ Specialty name search.  So, searching &quot;John Smith nose&quot; would return
 
       # http body (model)
       post_body = @api_client.object_to_http_body(opts[:'body'])
-      auth_names = []
+      auth_names = ['Vericred-Api-Key']
       data, status_code, headers = @api_client.call_api(:POST, local_var_path,
         :header_params => header_params,
         :query_params => query_params,

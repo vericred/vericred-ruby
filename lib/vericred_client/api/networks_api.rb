@@ -31,17 +31,12 @@ The current version is `v3`.  Previous versions are `v1` and `v2`.
 
 ## Pagination
 
-Most endpoints are not paginated.  It will be noted in the documentation if/when
-an endpoint is paginated.
+Endpoints that accept `page` and `per_page` parameters are paginated. They expose
+four additional fields that contain data about your position in the response,
+namely `Total`, `Per-Page`, `Link`, and `Page` as described in [RFC-5988](https://tools.ietf.org/html/rfc5988).
 
-When pagination is present, a `meta` stanza will be present in the response
-with the total number of records
-
-```
-{
-  things: [{ id: 1 }, { id: 2 }],
-  meta: { total: 500 }
-}
+For example, to display 5 results per page and view the second page of a
+`GET` to `/networks`, your final request would be `GET /networks?....page=2&per_page=5`.
 ```
 
 ## Sideloading
@@ -136,9 +131,11 @@ module VericredClient
     # Networks
     # A network is a list of the doctors, other health care providers,
 and hospitals that a plan has contracted with to provide medical care to
-its members.
+its members. This endpoint is paginated.
     # @param carrier_id Carrier HIOS Issuer ID
     # @param [Hash] opts the optional parameters
+    # @option opts [Integer] :page Page of paginated response
+    # @option opts [Integer] :per_page Responses per page
     # @return [NetworkSearchResponse]
     def list_networks(carrier_id, opts = {})
       data, _status_code, _headers = list_networks_with_http_info(carrier_id, opts)
@@ -148,9 +145,11 @@ its members.
     # Networks
     # A network is a list of the doctors, other health care providers,
 and hospitals that a plan has contracted with to provide medical care to
-its members.
+its members. This endpoint is paginated.
     # @param carrier_id Carrier HIOS Issuer ID
     # @param [Hash] opts the optional parameters
+    # @option opts [Integer] :page Page of paginated response
+    # @option opts [Integer] :per_page Responses per page
     # @return [Array<(NetworkSearchResponse, Fixnum, Hash)>] NetworkSearchResponse data, response status code and response headers
     def list_networks_with_http_info(carrier_id, opts = {})
       if @api_client.config.debugging
@@ -164,6 +163,8 @@ its members.
       # query parameters
       query_params = {}
       query_params[:'carrier_id'] = carrier_id
+      query_params[:'page'] = opts[:'page'] if opts[:'page']
+      query_params[:'per_page'] = opts[:'per_page'] if opts[:'per_page']
 
       # header parameters
       header_params = {}
@@ -181,7 +182,7 @@ its members.
 
       # http body (model)
       post_body = nil
-            auth_names = []
+            auth_names = ['Vericred-Api-Key']
       data, status_code, headers = @api_client.call_api(:GET, local_var_path,
         :header_params => header_params,
         :query_params => query_params,

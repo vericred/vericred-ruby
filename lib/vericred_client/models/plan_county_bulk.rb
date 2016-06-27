@@ -31,17 +31,12 @@ The current version is `v3`.  Previous versions are `v1` and `v2`.
 
 ## Pagination
 
-Most endpoints are not paginated.  It will be noted in the documentation if/when
-an endpoint is paginated.
+Endpoints that accept `page` and `per_page` parameters are paginated. They expose
+four additional fields that contain data about your position in the response,
+namely `Total`, `Per-Page`, `Link`, and `Page` as described in [RFC-5988](https://tools.ietf.org/html/rfc5988).
 
-When pagination is present, a `meta` stanza will be present in the response
-with the total number of records
-
-```
-{
-  things: [{ id: 1 }, { id: 2 }],
-  meta: { total: 500 }
-}
+For example, to display 5 results per page and view the second page of a
+`GET` to `/networks`, your final request would be `GET /networks?....page=2&per_page=5`.
 ```
 
 ## Sideloading
@@ -127,9 +122,6 @@ require 'date'
 
 module VericredClient
   class PlanCountyBulk
-    # Primary key
-    attr_accessor :id
-
     # Foreign key to plan
     attr_accessor :plan_id
 
@@ -139,7 +131,6 @@ module VericredClient
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'id' => :'id',
         :'plan_id' => :'plan_id',
         :'county_id' => :'county_id'
       }
@@ -148,7 +139,6 @@ module VericredClient
     # Attribute type mapping.
     def self.swagger_types
       {
-        :'id' => :'Integer',
         :'plan_id' => :'Integer',
         :'county_id' => :'Integer'
       }
@@ -161,10 +151,6 @@ module VericredClient
 
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}){|(k,v), h| h[k.to_sym] = v}
-
-      if attributes.has_key?(:'id')
-        self.id = attributes[:'id']
-      end
 
       if attributes.has_key?(:'plan_id')
         self.plan_id = attributes[:'plan_id']
@@ -193,7 +179,6 @@ module VericredClient
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          id == o.id &&
           plan_id == o.plan_id &&
           county_id == o.county_id
     end
@@ -207,7 +192,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [id, plan_id, county_id].hash
+      [plan_id, county_id].hash
     end
 
     # Builds the object from hash

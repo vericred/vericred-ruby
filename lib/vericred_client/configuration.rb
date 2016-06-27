@@ -157,6 +157,13 @@ module VericredClient
     # Returns Auth Settings hash for api client.
     def auth_settings
       {
+        'Vericred-Api-Key' =>
+          {
+            type: 'api_key',
+            in: 'header',
+            key: 'Vericred-Api-Key',
+            value: api_key_with_prefix('Vericred-Api-Key')
+          },
       }
     end
   end
