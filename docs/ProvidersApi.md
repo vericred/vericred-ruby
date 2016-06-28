@@ -19,12 +19,12 @@ To retrieve a specific provider, just perform a GET using his NPI number
 ```ruby
 # load the gem
 require 'vericred_client'
-# setup authorization 
+# setup authorization
 VericredClient.configure do |config|
   # Configure API key authorization: Vericred-Api-Key
   config.api_key['Vericred-Api-Key'] = 'YOUR API KEY'
-  # Uncomment the following line to set a prefix for the API key, e.g. 'BEARER' (defaults to nil)
-  #config.api_key_prefix['Vericred-Api-Key'] = 'BEARER'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  #config.api_key_prefix['Vericred-Api-Key'] = 'Bearer'
 end
 
 api_instance = VericredClient::ProvidersApi.new
@@ -67,31 +67,18 @@ Name | Type | Description  | Notes
 
 Find Providers
 
-All `Provider` searches require a `zip_code`, which we use for weighting
-the search results to favor `Provider`s that are near the user.  For example,
-we would want "Dr. John Smith" who is 5 miles away to appear before
-"Dr. John Smith" who is 100 miles away.
-
-The weighting also allows for non-exact matches.  In our prior example, we
-would want "Dr. Jon Smith" who is 2 miles away to appear before the exact
-match "Dr. John Smith" who is 100 miles away because it is more likely that
-the user just entered an incorrect name.
-
-The free text search also supports Specialty name search and "body part"
-Specialty name search.  So, searching "John Smith nose" would return
-"Dr. John Smith", the ENT Specialist before "Dr. John Smith" the Internist.
-
+All `Provider` searches require a `zip_code`, which we use for weighting the search results to favor `Provider`s that are near the user.  For example, we would want \"Dr. John Smith\" who is 5 miles away to appear before \"Dr. John Smith\" who is 100 miles away.  The weighting also allows for non-exact matches.  In our prior example, we would want \"Dr. Jon Smith\" who is 2 miles away to appear before the exact match \"Dr. John Smith\" who is 100 miles away because it is more likely that the user just entered an incorrect name.  The free text search also supports Specialty name search and \"body part\" Specialty name search.  So, searching \"John Smith nose\" would return \"Dr. John Smith\", the ENT Specialist before \"Dr. John Smith\" the Internist. 
 
 ### Example
 ```ruby
 # load the gem
 require 'vericred_client'
-# setup authorization 
+# setup authorization
 VericredClient.configure do |config|
   # Configure API key authorization: Vericred-Api-Key
   config.api_key['Vericred-Api-Key'] = 'YOUR API KEY'
-  # Uncomment the following line to set a prefix for the API key, e.g. 'BEARER' (defaults to nil)
-  #config.api_key_prefix['Vericred-Api-Key'] = 'BEARER'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  #config.api_key_prefix['Vericred-Api-Key'] = 'Bearer'
 end
 
 api_instance = VericredClient::ProvidersApi.new

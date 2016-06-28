@@ -3,9 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**accepts_insurance** | **BOOLEAN** | Limit results to Providers who accept at least one insurance
-        plan.  Note that the inverse of this filter is not supported and
-        any value will evaluate to true | [optional] 
+**accepts_insurance** | **BOOLEAN** | Limit results to Providers who accept at least one insurance         plan.  Note that the inverse of this filter is not supported and         any value will evaluate to true | [optional] 
 **hios_ids** | **Array&lt;String&gt;** | List of HIOS ids | [optional] 
 **page** | **Integer** | Page number | [optional] 
 **per_page** | **Integer** | Number of records to return per page | [optional] 

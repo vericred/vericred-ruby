@@ -12,20 +12,18 @@ Method | HTTP request | Description
 
 Networks
 
-A network is a list of the doctors, other health care providers,
-and hospitals that a plan has contracted with to provide medical care to
-its members. This endpoint is paginated.
+A network is a list of the doctors, other health care providers, and hospitals that a plan has contracted with to provide medical care to its members. This endpoint is paginated.
 
 ### Example
 ```ruby
 # load the gem
 require 'vericred_client'
-# setup authorization 
+# setup authorization
 VericredClient.configure do |config|
   # Configure API key authorization: Vericred-Api-Key
   config.api_key['Vericred-Api-Key'] = 'YOUR API KEY'
-  # Uncomment the following line to set a prefix for the API key, e.g. 'BEARER' (defaults to nil)
-  #config.api_key_prefix['Vericred-Api-Key'] = 'BEARER'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  #config.api_key_prefix['Vericred-Api-Key'] = 'Bearer'
 end
 
 api_instance = VericredClient::NetworksApi.new
