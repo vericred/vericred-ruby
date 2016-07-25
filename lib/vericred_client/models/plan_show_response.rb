@@ -132,42 +132,22 @@ require 'date'
 
 module VericredClient
 
-  class CountyBulk
-    # FIPs code for the county
-    attr_accessor :id
-
-    # Name of the county
-    attr_accessor :name
-
-    # State code
-    attr_accessor :state_id
-
-    # Count of unique rating areas in the county
-    attr_accessor :rating_area_count
-
-    # Count of unique service areas in the county
-    attr_accessor :service_area_count
+  class PlanShowResponse
+    # Plan response
+    attr_accessor :plan
 
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'id' => :'id',
-        :'name' => :'name',
-        :'state_id' => :'state_id',
-        :'rating_area_count' => :'rating_area_count',
-        :'service_area_count' => :'service_area_count'
+        :'plan' => :'plan'
       }
     end
 
     # Attribute type mapping.
     def self.swagger_types
       {
-        :'id' => :'String',
-        :'name' => :'String',
-        :'state_id' => :'String',
-        :'rating_area_count' => :'String',
-        :'service_area_count' => :'String'
+        :'plan' => :'Plan'
       }
     end
 
@@ -179,24 +159,8 @@ module VericredClient
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}){|(k,v), h| h[k.to_sym] = v}
 
-      if attributes.has_key?(:'id')
-        self.id = attributes[:'id']
-      end
-
-      if attributes.has_key?(:'name')
-        self.name = attributes[:'name']
-      end
-
-      if attributes.has_key?(:'state_id')
-        self.state_id = attributes[:'state_id']
-      end
-
-      if attributes.has_key?(:'rating_area_count')
-        self.rating_area_count = attributes[:'rating_area_count']
-      end
-
-      if attributes.has_key?(:'service_area_count')
-        self.service_area_count = attributes[:'service_area_count']
+      if attributes.has_key?(:'plan')
+        self.plan = attributes[:'plan']
       end
 
     end
@@ -219,11 +183,7 @@ module VericredClient
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          id == o.id &&
-          name == o.name &&
-          state_id == o.state_id &&
-          rating_area_count == o.rating_area_count &&
-          service_area_count == o.service_area_count
+          plan == o.plan
     end
 
     # @see the `==` method
@@ -235,7 +195,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [id, name, state_id, rating_area_count, service_area_count].hash
+      [plan].hash
     end
 
     # Builds the object from hash
