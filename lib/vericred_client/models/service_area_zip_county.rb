@@ -132,12 +132,12 @@ require 'date'
 
 module VericredClient
 
-  class PlanZipCounty
-    # Foreign key to plan
-    attr_accessor :plan_id
-
+  class ServiceAreaZipCounty
     # Foreign key to county
     attr_accessor :county_id
+
+    # Foreign key to service area
+    attr_accessor :service_area_id
 
     # Foreign key to zip code
     attr_accessor :zip_code_id
@@ -146,8 +146,8 @@ module VericredClient
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'plan_id' => :'plan_id',
         :'county_id' => :'county_id',
+        :'service_area_id' => :'service_area_id',
         :'zip_code_id' => :'zip_code_id'
       }
     end
@@ -155,9 +155,9 @@ module VericredClient
     # Attribute type mapping.
     def self.swagger_types
       {
-        :'plan_id' => :'Integer',
-        :'county_id' => :'Integer',
-        :'zip_code_id' => :'Integer'
+        :'county_id' => :'String',
+        :'service_area_id' => :'String',
+        :'zip_code_id' => :'String'
       }
     end
 
@@ -169,12 +169,12 @@ module VericredClient
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}){|(k,v), h| h[k.to_sym] = v}
 
-      if attributes.has_key?(:'plan_id')
-        self.plan_id = attributes[:'plan_id']
-      end
-
       if attributes.has_key?(:'county_id')
         self.county_id = attributes[:'county_id']
+      end
+
+      if attributes.has_key?(:'service_area_id')
+        self.service_area_id = attributes[:'service_area_id']
       end
 
       if attributes.has_key?(:'zip_code_id')
@@ -201,8 +201,8 @@ module VericredClient
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          plan_id == o.plan_id &&
           county_id == o.county_id &&
+          service_area_id == o.service_area_id &&
           zip_code_id == o.zip_code_id
     end
 
@@ -215,7 +215,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [plan_id, county_id, zip_code_id].hash
+      [county_id, service_area_id, zip_code_id].hash
     end
 
     # Builds the object from hash

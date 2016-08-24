@@ -5,6 +5,7 @@ All URIs are relative to *https://api.vericred.com/*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**find_plans**](PlansApi.md#find_plans) | **POST** /plans/search | Find Plans
+[**show_plan**](PlansApi.md#show_plan) | **GET** /plans/{id} | Show Plan
 
 
 # **find_plans**
@@ -59,6 +60,61 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
+
+
+
+# **show_plan**
+> PlanShowResponse show_plan(opts)
+
+Show Plan
+
+Show the details of an individual Plan.  This includes deductibles, maximums out of pocket, and co-pay/coinsurance for benefits
+
+### Example
+```ruby
+# load the gem
+require 'vericred_client'
+# setup authorization
+VericredClient.configure do |config|
+  # Configure API key authorization: Vericred-Api-Key
+  config.api_key['Vericred-Api-Key'] = 'YOUR API KEY'
+  # Uncomment the following line to set a prefix for the API key, e.g. 'Bearer' (defaults to nil)
+  #config.api_key_prefix['Vericred-Api-Key'] = 'Bearer'
+end
+
+api_instance = VericredClient::PlansApi.new
+
+opts = { 
+  year: 2016 # Integer | Plan year (defaults to current year)
+}
+
+begin
+  #Show Plan
+  result = api_instance.show_plan(opts)
+  p result
+rescue VericredClient::ApiError => e
+  puts "Exception when calling PlansApi->show_plan: #{e}"
+end
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **year** | **Integer**| Plan year (defaults to current year) | [optional] 
+
+### Return type
+
+[**PlanShowResponse**](PlanShowResponse.md)
+
+### Authorization
+
+[Vericred-Api-Key](../README.md#Vericred-Api-Key)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 
 

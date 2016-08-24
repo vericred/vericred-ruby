@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 
 # **get_provider**
-> ProviderShowResponse get_provider(npi)
+> ProviderShowResponse get_provider(npi, opts)
 
 Find a Provider
 
@@ -31,10 +31,14 @@ api_instance = VericredClient::ProvidersApi.new
 
 npi = "1234567890" # String | NPI number
 
+opts = { 
+  year: "2016", # String | Only show plan ids for the given year
+  state: "NY" # String | Only show plan ids for the given state
+}
 
 begin
   #Find a Provider
-  result = api_instance.get_provider(npi)
+  result = api_instance.get_provider(npi, opts)
   p result
 rescue VericredClient::ApiError => e
   puts "Exception when calling ProvidersApi->get_provider: #{e}"
@@ -46,6 +50,8 @@ end
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **npi** | **String**| NPI number | 
+ **year** | **String**| Only show plan ids for the given year | [optional] 
+ **state** | **String**| Only show plan ids for the given state | [optional] 
 
 ### Return type
 

@@ -142,6 +142,8 @@ module VericredClient
     # To retrieve a specific provider, just perform a GET using his NPI number
     # @param npi NPI number
     # @param [Hash] opts the optional parameters
+    # @option opts [String] :year Only show plan ids for the given year
+    # @option opts [String] :state Only show plan ids for the given state
     # @return [ProviderShowResponse]
     def get_provider(npi, opts = {})
       data, _status_code, _headers = get_provider_with_http_info(npi, opts)
@@ -152,6 +154,8 @@ module VericredClient
     # To retrieve a specific provider, just perform a GET using his NPI number
     # @param npi NPI number
     # @param [Hash] opts the optional parameters
+    # @option opts [String] :year Only show plan ids for the given year
+    # @option opts [String] :state Only show plan ids for the given state
     # @return [Array<(ProviderShowResponse, Fixnum, Hash)>] ProviderShowResponse data, response status code and response headers
     def get_provider_with_http_info(npi, opts = {})
       if @api_client.config.debugging
@@ -164,6 +168,8 @@ module VericredClient
 
       # query parameters
       query_params = {}
+      query_params[:'year'] = opts[:'year'] if !opts[:'year'].nil?
+      query_params[:'state'] = opts[:'state'] if !opts[:'state'].nil?
 
       # header parameters
       header_params = {}

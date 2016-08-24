@@ -139,6 +139,9 @@ module VericredClient
     # List of HIOS ids
     attr_accessor :hios_ids
 
+    # Minimum search threshold to be included in the results
+    attr_accessor :min_score
+
     # Page number
     attr_accessor :page
 
@@ -163,6 +166,7 @@ module VericredClient
       {
         :'accepts_insurance' => :'accepts_insurance',
         :'hios_ids' => :'hios_ids',
+        :'min_score' => :'min_score',
         :'page' => :'page',
         :'per_page' => :'per_page',
         :'radius' => :'radius',
@@ -177,6 +181,7 @@ module VericredClient
       {
         :'accepts_insurance' => :'BOOLEAN',
         :'hios_ids' => :'Array<String>',
+        :'min_score' => :'Float',
         :'page' => :'Integer',
         :'per_page' => :'Integer',
         :'radius' => :'Integer',
@@ -202,6 +207,10 @@ module VericredClient
         if (value = attributes[:'hios_ids']).is_a?(Array)
           self.hios_ids = value
         end
+      end
+
+      if attributes.has_key?(:'min_score')
+        self.min_score = attributes[:'min_score']
       end
 
       if attributes.has_key?(:'page')
@@ -250,6 +259,7 @@ module VericredClient
       self.class == o.class &&
           accepts_insurance == o.accepts_insurance &&
           hios_ids == o.hios_ids &&
+          min_score == o.min_score &&
           page == o.page &&
           per_page == o.per_page &&
           radius == o.radius &&
@@ -267,7 +277,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [accepts_insurance, hios_ids, page, per_page, radius, search_term, zip_code, type].hash
+      [accepts_insurance, hios_ids, min_score, page, per_page, radius, search_term, zip_code, type].hash
     end
 
     # Builds the object from hash

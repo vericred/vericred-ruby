@@ -151,6 +151,9 @@ module VericredClient
     # Number of people living in household.
     attr_accessor :household_size
 
+    # List of plan IDs to filter by
+    attr_accessor :ids
+
     # Type of plan to search for.
     attr_accessor :market
 
@@ -179,6 +182,7 @@ module VericredClient
         :'fips_code' => :'fips_code',
         :'household_income' => :'household_income',
         :'household_size' => :'household_size',
+        :'ids' => :'ids',
         :'market' => :'market',
         :'providers' => :'providers',
         :'page' => :'page',
@@ -193,10 +197,11 @@ module VericredClient
       {
         :'applicants' => :'Array<RequestPlanFindApplicant>',
         :'enrollment_date' => :'String',
-        :'drug_packages' => :'Array<DrugPackage>',
+        :'drug_packages' => :'Array<RequestPlanFindDrugPackage>',
         :'fips_code' => :'String',
         :'household_income' => :'Integer',
         :'household_size' => :'Integer',
+        :'ids' => :'Array<Integer>',
         :'market' => :'String',
         :'providers' => :'Array<RequestPlanFindProvider>',
         :'page' => :'Integer',
@@ -240,6 +245,12 @@ module VericredClient
 
       if attributes.has_key?(:'household_size')
         self.household_size = attributes[:'household_size']
+      end
+
+      if attributes.has_key?(:'ids')
+        if (value = attributes[:'ids']).is_a?(Array)
+          self.ids = value
+        end
       end
 
       if attributes.has_key?(:'market')
@@ -294,6 +305,7 @@ module VericredClient
           fips_code == o.fips_code &&
           household_income == o.household_income &&
           household_size == o.household_size &&
+          ids == o.ids &&
           market == o.market &&
           providers == o.providers &&
           page == o.page &&
@@ -311,7 +323,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [applicants, enrollment_date, drug_packages, fips_code, household_income, household_size, market, providers, page, per_page, sort, zip_code].hash
+      [applicants, enrollment_date, drug_packages, fips_code, household_income, household_size, ids, market, providers, page, per_page, sort, zip_code].hash
     end
 
     # Builds the object from hash

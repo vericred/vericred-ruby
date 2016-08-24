@@ -155,6 +155,8 @@ describe 'ProvidersApi' do
   # To retrieve a specific provider, just perform a GET using his NPI number
   # @param npi NPI number
   # @param [Hash] opts the optional parameters
+  # @option opts [String] :year Only show plan ids for the given year
+  # @option opts [String] :state Only show plan ids for the given state
   # @return [ProviderShowResponse]
   describe 'get_provider test' do
     it "should work" do
