@@ -169,6 +169,9 @@ module VericredClient
     # Diagnostic tests benefit summary
     attr_accessor :diagnostic_test
 
+    # Alternate name for the Plan
+    attr_accessor :display_name
+
     # Is this a domestic plan?
     attr_accessor :dp_rider
 
@@ -213,6 +216,9 @@ module VericredClient
 
     # Hospice service benefits summary
     attr_accessor :hospice_service
+
+    # Is the plan HSA eligible?
+    attr_accessor :hsa_eligible
 
     # Government-issued HIOS plan ID
     attr_accessor :id
@@ -316,6 +322,9 @@ module VericredClient
     # Benefits summary for rehabilitation services
     attr_accessor :rehabilitation_services
 
+    # Foreign key for service area
+    attr_accessor :service_area_id
+
     # Benefits summary for skilled nursing services
     attr_accessor :skilled_nursing
 
@@ -344,6 +353,7 @@ module VericredClient
         :'customer_service_phone_number' => :'customer_service_phone_number',
         :'durable_medical_equipment' => :'durable_medical_equipment',
         :'diagnostic_test' => :'diagnostic_test',
+        :'display_name' => :'display_name',
         :'dp_rider' => :'dp_rider',
         :'drug_formulary_url' => :'drug_formulary_url',
         :'effective_date' => :'effective_date',
@@ -359,6 +369,7 @@ module VericredClient
         :'hios_issuer_id' => :'hios_issuer_id',
         :'home_health_care' => :'home_health_care',
         :'hospice_service' => :'hospice_service',
+        :'hsa_eligible' => :'hsa_eligible',
         :'id' => :'id',
         :'imaging' => :'imaging',
         :'in_network_ids' => :'in_network_ids',
@@ -393,6 +404,7 @@ module VericredClient
         :'premium' => :'premium',
         :'primary_care_physician' => :'primary_care_physician',
         :'rehabilitation_services' => :'rehabilitation_services',
+        :'service_area_id' => :'service_area_id',
         :'skilled_nursing' => :'skilled_nursing',
         :'specialist' => :'specialist',
         :'specialty_drugs' => :'specialty_drugs',
@@ -415,6 +427,7 @@ module VericredClient
         :'customer_service_phone_number' => :'String',
         :'durable_medical_equipment' => :'String',
         :'diagnostic_test' => :'String',
+        :'display_name' => :'String',
         :'dp_rider' => :'BOOLEAN',
         :'drug_formulary_url' => :'String',
         :'effective_date' => :'String',
@@ -430,6 +443,7 @@ module VericredClient
         :'hios_issuer_id' => :'String',
         :'home_health_care' => :'String',
         :'hospice_service' => :'String',
+        :'hsa_eligible' => :'BOOLEAN',
         :'id' => :'String',
         :'imaging' => :'String',
         :'in_network_ids' => :'Array<Integer>',
@@ -464,6 +478,7 @@ module VericredClient
         :'premium' => :'Float',
         :'primary_care_physician' => :'String',
         :'rehabilitation_services' => :'String',
+        :'service_area_id' => :'String',
         :'skilled_nursing' => :'String',
         :'specialist' => :'String',
         :'specialty_drugs' => :'String',
@@ -527,6 +542,10 @@ module VericredClient
         self.diagnostic_test = attributes[:'diagnostic_test']
       end
 
+      if attributes.has_key?(:'display_name')
+        self.display_name = attributes[:'display_name']
+      end
+
       if attributes.has_key?(:'dp_rider')
         self.dp_rider = attributes[:'dp_rider']
       end
@@ -585,6 +604,10 @@ module VericredClient
 
       if attributes.has_key?(:'hospice_service')
         self.hospice_service = attributes[:'hospice_service']
+      end
+
+      if attributes.has_key?(:'hsa_eligible')
+        self.hsa_eligible = attributes[:'hsa_eligible']
       end
 
       if attributes.has_key?(:'id')
@@ -727,6 +750,10 @@ module VericredClient
         self.rehabilitation_services = attributes[:'rehabilitation_services']
       end
 
+      if attributes.has_key?(:'service_area_id')
+        self.service_area_id = attributes[:'service_area_id']
+      end
+
       if attributes.has_key?(:'skilled_nursing')
         self.skilled_nursing = attributes[:'skilled_nursing']
       end
@@ -775,6 +802,7 @@ module VericredClient
           customer_service_phone_number == o.customer_service_phone_number &&
           durable_medical_equipment == o.durable_medical_equipment &&
           diagnostic_test == o.diagnostic_test &&
+          display_name == o.display_name &&
           dp_rider == o.dp_rider &&
           drug_formulary_url == o.drug_formulary_url &&
           effective_date == o.effective_date &&
@@ -790,6 +818,7 @@ module VericredClient
           hios_issuer_id == o.hios_issuer_id &&
           home_health_care == o.home_health_care &&
           hospice_service == o.hospice_service &&
+          hsa_eligible == o.hsa_eligible &&
           id == o.id &&
           imaging == o.imaging &&
           in_network_ids == o.in_network_ids &&
@@ -824,6 +853,7 @@ module VericredClient
           premium == o.premium &&
           primary_care_physician == o.primary_care_physician &&
           rehabilitation_services == o.rehabilitation_services &&
+          service_area_id == o.service_area_id &&
           skilled_nursing == o.skilled_nursing &&
           specialist == o.specialist &&
           specialty_drugs == o.specialty_drugs &&
@@ -839,7 +869,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [adult_dental, age29_rider, ambulance, benefits_summary_url, buy_link, carrier_name, child_dental, child_eyewear, child_eye_exam, customer_service_phone_number, durable_medical_equipment, diagnostic_test, dp_rider, drug_formulary_url, effective_date, expiration_date, emergency_room, family_drug_deductible, family_drug_moop, family_medical_deductible, family_medical_moop, fp_rider, generic_drugs, habilitation_services, hios_issuer_id, home_health_care, hospice_service, id, imaging, in_network_ids, individual_drug_deductible, individual_drug_moop, individual_medical_deductible, individual_medical_moop, inpatient_birth, inpatient_facility, inpatient_mental_health, inpatient_physician, inpatient_substance, level, logo_url, name, network_size, non_preferred_brand_drugs, on_market, off_market, out_of_network_coverage, out_of_network_ids, outpatient_facility, outpatient_mental_health, outpatient_physician, outpatient_substance, plan_market, plan_type, preferred_brand_drugs, prenatal_postnatal_care, preventative_care, premium_subsidized, premium, primary_care_physician, rehabilitation_services, skilled_nursing, specialist, specialty_drugs, urgent_care].hash
+      [adult_dental, age29_rider, ambulance, benefits_summary_url, buy_link, carrier_name, child_dental, child_eyewear, child_eye_exam, customer_service_phone_number, durable_medical_equipment, diagnostic_test, display_name, dp_rider, drug_formulary_url, effective_date, expiration_date, emergency_room, family_drug_deductible, family_drug_moop, family_medical_deductible, family_medical_moop, fp_rider, generic_drugs, habilitation_services, hios_issuer_id, home_health_care, hospice_service, hsa_eligible, id, imaging, in_network_ids, individual_drug_deductible, individual_drug_moop, individual_medical_deductible, individual_medical_moop, inpatient_birth, inpatient_facility, inpatient_mental_health, inpatient_physician, inpatient_substance, level, logo_url, name, network_size, non_preferred_brand_drugs, on_market, off_market, out_of_network_coverage, out_of_network_ids, outpatient_facility, outpatient_mental_health, outpatient_physician, outpatient_substance, plan_market, plan_type, preferred_brand_drugs, prenatal_postnatal_care, preventative_care, premium_subsidized, premium, primary_care_physician, rehabilitation_services, service_area_id, skilled_nursing, specialist, specialty_drugs, urgent_care].hash
     end
 
     # Builds the object from hash

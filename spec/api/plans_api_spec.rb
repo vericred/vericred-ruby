@@ -162,4 +162,16 @@ describe 'PlansApi' do
     end
   end
 
+  # unit tests for show_plan
+  # Show Plan
+  # Show the details of an individual Plan.  This includes deductibles, maximums out of pocket, and co-pay/coinsurance for benefits
+  # @param [Hash] opts the optional parameters
+  # @option opts [Integer] :year Plan year (defaults to current year)
+  # @return [PlanShowResponse]
+  describe 'show_plan test' do
+    it "should work" do
+      # assertion here. ref: https://www.relishapp.com/rspec/rspec-expectations/docs/built-in-matchers
+    end
+  end
+
 end

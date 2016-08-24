@@ -192,5 +192,61 @@ module VericredClient
       end
       return data, status_code, headers
     end
+
+    # Show Plan
+    # Show the details of an individual Plan.  This includes deductibles, maximums out of pocket, and co-pay/coinsurance for benefits
+    # @param [Hash] opts the optional parameters
+    # @option opts [Integer] :year Plan year (defaults to current year)
+    # @return [PlanShowResponse]
+    def show_plan(opts = {})
+      data, _status_code, _headers = show_plan_with_http_info(opts)
+      return data
+    end
+
+    # Show Plan
+    # Show the details of an individual Plan.  This includes deductibles, maximums out of pocket, and co-pay/coinsurance for benefits
+    # @param [Hash] opts the optional parameters
+    # @option opts [Integer] :year Plan year (defaults to current year)
+    # @return [Array<(PlanShowResponse, Fixnum, Hash)>] PlanShowResponse data, response status code and response headers
+    def show_plan_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "Calling API: PlansApi.show_plan ..."
+      end
+      # resource path
+      local_var_path = "/plans/{id}".sub('{format}','json')
+
+      # query parameters
+      query_params = {}
+      query_params[:'year'] = opts[:'year'] if !opts[:'year'].nil?
+
+      # header parameters
+      header_params = {}
+
+      # HTTP header 'Accept' (if needed)
+      local_header_accept = ['application/json']
+      local_header_accept_result = @api_client.select_header_accept(local_header_accept) and header_params['Accept'] = local_header_accept_result
+
+      # HTTP header 'Content-Type'
+      local_header_content_type = ['application/json']
+      header_params['Content-Type'] = @api_client.select_header_content_type(local_header_content_type)
+
+      # form parameters
+      form_params = {}
+
+      # http body (model)
+      post_body = nil
+      auth_names = ['Vericred-Api-Key']
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path,
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => 'PlanShowResponse')
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: PlansApi#show_plan\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
   end
 end

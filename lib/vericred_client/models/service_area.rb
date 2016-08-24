@@ -132,31 +132,23 @@ require 'date'
 
 module VericredClient
 
-  class CountyBulk
-    # FIPs code for the county
+  class ServiceArea
+    # Primary key
     attr_accessor :id
 
-    # Name of the county
+    # Issuer foreign key
+    attr_accessor :issuer_id
+
+    # Name of the Service Area
     attr_accessor :name
-
-    # State code
-    attr_accessor :state_id
-
-    # Count of unique rating areas in the county
-    attr_accessor :rating_area_count
-
-    # Count of unique service areas in the county
-    attr_accessor :service_area_count
 
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'id' => :'id',
-        :'name' => :'name',
-        :'state_id' => :'state_id',
-        :'rating_area_count' => :'rating_area_count',
-        :'service_area_count' => :'service_area_count'
+        :'issuer_id' => :'issuer_id',
+        :'name' => :'name'
       }
     end
 
@@ -164,10 +156,8 @@ module VericredClient
     def self.swagger_types
       {
         :'id' => :'String',
-        :'name' => :'String',
-        :'state_id' => :'String',
-        :'rating_area_count' => :'String',
-        :'service_area_count' => :'String'
+        :'issuer_id' => :'String',
+        :'name' => :'String'
       }
     end
 
@@ -183,20 +173,12 @@ module VericredClient
         self.id = attributes[:'id']
       end
 
+      if attributes.has_key?(:'issuer_id')
+        self.issuer_id = attributes[:'issuer_id']
+      end
+
       if attributes.has_key?(:'name')
         self.name = attributes[:'name']
-      end
-
-      if attributes.has_key?(:'state_id')
-        self.state_id = attributes[:'state_id']
-      end
-
-      if attributes.has_key?(:'rating_area_count')
-        self.rating_area_count = attributes[:'rating_area_count']
-      end
-
-      if attributes.has_key?(:'service_area_count')
-        self.service_area_count = attributes[:'service_area_count']
       end
 
     end
@@ -220,10 +202,8 @@ module VericredClient
       return true if self.equal?(o)
       self.class == o.class &&
           id == o.id &&
-          name == o.name &&
-          state_id == o.state_id &&
-          rating_area_count == o.rating_area_count &&
-          service_area_count == o.service_area_count
+          issuer_id == o.issuer_id &&
+          name == o.name
     end
 
     # @see the `==` method
@@ -235,7 +215,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [id, name, state_id, rating_area_count, service_area_count].hash
+      [id, issuer_id, name].hash
     end
 
     # Builds the object from hash
