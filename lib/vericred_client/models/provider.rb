@@ -160,9 +160,6 @@ module VericredClient
     # Given name for the provider.
     attr_accessor :first_name
 
-    # List of HIOS ids for this provider
-    attr_accessor :hios_ids
-
     # National Provider Index (NPI) number
     attr_accessor :id
 
@@ -180,6 +177,9 @@ module VericredClient
 
     # Array of network ids
     attr_accessor :network_ids
+
+    # name for the providers of type: organization.
+    attr_accessor :organization_name
 
     # Personal contact phone for the provider.
     attr_accessor :personal_phone
@@ -230,13 +230,13 @@ module VericredClient
         :'email' => :'email',
         :'gender' => :'gender',
         :'first_name' => :'first_name',
-        :'hios_ids' => :'hios_ids',
         :'id' => :'id',
         :'last_name' => :'last_name',
         :'latitude' => :'latitude',
         :'longitude' => :'longitude',
         :'middle_name' => :'middle_name',
         :'network_ids' => :'network_ids',
+        :'organization_name' => :'organization_name',
         :'personal_phone' => :'personal_phone',
         :'phone' => :'phone',
         :'presentation_name' => :'presentation_name',
@@ -264,13 +264,13 @@ module VericredClient
         :'email' => :'String',
         :'gender' => :'String',
         :'first_name' => :'String',
-        :'hios_ids' => :'Array<String>',
         :'id' => :'Integer',
         :'last_name' => :'String',
         :'latitude' => :'Float',
         :'longitude' => :'Float',
         :'middle_name' => :'String',
         :'network_ids' => :'Array<Integer>',
+        :'organization_name' => :'String',
         :'personal_phone' => :'String',
         :'phone' => :'String',
         :'presentation_name' => :'String',
@@ -330,12 +330,6 @@ module VericredClient
         self.first_name = attributes[:'first_name']
       end
 
-      if attributes.has_key?(:'hios_ids')
-        if (value = attributes[:'hios_ids']).is_a?(Array)
-          self.hios_ids = value
-        end
-      end
-
       if attributes.has_key?(:'id')
         self.id = attributes[:'id']
       end
@@ -360,6 +354,10 @@ module VericredClient
         if (value = attributes[:'network_ids']).is_a?(Array)
           self.network_ids = value
         end
+      end
+
+      if attributes.has_key?(:'organization_name')
+        self.organization_name = attributes[:'organization_name']
       end
 
       if attributes.has_key?(:'personal_phone')
@@ -439,13 +437,13 @@ module VericredClient
           email == o.email &&
           gender == o.gender &&
           first_name == o.first_name &&
-          hios_ids == o.hios_ids &&
           id == o.id &&
           last_name == o.last_name &&
           latitude == o.latitude &&
           longitude == o.longitude &&
           middle_name == o.middle_name &&
           network_ids == o.network_ids &&
+          organization_name == o.organization_name &&
           personal_phone == o.personal_phone &&
           phone == o.phone &&
           presentation_name == o.presentation_name &&
@@ -469,7 +467,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [accepting_change_of_payor_patients, accepting_medicaid_patients, accepting_medicare_patients, accepting_private_patients, accepting_referral_patients, city, email, gender, first_name, hios_ids, id, last_name, latitude, longitude, middle_name, network_ids, personal_phone, phone, presentation_name, specialty, state, state_id, street_line_1, street_line_2, suffix, title, type, zip_code].hash
+      [accepting_change_of_payor_patients, accepting_medicaid_patients, accepting_medicare_patients, accepting_private_patients, accepting_referral_patients, city, email, gender, first_name, id, last_name, latitude, longitude, middle_name, network_ids, organization_name, personal_phone, phone, presentation_name, specialty, state, state_id, street_line_1, street_line_2, suffix, title, type, zip_code].hash
     end
 
     # Builds the object from hash
@@ -478,7 +476,7 @@ module VericredClient
     def build_from_hash(attributes)
       return nil unless attributes.is_a?(Hash)
       self.class.swagger_types.each_pair do |key, type|
-        if type =~ /^Array<(.*)>/i
+        if type =~ /\AArray<(.*)>/i
           # check to ensure the input is an array given that the the attribute
           # is documented as an array but the input is not
           if attributes[self.class.attribute_map[key]].is_a?(Array)
@@ -509,7 +507,7 @@ module VericredClient
       when :Float
         value.to_f
       when :BOOLEAN
-        if value.to_s =~ /^(true|t|yes|y|1)$/i
+        if value.to_s =~ /\A(true|t|yes|y|1)\z/i
           true
         else
           false

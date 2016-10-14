@@ -142,6 +142,9 @@ module VericredClient
     # Minimum search threshold to be included in the results
     attr_accessor :min_score
 
+    # List of Vericred network ids
+    attr_accessor :network_ids
+
     # Page number
     attr_accessor :page
 
@@ -167,6 +170,7 @@ module VericredClient
         :'accepts_insurance' => :'accepts_insurance',
         :'hios_ids' => :'hios_ids',
         :'min_score' => :'min_score',
+        :'network_ids' => :'network_ids',
         :'page' => :'page',
         :'per_page' => :'per_page',
         :'radius' => :'radius',
@@ -182,6 +186,7 @@ module VericredClient
         :'accepts_insurance' => :'BOOLEAN',
         :'hios_ids' => :'Array<String>',
         :'min_score' => :'Float',
+        :'network_ids' => :'Array<Integer>',
         :'page' => :'Integer',
         :'per_page' => :'Integer',
         :'radius' => :'Integer',
@@ -211,6 +216,12 @@ module VericredClient
 
       if attributes.has_key?(:'min_score')
         self.min_score = attributes[:'min_score']
+      end
+
+      if attributes.has_key?(:'network_ids')
+        if (value = attributes[:'network_ids']).is_a?(Array)
+          self.network_ids = value
+        end
       end
 
       if attributes.has_key?(:'page')
@@ -260,6 +271,7 @@ module VericredClient
           accepts_insurance == o.accepts_insurance &&
           hios_ids == o.hios_ids &&
           min_score == o.min_score &&
+          network_ids == o.network_ids &&
           page == o.page &&
           per_page == o.per_page &&
           radius == o.radius &&
@@ -277,7 +289,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [accepts_insurance, hios_ids, min_score, page, per_page, radius, search_term, zip_code, type].hash
+      [accepts_insurance, hios_ids, min_score, network_ids, page, per_page, radius, search_term, zip_code, type].hash
     end
 
     # Builds the object from hash
@@ -286,7 +298,7 @@ module VericredClient
     def build_from_hash(attributes)
       return nil unless attributes.is_a?(Hash)
       self.class.swagger_types.each_pair do |key, type|
-        if type =~ /^Array<(.*)>/i
+        if type =~ /\AArray<(.*)>/i
           # check to ensure the input is an array given that the the attribute
           # is documented as an array but the input is not
           if attributes[self.class.attribute_map[key]].is_a?(Array)
@@ -317,7 +329,7 @@ module VericredClient
       when :Float
         value.to_f
       when :BOOLEAN
-        if value.to_s =~ /^(true|t|yes|y|1)$/i
+        if value.to_s =~ /\A(true|t|yes|y|1)\z/i
           true
         else
           false

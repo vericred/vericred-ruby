@@ -139,8 +139,8 @@ module VericredClient
     # NDC package code
     attr_accessor :drug_package_id
 
-    # Tier Name
-    attr_accessor :tier
+    # Med ID
+    attr_accessor :med_id
 
     # Quantity limit exists
     attr_accessor :quantity_limit
@@ -151,16 +151,20 @@ module VericredClient
     # Step Treatment required
     attr_accessor :step_therapy
 
+    # Tier Name
+    attr_accessor :tier
+
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'plan_id' => :'plan_id',
         :'drug_package_id' => :'drug_package_id',
-        :'tier' => :'tier',
+        :'med_id' => :'med_id',
         :'quantity_limit' => :'quantity_limit',
         :'prior_authorization' => :'prior_authorization',
-        :'step_therapy' => :'step_therapy'
+        :'step_therapy' => :'step_therapy',
+        :'tier' => :'tier'
       }
     end
 
@@ -169,10 +173,11 @@ module VericredClient
       {
         :'plan_id' => :'String',
         :'drug_package_id' => :'String',
-        :'tier' => :'String',
+        :'med_id' => :'Integer',
         :'quantity_limit' => :'BOOLEAN',
         :'prior_authorization' => :'BOOLEAN',
-        :'step_therapy' => :'BOOLEAN'
+        :'step_therapy' => :'BOOLEAN',
+        :'tier' => :'String'
       }
     end
 
@@ -192,8 +197,8 @@ module VericredClient
         self.drug_package_id = attributes[:'drug_package_id']
       end
 
-      if attributes.has_key?(:'tier')
-        self.tier = attributes[:'tier']
+      if attributes.has_key?(:'med_id')
+        self.med_id = attributes[:'med_id']
       end
 
       if attributes.has_key?(:'quantity_limit')
@@ -206,6 +211,10 @@ module VericredClient
 
       if attributes.has_key?(:'step_therapy')
         self.step_therapy = attributes[:'step_therapy']
+      end
+
+      if attributes.has_key?(:'tier')
+        self.tier = attributes[:'tier']
       end
 
     end
@@ -230,10 +239,11 @@ module VericredClient
       self.class == o.class &&
           plan_id == o.plan_id &&
           drug_package_id == o.drug_package_id &&
-          tier == o.tier &&
+          med_id == o.med_id &&
           quantity_limit == o.quantity_limit &&
           prior_authorization == o.prior_authorization &&
-          step_therapy == o.step_therapy
+          step_therapy == o.step_therapy &&
+          tier == o.tier
     end
 
     # @see the `==` method
@@ -245,7 +255,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [plan_id, drug_package_id, tier, quantity_limit, prior_authorization, step_therapy].hash
+      [plan_id, drug_package_id, med_id, quantity_limit, prior_authorization, step_therapy, tier].hash
     end
 
     # Builds the object from hash
@@ -254,7 +264,7 @@ module VericredClient
     def build_from_hash(attributes)
       return nil unless attributes.is_a?(Hash)
       self.class.swagger_types.each_pair do |key, type|
-        if type =~ /^Array<(.*)>/i
+        if type =~ /\AArray<(.*)>/i
           # check to ensure the input is an array given that the the attribute
           # is documented as an array but the input is not
           if attributes[self.class.attribute_map[key]].is_a?(Array)
@@ -285,7 +295,7 @@ module VericredClient
       when :Float
         value.to_f
       when :BOOLEAN
-        if value.to_s =~ /^(true|t|yes|y|1)$/i
+        if value.to_s =~ /\A(true|t|yes|y|1)\z/i
           true
         else
           false

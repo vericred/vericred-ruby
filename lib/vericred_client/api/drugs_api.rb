@@ -141,7 +141,7 @@ module VericredClient
     # Search for DrugCoverages
     # Drug Coverages are the specific tier level, quantity limit, prior authorization and step therapy for a given Drug/Plan combination. This endpoint returns all DrugCoverages for a given Drug
     # @param ndc_package_code NDC package code
-    # @param audience Two-character state code
+    # @param audience Plan Audience (individual or small_group)
     # @param state_code Two-character state code
     # @param [Hash] opts the optional parameters
     # @return [DrugCoverageResponse]
@@ -153,7 +153,7 @@ module VericredClient
     # Search for DrugCoverages
     # Drug Coverages are the specific tier level, quantity limit, prior authorization and step therapy for a given Drug/Plan combination. This endpoint returns all DrugCoverages for a given Drug
     # @param ndc_package_code NDC package code
-    # @param audience Two-character state code
+    # @param audience Plan Audience (individual or small_group)
     # @param state_code Two-character state code
     # @param [Hash] opts the optional parameters
     # @return [Array<(DrugCoverageResponse, Fixnum, Hash)>] DrugCoverageResponse data, response status code and response headers

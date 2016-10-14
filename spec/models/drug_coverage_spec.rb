@@ -162,7 +162,7 @@ describe 'DrugCoverage' do
     end
   end
 
-  describe 'test attribute "tier"' do
+  describe 'test attribute "med_id"' do
     it 'should work' do
        # assertion here. ref: https://www.relishapp.com/rspec/rspec-expectations/docs/built-in-matchers
     end
@@ -181,6 +181,12 @@ describe 'DrugCoverage' do
   end
 
   describe 'test attribute "step_therapy"' do
+    it 'should work' do
+       # assertion here. ref: https://www.relishapp.com/rspec/rspec-expectations/docs/built-in-matchers
+    end
+  end
+
+  describe 'test attribute "tier"' do
     it 'should work' do
        # assertion here. ref: https://www.relishapp.com/rspec/rspec-expectations/docs/built-in-matchers
     end

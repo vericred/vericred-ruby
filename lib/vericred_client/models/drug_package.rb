@@ -139,12 +139,16 @@ module VericredClient
     # Package description
     attr_accessor :description
 
+    # Med ID
+    attr_accessor :med_id
+
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'id' => :'id',
-        :'description' => :'description'
+        :'description' => :'description',
+        :'med_id' => :'med_id'
       }
     end
 
@@ -152,7 +156,8 @@ module VericredClient
     def self.swagger_types
       {
         :'id' => :'String',
-        :'description' => :'String'
+        :'description' => :'String',
+        :'med_id' => :'Integer'
       }
     end
 
@@ -170,6 +175,10 @@ module VericredClient
 
       if attributes.has_key?(:'description')
         self.description = attributes[:'description']
+      end
+
+      if attributes.has_key?(:'med_id')
+        self.med_id = attributes[:'med_id']
       end
 
     end
@@ -193,7 +202,8 @@ module VericredClient
       return true if self.equal?(o)
       self.class == o.class &&
           id == o.id &&
-          description == o.description
+          description == o.description &&
+          med_id == o.med_id
     end
 
     # @see the `==` method
@@ -205,7 +215,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [id, description].hash
+      [id, description, med_id].hash
     end
 
     # Builds the object from hash
@@ -214,7 +224,7 @@ module VericredClient
     def build_from_hash(attributes)
       return nil unless attributes.is_a?(Hash)
       self.class.swagger_types.each_pair do |key, type|
-        if type =~ /^Array<(.*)>/i
+        if type =~ /\AArray<(.*)>/i
           # check to ensure the input is an array given that the the attribute
           # is documented as an array but the input is not
           if attributes[self.class.attribute_map[key]].is_a?(Array)
@@ -245,7 +255,7 @@ module VericredClient
       when :Float
         value.to_f
       when :BOOLEAN
-        if value.to_s =~ /^(true|t|yes|y|1)$/i
+        if value.to_s =~ /\A(true|t|yes|y|1)\z/i
           true
         else
           false
