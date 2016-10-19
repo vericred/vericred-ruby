@@ -136,7 +136,7 @@ module VericredClient
     # Does the plan provide dental coverage for adults?
     attr_accessor :adult_dental
 
-    # 
+    # True if the plan allows dependents up to age 29
     attr_accessor :age29_rider
 
     # Benefits string for ambulance coverage
@@ -172,7 +172,7 @@ module VericredClient
     # Alternate name for the Plan
     attr_accessor :display_name
 
-    # Is this a domestic plan?
+    # True if plan does not cover domestic partners
     attr_accessor :dp_rider
 
     # Link to the summary of drug benefits for the plan
@@ -199,7 +199,7 @@ module VericredClient
     # Maximum out-of-pocket when a family is on the plan
     attr_accessor :family_medical_moop
 
-    # Is this a family plan?
+    # True if plan does not cover family planning
     attr_accessor :fp_rider
 
     # Cost for generic drugs
@@ -313,6 +313,9 @@ module VericredClient
     # Cumulative premium amount
     attr_accessor :premium
 
+    # Source of the base pricing data
+    attr_accessor :premium_source
+
     # Cost under the plan to visit a Primary Care Physician
     attr_accessor :primary_care_physician
 
@@ -410,6 +413,7 @@ module VericredClient
         :'preventative_care' => :'preventative_care',
         :'premium_subsidized' => :'premium_subsidized',
         :'premium' => :'premium',
+        :'premium_source' => :'premium_source',
         :'primary_care_physician' => :'primary_care_physician',
         :'rehabilitation_services' => :'rehabilitation_services',
         :'service_area_id' => :'service_area_id',
@@ -487,6 +491,7 @@ module VericredClient
         :'preventative_care' => :'String',
         :'premium_subsidized' => :'Float',
         :'premium' => :'Float',
+        :'premium_source' => :'String',
         :'primary_care_physician' => :'String',
         :'rehabilitation_services' => :'String',
         :'service_area_id' => :'String',
@@ -753,6 +758,10 @@ module VericredClient
         self.premium = attributes[:'premium']
       end
 
+      if attributes.has_key?(:'premium_source')
+        self.premium_source = attributes[:'premium_source']
+      end
+
       if attributes.has_key?(:'primary_care_physician')
         self.primary_care_physician = attributes[:'primary_care_physician']
       end
@@ -877,6 +886,7 @@ module VericredClient
           preventative_care == o.preventative_care &&
           premium_subsidized == o.premium_subsidized &&
           premium == o.premium &&
+          premium_source == o.premium_source &&
           primary_care_physician == o.primary_care_physician &&
           rehabilitation_services == o.rehabilitation_services &&
           service_area_id == o.service_area_id &&
@@ -899,7 +909,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [adult_dental, age29_rider, ambulance, benefits_summary_url, buy_link, carrier_name, child_dental, child_eyewear, child_eye_exam, customer_service_phone_number, durable_medical_equipment, diagnostic_test, display_name, dp_rider, drug_formulary_url, effective_date, expiration_date, emergency_room, family_drug_deductible, family_drug_moop, family_medical_deductible, family_medical_moop, fp_rider, generic_drugs, habilitation_services, hios_issuer_id, home_health_care, hospice_service, hsa_eligible, id, imaging, in_network_ids, individual_drug_deductible, individual_drug_moop, individual_medical_deductible, individual_medical_moop, inpatient_birth, inpatient_facility, inpatient_mental_health, inpatient_physician, inpatient_substance, level, logo_url, name, non_preferred_brand_drugs, on_market, off_market, out_of_network_coverage, out_of_network_ids, outpatient_facility, outpatient_mental_health, outpatient_physician, outpatient_substance, plan_market, plan_type, preferred_brand_drugs, prenatal_postnatal_care, preventative_care, premium_subsidized, premium, primary_care_physician, rehabilitation_services, service_area_id, skilled_nursing, specialist, specialty_drugs, urgent_care, match_percentage, perfect_match_percentage, employee_premium, dependent_premium].hash
+      [adult_dental, age29_rider, ambulance, benefits_summary_url, buy_link, carrier_name, child_dental, child_eyewear, child_eye_exam, customer_service_phone_number, durable_medical_equipment, diagnostic_test, display_name, dp_rider, drug_formulary_url, effective_date, expiration_date, emergency_room, family_drug_deductible, family_drug_moop, family_medical_deductible, family_medical_moop, fp_rider, generic_drugs, habilitation_services, hios_issuer_id, home_health_care, hospice_service, hsa_eligible, id, imaging, in_network_ids, individual_drug_deductible, individual_drug_moop, individual_medical_deductible, individual_medical_moop, inpatient_birth, inpatient_facility, inpatient_mental_health, inpatient_physician, inpatient_substance, level, logo_url, name, non_preferred_brand_drugs, on_market, off_market, out_of_network_coverage, out_of_network_ids, outpatient_facility, outpatient_mental_health, outpatient_physician, outpatient_substance, plan_market, plan_type, preferred_brand_drugs, prenatal_postnatal_care, preventative_care, premium_subsidized, premium, premium_source, primary_care_physician, rehabilitation_services, service_area_id, skilled_nursing, specialist, specialty_drugs, urgent_care, match_percentage, perfect_match_percentage, employee_premium, dependent_premium].hash
     end
 
     # Builds the object from hash
@@ -908,7 +918,7 @@ module VericredClient
     def build_from_hash(attributes)
       return nil unless attributes.is_a?(Hash)
       self.class.swagger_types.each_pair do |key, type|
-        if type =~ /^Array<(.*)>/i
+        if type =~ /\AArray<(.*)>/i
           # check to ensure the input is an array given that the the attribute
           # is documented as an array but the input is not
           if attributes[self.class.attribute_map[key]].is_a?(Array)
@@ -939,7 +949,7 @@ module VericredClient
       when :Float
         value.to_f
       when :BOOLEAN
-        if value.to_s =~ /^(true|t|yes|y|1)$/i
+        if value.to_s =~ /\A(true|t|yes|y|1)\z/i
           true
         else
           false

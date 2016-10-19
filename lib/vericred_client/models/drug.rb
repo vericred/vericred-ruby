@@ -136,6 +136,9 @@ module VericredClient
     # National Drug Code ID
     attr_accessor :id
 
+    # Active Ingredient Strength information
+    attr_accessor :active_ingredient_strength
+
     # Proprietary name of drug
     attr_accessor :proprietary_name
 
@@ -150,6 +153,7 @@ module VericredClient
     def self.attribute_map
       {
         :'id' => :'id',
+        :'active_ingredient_strength' => :'active_ingredient_strength',
         :'proprietary_name' => :'proprietary_name',
         :'non_proprietary_name' => :'non_proprietary_name',
         :'drug_package_ids' => :'drug_package_ids'
@@ -160,6 +164,7 @@ module VericredClient
     def self.swagger_types
       {
         :'id' => :'String',
+        :'active_ingredient_strength' => :'String',
         :'proprietary_name' => :'String',
         :'non_proprietary_name' => :'String',
         :'drug_package_ids' => :'Array<String>'
@@ -176,6 +181,10 @@ module VericredClient
 
       if attributes.has_key?(:'id')
         self.id = attributes[:'id']
+      end
+
+      if attributes.has_key?(:'active_ingredient_strength')
+        self.active_ingredient_strength = attributes[:'active_ingredient_strength']
       end
 
       if attributes.has_key?(:'proprietary_name')
@@ -213,6 +222,7 @@ module VericredClient
       return true if self.equal?(o)
       self.class == o.class &&
           id == o.id &&
+          active_ingredient_strength == o.active_ingredient_strength &&
           proprietary_name == o.proprietary_name &&
           non_proprietary_name == o.non_proprietary_name &&
           drug_package_ids == o.drug_package_ids
@@ -227,7 +237,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [id, proprietary_name, non_proprietary_name, drug_package_ids].hash
+      [id, active_ingredient_strength, proprietary_name, non_proprietary_name, drug_package_ids].hash
     end
 
     # Builds the object from hash
@@ -236,7 +246,7 @@ module VericredClient
     def build_from_hash(attributes)
       return nil unless attributes.is_a?(Hash)
       self.class.swagger_types.each_pair do |key, type|
-        if type =~ /^Array<(.*)>/i
+        if type =~ /\AArray<(.*)>/i
           # check to ensure the input is an array given that the the attribute
           # is documented as an array but the input is not
           if attributes[self.class.attribute_map[key]].is_a?(Array)
@@ -267,7 +277,7 @@ module VericredClient
       when :Float
         value.to_f
       when :BOOLEAN
-        if value.to_s =~ /^(true|t|yes|y|1)$/i
+        if value.to_s =~ /\A(true|t|yes|y|1)\z/i
           true
         else
           false

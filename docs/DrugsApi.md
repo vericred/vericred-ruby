@@ -29,11 +29,11 @@ end
 
 api_instance = VericredClient::DrugsApi.new
 
-ndc_package_code = "12345-4321-11" # String | NDC package code
+ndc_package_code = "07777-3105-01" # String | NDC package code
 
-audience = "individual" # String | Two-character state code
+audience = "individual" # String | Plan Audience (individual or small_group)
 
-state_code = "NY" # String | Two-character state code
+state_code = "CA" # String | Two-character state code
 
 
 begin
@@ -50,7 +50,7 @@ end
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **ndc_package_code** | **String**| NDC package code | 
- **audience** | **String**| Two-character state code | 
+ **audience** | **String**| Plan Audience (individual or small_group) | 
  **state_code** | **String**| Two-character state code | 
 
 ### Return type

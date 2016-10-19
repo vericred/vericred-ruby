@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**meta** | [**Meta**](Meta.md) | Metadata for query | [optional] 
+**meta** | [**Meta**](Meta.md) | Meta-data | [optional] 
 **plans** | [**Array&lt;Plan&gt;**](Plan.md) | Plan search results | [optional] 
-**coverages** | [**Array&lt;Drug&gt;**](Drug.md) | null | [optional] 
+**coverages** | [**Array&lt;DrugCoverage&gt;**](DrugCoverage.md) | Coverages associated with the plan. | [optional] 
 
 

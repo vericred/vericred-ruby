@@ -166,6 +166,12 @@ module VericredClient
     # Foreign key to rating areas
     attr_accessor :rating_area_id
 
+    # Where was this pricing data extracted from?
+    attr_accessor :premium_source
+
+    # Time when pricing was last updated
+    attr_accessor :updated_at
+
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
@@ -180,7 +186,9 @@ module VericredClient
         :'premium_single_and_children' => :'premium_single_and_children',
         :'premium_single_and_spouse' => :'premium_single_and_spouse',
         :'premium_single_smoker' => :'premium_single_smoker',
-        :'rating_area_id' => :'rating_area_id'
+        :'rating_area_id' => :'rating_area_id',
+        :'premium_source' => :'premium_source',
+        :'updated_at' => :'updated_at'
       }
     end
 
@@ -197,7 +205,9 @@ module VericredClient
         :'premium_single_and_children' => :'Float',
         :'premium_single_and_spouse' => :'Float',
         :'premium_single_smoker' => :'Float',
-        :'rating_area_id' => :'String'
+        :'rating_area_id' => :'String',
+        :'premium_source' => :'String',
+        :'updated_at' => :'String'
       }
     end
 
@@ -253,6 +263,14 @@ module VericredClient
         self.rating_area_id = attributes[:'rating_area_id']
       end
 
+      if attributes.has_key?(:'premium_source')
+        self.premium_source = attributes[:'premium_source']
+      end
+
+      if attributes.has_key?(:'updated_at')
+        self.updated_at = attributes[:'updated_at']
+      end
+
     end
 
     # Show invalid properties with the reasons. Usually used together with valid?
@@ -283,7 +301,9 @@ module VericredClient
           premium_single_and_children == o.premium_single_and_children &&
           premium_single_and_spouse == o.premium_single_and_spouse &&
           premium_single_smoker == o.premium_single_smoker &&
-          rating_area_id == o.rating_area_id
+          rating_area_id == o.rating_area_id &&
+          premium_source == o.premium_source &&
+          updated_at == o.updated_at
     end
 
     # @see the `==` method
@@ -295,7 +315,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [age, effective_date, expiration_date, plan_id, premium_child_only, premium_family, premium_single, premium_single_and_children, premium_single_and_spouse, premium_single_smoker, rating_area_id].hash
+      [age, effective_date, expiration_date, plan_id, premium_child_only, premium_family, premium_single, premium_single_and_children, premium_single_and_spouse, premium_single_smoker, rating_area_id, premium_source, updated_at].hash
     end
 
     # Builds the object from hash
@@ -304,7 +324,7 @@ module VericredClient
     def build_from_hash(attributes)
       return nil unless attributes.is_a?(Hash)
       self.class.swagger_types.each_pair do |key, type|
-        if type =~ /^Array<(.*)>/i
+        if type =~ /\AArray<(.*)>/i
           # check to ensure the input is an array given that the the attribute
           # is documented as an array but the input is not
           if attributes[self.class.attribute_map[key]].is_a?(Array)
@@ -335,7 +355,7 @@ module VericredClient
       when :Float
         value.to_f
       when :BOOLEAN
-        if value.to_s =~ /^(true|t|yes|y|1)$/i
+        if value.to_s =~ /\A(true|t|yes|y|1)\z/i
           true
         else
           false
