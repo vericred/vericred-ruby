@@ -93,7 +93,7 @@ document.
 In this case, we want to select `name` and `phone` from the `provider` key,
 so we would add the parameters `select=provider.name,provider.phone`.
 We also want the `name` and `code` from the `states` key, so we would
-add the parameters `select=states.name,staes.code`.  The id field of
+add the parameters `select=states.name,states.code`.  The id field of
 each document is always returned whether or not it is requested.
 
 Our final request would be `GET /providers/12345?select=provider.name,provider.phone,states.name,states.code`
@@ -148,19 +148,53 @@ In [this other Summary of Benefits &amp; Coverage](https://s3.amazonaws.com/veri
 Here's a description of the benefits summary string, represented as a context-free grammar:
 
 ```
-<cost-share>     ::= <tier> <opt-num-prefix> <value> <opt-per-unit> <deductible> <tier-limit> "/" <tier> <opt-num-prefix> <value> <opt-per-unit> <deductible> "|" <benefit-limit>
-<tier>           ::= "In-Network:" | "In-Network-Tier-2:" | "Out-of-Network:"
-<opt-num-prefix> ::= "first" <num> <unit> | ""
-<unit>           ::= "day(s)" | "visit(s)" | "exam(s)" | "item(s)"
-<value>          ::= <ddct_moop> | <copay> | <coinsurance> | <compound> | "unknown" | "Not Applicable"
-<compound>       ::= <copay> <deductible> "then" <coinsurance> <deductible> | <copay> <deductible> "then" <copay> <deductible> | <coinsurance> <deductible> "then" <coinsurance> <deductible>
-<copay>          ::= "$" <num>
-<coinsurace>     ::= <num> "%"
-<ddct_moop>      ::= <copay> | "Included in Medical" | "Unlimited"
-<opt-per-unit>   ::= "per day" | "per visit" | "per stay" | ""
-<deductible>     ::= "before deductible" | "after deductible" | ""
-<tier-limit>     ::= ", " <limit> | ""
-<benefit-limit>  ::= <limit> | ""
+root                      ::= coverage
+
+coverage                  ::= (simple_coverage | tiered_coverage) (space pipe space coverage_modifier)?
+tiered_coverage           ::= tier (space slash space tier)*
+tier                      ::= tier_name colon space (tier_coverage | not_applicable)
+tier_coverage             ::= simple_coverage (space (then | or | and) space simple_coverage)* tier_limitation?
+simple_coverage           ::= (pre_coverage_limitation space)? coverage_amount (space post_coverage_limitation)? (comma? space coverage_condition)?
+coverage_modifier         ::= limit_condition colon space (((simple_coverage | simple_limitation) (semicolon space see_carrier_documentation)?) | see_carrier_documentation | waived_if_admitted | shared_across_tiers)
+waived_if_admitted        ::= ("copay" space)? "waived if admitted"
+simple_limitation         ::= pre_coverage_limitation space "copay applies"
+tier_name                 ::= "In-Network-Tier-2" | "Out-of-Network" | "In-Network"
+limit_condition           ::= "limit" | "condition"
+tier_limitation           ::= comma space "up to" space (currency | (integer space time_unit plural?)) (space post_coverage_limitation)?
+coverage_amount           ::= currency | unlimited | included | unknown | percentage | (digits space (treatment_unit | time_unit) plural?)
+pre_coverage_limitation   ::= first space digits space time_unit plural?
+post_coverage_limitation  ::= (((then space currency) | "per condition") space)? "per" space (treatment_unit | (integer space time_unit) | time_unit) plural?
+coverage_condition        ::= ("before deductible" | "after deductible" | "penalty" | allowance | "in-state" | "out-of-state") (space allowance)?
+allowance                 ::= upto_allowance | after_allowance
+upto_allowance            ::= "up to" space (currency space)? "allowance"
+after_allowance           ::= "after" space (currency space)? "allowance"
+see_carrier_documentation ::= "see carrier documentation for more information"
+shared_across_tiers       ::= "shared across all tiers"
+unknown                   ::= "unknown"
+unlimited                 ::= /[uU]nlimited/
+included                  ::= /[iI]ncluded in [mM]edical/
+time_unit                 ::= /[hH]our/ | (((/[cC]alendar/ | /[cC]ontract/) space)? /[yY]ear/) | /[mM]onth/ | /[dD]ay/ | /[wW]eek/ | /[vV]isit/ | /[lL]ifetime/ | ((((/[bB]enefit/ plural?) | /[eE]ligibility/) space)? /[pP]eriod/)
+treatment_unit            ::= /[pP]erson/ | /[gG]roup/ | /[cC]ondition/ | /[sS]cript/ | /[vV]isit/ | /[eE]xam/ | /[iI]tem/ | /[sS]tay/ | /[tT]reatment/ | /[aA]dmission/ | /[eE]pisode/
+comma                     ::= ","
+colon                     ::= ":"
+semicolon                 ::= ";"
+pipe                      ::= "|"
+slash                     ::= "/"
+plural                    ::= "(s)" | "s"
+then                      ::= "then" | ("," space) | space
+or                        ::= "or"
+and                       ::= "and"
+not_applicable            ::= "Not Applicable" | "N/A" | "NA"
+first                     ::= "first"
+currency                  ::= "$" number
+percentage                ::= number "%"
+number                    ::= float | integer
+float                     ::= digits "." digits
+integer                   ::= /[0-9]/+ (comma_int | under_int)*
+comma_int                 ::= ("," /[0-9]/*3) !"_"
+under_int                 ::= ("_" /[0-9]/*3) !","
+digits                    ::= /[0-9]/+ ("_" /[0-9]/+)*
+space                     ::= /[ \t]/+
 ```
 
 
@@ -191,6 +225,67 @@ module VericredClient
 
     def initialize(api_client = ApiClient.default)
       @api_client = api_client
+    end
+
+    # Network Comparisons
+    # Compare provider counts in a given area between a base network and one or more comparison networks.  #### Comparing Networks Comparison of provider counts within a radius requires that you provide a `zip_code` and `radius` to use as a search area.  The response returns the total number of unique `Providers` in the Base `Network` (i.e. those who are not present in the Comparison `Network`), The number of unique `Provider`s in the Comparison `Network` (i.e. those who are not present in the Base `Network`), and the count of `Provider`s who are in *both* `Network`s
+    # @param id Primary key of the base network
+    # @param body 
+    # @param [Hash] opts the optional parameters
+    # @return [NetworkComparisonResponse]
+    def create_network_comparisons(id, body, opts = {})
+      data, _status_code, _headers = create_network_comparisons_with_http_info(id, body, opts)
+      return data
+    end
+
+    # Network Comparisons
+    # Compare provider counts in a given area between a base network and one or more comparison networks.  #### Comparing Networks Comparison of provider counts within a radius requires that you provide a &#x60;zip_code&#x60; and &#x60;radius&#x60; to use as a search area.  The response returns the total number of unique &#x60;Providers&#x60; in the Base &#x60;Network&#x60; (i.e. those who are not present in the Comparison &#x60;Network&#x60;), The number of unique &#x60;Provider&#x60;s in the Comparison &#x60;Network&#x60; (i.e. those who are not present in the Base &#x60;Network&#x60;), and the count of &#x60;Provider&#x60;s who are in *both* &#x60;Network&#x60;s
+    # @param id Primary key of the base network
+    # @param body 
+    # @param [Hash] opts the optional parameters
+    # @return [Array<(NetworkComparisonResponse, Fixnum, Hash)>] NetworkComparisonResponse data, response status code and response headers
+    def create_network_comparisons_with_http_info(id, body, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "Calling API: NetworksApi.create_network_comparisons ..."
+      end
+      # verify the required parameter 'id' is set
+      fail ArgumentError, "Missing the required parameter 'id' when calling NetworksApi.create_network_comparisons" if id.nil?
+      # verify the required parameter 'body' is set
+      fail ArgumentError, "Missing the required parameter 'body' when calling NetworksApi.create_network_comparisons" if body.nil?
+      # resource path
+      local_var_path = "/networks/{id}/network_comparisons".sub('{format}','json').sub('{' + 'id' + '}', id.to_s)
+
+      # query parameters
+      query_params = {}
+
+      # header parameters
+      header_params = {}
+
+      # HTTP header 'Accept' (if needed)
+      local_header_accept = ['application/json']
+      local_header_accept_result = @api_client.select_header_accept(local_header_accept) and header_params['Accept'] = local_header_accept_result
+
+      # HTTP header 'Content-Type'
+      local_header_content_type = ['application/json']
+      header_params['Content-Type'] = @api_client.select_header_content_type(local_header_content_type)
+
+      # form parameters
+      form_params = {}
+
+      # http body (model)
+      post_body = @api_client.object_to_http_body(body)
+      auth_names = ['Vericred-Api-Key']
+      data, status_code, headers = @api_client.call_api(:POST, local_var_path,
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => 'NetworkComparisonResponse')
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: NetworksApi#create_network_comparisons\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
     end
 
     # Networks

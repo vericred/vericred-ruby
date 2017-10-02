@@ -93,7 +93,7 @@ document.
 In this case, we want to select `name` and `phone` from the `provider` key,
 so we would add the parameters `select=provider.name,provider.phone`.
 We also want the `name` and `code` from the `states` key, so we would
-add the parameters `select=states.name,staes.code`.  The id field of
+add the parameters `select=states.name,states.code`.  The id field of
 each document is always returned whether or not it is requested.
 
 Our final request would be `GET /providers/12345?select=provider.name,provider.phone,states.name,states.code`
@@ -148,19 +148,53 @@ In [this other Summary of Benefits &amp; Coverage](https://s3.amazonaws.com/veri
 Here's a description of the benefits summary string, represented as a context-free grammar:
 
 ```
-<cost-share>     ::= <tier> <opt-num-prefix> <value> <opt-per-unit> <deductible> <tier-limit> "/" <tier> <opt-num-prefix> <value> <opt-per-unit> <deductible> "|" <benefit-limit>
-<tier>           ::= "In-Network:" | "In-Network-Tier-2:" | "Out-of-Network:"
-<opt-num-prefix> ::= "first" <num> <unit> | ""
-<unit>           ::= "day(s)" | "visit(s)" | "exam(s)" | "item(s)"
-<value>          ::= <ddct_moop> | <copay> | <coinsurance> | <compound> | "unknown" | "Not Applicable"
-<compound>       ::= <copay> <deductible> "then" <coinsurance> <deductible> | <copay> <deductible> "then" <copay> <deductible> | <coinsurance> <deductible> "then" <coinsurance> <deductible>
-<copay>          ::= "$" <num>
-<coinsurace>     ::= <num> "%"
-<ddct_moop>      ::= <copay> | "Included in Medical" | "Unlimited"
-<opt-per-unit>   ::= "per day" | "per visit" | "per stay" | ""
-<deductible>     ::= "before deductible" | "after deductible" | ""
-<tier-limit>     ::= ", " <limit> | ""
-<benefit-limit>  ::= <limit> | ""
+root                      ::= coverage
+
+coverage                  ::= (simple_coverage | tiered_coverage) (space pipe space coverage_modifier)?
+tiered_coverage           ::= tier (space slash space tier)*
+tier                      ::= tier_name colon space (tier_coverage | not_applicable)
+tier_coverage             ::= simple_coverage (space (then | or | and) space simple_coverage)* tier_limitation?
+simple_coverage           ::= (pre_coverage_limitation space)? coverage_amount (space post_coverage_limitation)? (comma? space coverage_condition)?
+coverage_modifier         ::= limit_condition colon space (((simple_coverage | simple_limitation) (semicolon space see_carrier_documentation)?) | see_carrier_documentation | waived_if_admitted | shared_across_tiers)
+waived_if_admitted        ::= ("copay" space)? "waived if admitted"
+simple_limitation         ::= pre_coverage_limitation space "copay applies"
+tier_name                 ::= "In-Network-Tier-2" | "Out-of-Network" | "In-Network"
+limit_condition           ::= "limit" | "condition"
+tier_limitation           ::= comma space "up to" space (currency | (integer space time_unit plural?)) (space post_coverage_limitation)?
+coverage_amount           ::= currency | unlimited | included | unknown | percentage | (digits space (treatment_unit | time_unit) plural?)
+pre_coverage_limitation   ::= first space digits space time_unit plural?
+post_coverage_limitation  ::= (((then space currency) | "per condition") space)? "per" space (treatment_unit | (integer space time_unit) | time_unit) plural?
+coverage_condition        ::= ("before deductible" | "after deductible" | "penalty" | allowance | "in-state" | "out-of-state") (space allowance)?
+allowance                 ::= upto_allowance | after_allowance
+upto_allowance            ::= "up to" space (currency space)? "allowance"
+after_allowance           ::= "after" space (currency space)? "allowance"
+see_carrier_documentation ::= "see carrier documentation for more information"
+shared_across_tiers       ::= "shared across all tiers"
+unknown                   ::= "unknown"
+unlimited                 ::= /[uU]nlimited/
+included                  ::= /[iI]ncluded in [mM]edical/
+time_unit                 ::= /[hH]our/ | (((/[cC]alendar/ | /[cC]ontract/) space)? /[yY]ear/) | /[mM]onth/ | /[dD]ay/ | /[wW]eek/ | /[vV]isit/ | /[lL]ifetime/ | ((((/[bB]enefit/ plural?) | /[eE]ligibility/) space)? /[pP]eriod/)
+treatment_unit            ::= /[pP]erson/ | /[gG]roup/ | /[cC]ondition/ | /[sS]cript/ | /[vV]isit/ | /[eE]xam/ | /[iI]tem/ | /[sS]tay/ | /[tT]reatment/ | /[aA]dmission/ | /[eE]pisode/
+comma                     ::= ","
+colon                     ::= ":"
+semicolon                 ::= ";"
+pipe                      ::= "|"
+slash                     ::= "/"
+plural                    ::= "(s)" | "s"
+then                      ::= "then" | ("," space) | space
+or                        ::= "or"
+and                       ::= "and"
+not_applicable            ::= "Not Applicable" | "N/A" | "NA"
+first                     ::= "first"
+currency                  ::= "$" number
+percentage                ::= number "%"
+number                    ::= float | integer
+float                     ::= digits "." digits
+integer                   ::= /[0-9]/+ (comma_int | under_int)*
+comma_int                 ::= ("," /[0-9]/*3) !"_"
+under_int                 ::= ("_" /[0-9]/*3) !","
+digits                    ::= /[0-9]/+ ("_" /[0-9]/+)*
+space                     ::= /[ \t]/+
 ```
 
 
@@ -197,7 +231,7 @@ module VericredClient
     # Our `Plan` endpoints require a zip code and a fips (county) code.  This is because plan pricing requires both of these elements.  Users are unlikely to know their fips code, so we provide this endpoint to look up a `ZipCounty` by zip code and return both the selected zip and fips codes.
     # @param zip_prefix Partial five-digit Zip
     # @param [Hash] opts the optional parameters
-    # @return [ZipCountyResponse]
+    # @return [ZipCountiesResponse]
     def get_zip_counties(zip_prefix, opts = {})
       data, _status_code, _headers = get_zip_counties_with_http_info(zip_prefix, opts)
       return data
@@ -207,7 +241,7 @@ module VericredClient
     # Our &#x60;Plan&#x60; endpoints require a zip code and a fips (county) code.  This is because plan pricing requires both of these elements.  Users are unlikely to know their fips code, so we provide this endpoint to look up a &#x60;ZipCounty&#x60; by zip code and return both the selected zip and fips codes.
     # @param zip_prefix Partial five-digit Zip
     # @param [Hash] opts the optional parameters
-    # @return [Array<(ZipCountyResponse, Fixnum, Hash)>] ZipCountyResponse data, response status code and response headers
+    # @return [Array<(ZipCountiesResponse, Fixnum, Hash)>] ZipCountiesResponse data, response status code and response headers
     def get_zip_counties_with_http_info(zip_prefix, opts = {})
       if @api_client.config.debugging
         @api_client.config.logger.debug "Calling API: ZipCountiesApi.get_zip_counties ..."
@@ -244,9 +278,66 @@ module VericredClient
         :form_params => form_params,
         :body => post_body,
         :auth_names => auth_names,
-        :return_type => 'ZipCountyResponse')
+        :return_type => 'ZipCountiesResponse')
       if @api_client.config.debugging
         @api_client.config.logger.debug "API called: ZipCountiesApi#get_zip_counties\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # Show an individual ZipCounty
+    # Our `Plan` endpoints require a zip code and a fips (county) code.  This is because plan pricing requires both of these elements.  Users are unlikely to know their fips code, so we provide this endpoint to returns the details for a `ZipCounty` by zip code and return both the selected zip and fips codes.
+    # @param id Unique ID for ZipCounty
+    # @param [Hash] opts the optional parameters
+    # @return [ZipCountyResponse]
+    def show_zip_county(id, opts = {})
+      data, _status_code, _headers = show_zip_county_with_http_info(id, opts)
+      return data
+    end
+
+    # Show an individual ZipCounty
+    # Our &#x60;Plan&#x60; endpoints require a zip code and a fips (county) code.  This is because plan pricing requires both of these elements.  Users are unlikely to know their fips code, so we provide this endpoint to returns the details for a &#x60;ZipCounty&#x60; by zip code and return both the selected zip and fips codes.
+    # @param id Unique ID for ZipCounty
+    # @param [Hash] opts the optional parameters
+    # @return [Array<(ZipCountyResponse, Fixnum, Hash)>] ZipCountyResponse data, response status code and response headers
+    def show_zip_county_with_http_info(id, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "Calling API: ZipCountiesApi.show_zip_county ..."
+      end
+      # verify the required parameter 'id' is set
+      fail ArgumentError, "Missing the required parameter 'id' when calling ZipCountiesApi.show_zip_county" if id.nil?
+      # resource path
+      local_var_path = "/zip_counties/{id}".sub('{format}','json').sub('{' + 'id' + '}', id.to_s)
+
+      # query parameters
+      query_params = {}
+
+      # header parameters
+      header_params = {}
+
+      # HTTP header 'Accept' (if needed)
+      local_header_accept = []
+      local_header_accept_result = @api_client.select_header_accept(local_header_accept) and header_params['Accept'] = local_header_accept_result
+
+      # HTTP header 'Content-Type'
+      local_header_content_type = []
+      header_params['Content-Type'] = @api_client.select_header_content_type(local_header_content_type)
+
+      # form parameters
+      form_params = {}
+
+      # http body (model)
+      post_body = nil
+      auth_names = ['Vericred-Api-Key']
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path,
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => 'ZipCountyResponse')
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: ZipCountiesApi#show_zip_county\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end

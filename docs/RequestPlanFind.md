@@ -4,9 +4,11 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **applicants** | [**Array&lt;RequestPlanFindApplicant&gt;**](RequestPlanFindApplicant.md) | Applicants for desired plans. | [optional] 
+**carrier_id** | **Integer** | National-level carrier id | [optional] 
 **enrollment_date** | **String** | Date of enrollment | [optional] 
 **drug_packages** | [**Array&lt;RequestPlanFindDrugPackage&gt;**](RequestPlanFindDrugPackage.md) | National Drug Code Package Id | [optional] 
 **fips_code** | **String** | County code to determine eligibility | [optional] 
+**group_name** | **String** | Label for search tracking | [optional] 
 **household_income** | **Integer** | Total household income. | [optional] 
 **household_size** | **Integer** | Number of people living in household. | [optional] 
 **ids** | **Array&lt;Integer&gt;** | List of plan IDs to filter by | [optional] 

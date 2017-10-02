@@ -3,6 +3,6 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**plan** | [**Plan**](Plan.md) | Plan response | [optional] 
+**plan** | [**ACAPlan**](ACAPlan.md) | Plan response | [optional] 
 
 
