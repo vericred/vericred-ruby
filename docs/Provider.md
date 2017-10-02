@@ -26,5 +26,6 @@ Name | Type | Description | Notes
 **title** | **String** | Professional title for the provider (e.g. Dr). | [optional] 
 **type** | **String** | Type of NPI number (individual provider vs organization). | [optional] 
 **zip_code** | **String** | Postal code for the provider&#39;s address (e.g. 11215) | [optional] 
+**npis** | **Array&lt;Integer&gt;** | The National Provider Index (NPI) numbers associated with this provider. | [optional] 
 
 
