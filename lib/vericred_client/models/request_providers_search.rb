@@ -225,6 +225,9 @@ module VericredClient
     # Limit results to Providers who accept at least one insurance         plan.  Note that the inverse of this filter is not supported and         any value will evaluate to true
     attr_accessor :accepts_insurance
 
+    # List of NPIs
+    attr_accessor :ids
+
     # Minimum search threshold to be included in the results
     attr_accessor :min_score
 
@@ -263,6 +266,7 @@ module VericredClient
     def self.attribute_map
       {
         :'accepts_insurance' => :'accepts_insurance',
+        :'ids' => :'ids',
         :'min_score' => :'min_score',
         :'network_ids' => :'network_ids',
         :'page' => :'page',
@@ -281,6 +285,7 @@ module VericredClient
     def self.swagger_types
       {
         :'accepts_insurance' => :'BOOLEAN',
+        :'ids' => :'Array<Integer>',
         :'min_score' => :'Float',
         :'network_ids' => :'Array<Integer>',
         :'page' => :'Integer',
@@ -305,6 +310,12 @@ module VericredClient
 
       if attributes.has_key?(:'accepts_insurance')
         self.accepts_insurance = attributes[:'accepts_insurance']
+      end
+
+      if attributes.has_key?(:'ids')
+        if (value = attributes[:'ids']).is_a?(Array)
+          self.ids = value
+        end
       end
 
       if attributes.has_key?(:'min_score')
@@ -374,6 +385,7 @@ module VericredClient
       return true if self.equal?(o)
       self.class == o.class &&
           accepts_insurance == o.accepts_insurance &&
+          ids == o.ids &&
           min_score == o.min_score &&
           network_ids == o.network_ids &&
           page == o.page &&
@@ -396,7 +408,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [accepts_insurance, min_score, network_ids, page, per_page, polygon, radius, search_term, sort, sort_seed, type, zip_code].hash
+      [accepts_insurance, ids, min_score, network_ids, page, per_page, polygon, radius, search_term, sort, sort_seed, type, zip_code].hash
     end
 
     # Builds the object from hash

@@ -229,10 +229,7 @@ module VericredClient
     attr_accessor :drug_coverages
 
     # Drug
-    attr_accessor :drugs
-
-    # Drug Packages
-    attr_accessor :drug_packages
+    attr_accessor :drug
 
 
     # Attribute mapping from ruby-style variable name to JSON key.
@@ -240,8 +237,7 @@ module VericredClient
       {
         :'meta' => :'meta',
         :'drug_coverages' => :'drug_coverages',
-        :'drugs' => :'drugs',
-        :'drug_packages' => :'drug_packages'
+        :'drug' => :'drug'
       }
     end
 
@@ -250,8 +246,7 @@ module VericredClient
       {
         :'meta' => :'Meta',
         :'drug_coverages' => :'Array<DrugCoverage>',
-        :'drugs' => :'Array<Drug>',
-        :'drug_packages' => :'Array<DrugPackage>'
+        :'drug' => :'Drug'
       }
     end
 
@@ -273,16 +268,8 @@ module VericredClient
         end
       end
 
-      if attributes.has_key?(:'drugs')
-        if (value = attributes[:'drugs']).is_a?(Array)
-          self.drugs = value
-        end
-      end
-
-      if attributes.has_key?(:'drug_packages')
-        if (value = attributes[:'drug_packages']).is_a?(Array)
-          self.drug_packages = value
-        end
+      if attributes.has_key?(:'drug')
+        self.drug = attributes[:'drug']
       end
 
     end
@@ -307,8 +294,7 @@ module VericredClient
       self.class == o.class &&
           meta == o.meta &&
           drug_coverages == o.drug_coverages &&
-          drugs == o.drugs &&
-          drug_packages == o.drug_packages
+          drug == o.drug
     end
 
     # @see the `==` method
@@ -320,7 +306,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [meta, drug_coverages, drugs, drug_packages].hash
+      [meta, drug_coverages, drug].hash
     end
 
     # Builds the object from hash

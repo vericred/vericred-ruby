@@ -218,5 +218,5 @@ limitations under the License.
 =end
 
 module VericredClient
-  VERSION = "0.0.13"
+  VERSION = "0.0.11"
 end

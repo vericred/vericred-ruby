@@ -231,13 +231,17 @@ module VericredClient
     # Parent Carrier Name
     attr_accessor :alternate_name
 
+    # URL for the Carrier's logo
+    attr_accessor :logo_path
+
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'id' => :'id',
         :'name' => :'name',
-        :'alternate_name' => :'alternate_name'
+        :'alternate_name' => :'alternate_name',
+        :'logo_path' => :'logo_path'
       }
     end
 
@@ -246,7 +250,8 @@ module VericredClient
       {
         :'id' => :'Integer',
         :'name' => :'String',
-        :'alternate_name' => :'String'
+        :'alternate_name' => :'String',
+        :'logo_path' => :'String'
       }
     end
 
@@ -268,6 +273,10 @@ module VericredClient
 
       if attributes.has_key?(:'alternate_name')
         self.alternate_name = attributes[:'alternate_name']
+      end
+
+      if attributes.has_key?(:'logo_path')
+        self.logo_path = attributes[:'logo_path']
       end
 
     end
@@ -292,7 +301,8 @@ module VericredClient
       self.class == o.class &&
           id == o.id &&
           name == o.name &&
-          alternate_name == o.alternate_name
+          alternate_name == o.alternate_name &&
+          logo_path == o.logo_path
     end
 
     # @see the `==` method
@@ -304,7 +314,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [id, name, alternate_name].hash
+      [id, name, alternate_name, logo_path].hash
     end
 
     # Builds the object from hash

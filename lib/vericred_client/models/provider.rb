@@ -255,9 +255,6 @@ module VericredClient
     # name for the providers of type: organization.
     attr_accessor :organization_name
 
-    # Personal contact phone for the provider.
-    attr_accessor :personal_phone
-
     # Office phone for the provider
     attr_accessor :phone
 
@@ -309,7 +306,6 @@ module VericredClient
         :'middle_name' => :'middle_name',
         :'network_ids' => :'network_ids',
         :'organization_name' => :'organization_name',
-        :'personal_phone' => :'personal_phone',
         :'phone' => :'phone',
         :'presentation_name' => :'presentation_name',
         :'specialty' => :'specialty',
@@ -339,7 +335,6 @@ module VericredClient
         :'middle_name' => :'String',
         :'network_ids' => :'Array<Integer>',
         :'organization_name' => :'String',
-        :'personal_phone' => :'String',
         :'phone' => :'String',
         :'presentation_name' => :'String',
         :'specialty' => :'String',
@@ -407,10 +402,6 @@ module VericredClient
 
       if attributes.has_key?(:'organization_name')
         self.organization_name = attributes[:'organization_name']
-      end
-
-      if attributes.has_key?(:'personal_phone')
-        self.personal_phone = attributes[:'personal_phone']
       end
 
       if attributes.has_key?(:'phone')
@@ -494,7 +485,6 @@ module VericredClient
           middle_name == o.middle_name &&
           network_ids == o.network_ids &&
           organization_name == o.organization_name &&
-          personal_phone == o.personal_phone &&
           phone == o.phone &&
           presentation_name == o.presentation_name &&
           specialty == o.specialty &&
@@ -518,7 +508,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [city, email, gender, first_name, id, last_name, latitude, longitude, middle_name, network_ids, organization_name, personal_phone, phone, presentation_name, specialty, state, state_id, street_line_1, street_line_2, suffix, title, type, zip_code, npis].hash
+      [city, email, gender, first_name, id, last_name, latitude, longitude, middle_name, network_ids, organization_name, phone, presentation_name, specialty, state, state_id, street_line_1, street_line_2, suffix, title, type, zip_code, npis].hash
     end
 
     # Builds the object from hash
