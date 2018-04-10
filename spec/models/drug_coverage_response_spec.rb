@@ -251,13 +251,7 @@ describe 'DrugCoverageResponse' do
     end
   end
 
-  describe 'test attribute "drugs"' do
-    it 'should work' do
-       # assertion here. ref: https://www.relishapp.com/rspec/rspec-expectations/docs/built-in-matchers
-    end
-  end
-
-  describe 'test attribute "drug_packages"' do
+  describe 'test attribute "drug"' do
     it 'should work' do
        # assertion here. ref: https://www.relishapp.com/rspec/rspec-expectations/docs/built-in-matchers
     end

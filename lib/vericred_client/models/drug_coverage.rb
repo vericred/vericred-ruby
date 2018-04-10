@@ -231,6 +231,9 @@ module VericredClient
     # Med ID
     attr_accessor :med_id
 
+    # Vericred-generated IDs for drugs
+    attr_accessor :drug_ids
+
     # Quantity limit exists
     attr_accessor :quantity_limit
 
@@ -250,6 +253,7 @@ module VericredClient
         :'plan_id' => :'plan_id',
         :'drug_package_id' => :'drug_package_id',
         :'med_id' => :'med_id',
+        :'drug_ids' => :'drug_ids',
         :'quantity_limit' => :'quantity_limit',
         :'prior_authorization' => :'prior_authorization',
         :'step_therapy' => :'step_therapy',
@@ -263,6 +267,7 @@ module VericredClient
         :'plan_id' => :'String',
         :'drug_package_id' => :'String',
         :'med_id' => :'Integer',
+        :'drug_ids' => :'Array<String>',
         :'quantity_limit' => :'BOOLEAN',
         :'prior_authorization' => :'BOOLEAN',
         :'step_therapy' => :'BOOLEAN',
@@ -288,6 +293,12 @@ module VericredClient
 
       if attributes.has_key?(:'med_id')
         self.med_id = attributes[:'med_id']
+      end
+
+      if attributes.has_key?(:'drug_ids')
+        if (value = attributes[:'drug_ids']).is_a?(Array)
+          self.drug_ids = value
+        end
       end
 
       if attributes.has_key?(:'quantity_limit')
@@ -329,6 +340,7 @@ module VericredClient
           plan_id == o.plan_id &&
           drug_package_id == o.drug_package_id &&
           med_id == o.med_id &&
+          drug_ids == o.drug_ids &&
           quantity_limit == o.quantity_limit &&
           prior_authorization == o.prior_authorization &&
           step_therapy == o.step_therapy &&
@@ -344,7 +356,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [plan_id, drug_package_id, med_id, quantity_limit, prior_authorization, step_therapy, tier].hash
+      [plan_id, drug_package_id, med_id, drug_ids, quantity_limit, prior_authorization, step_therapy, tier].hash
     end
 
     # Builds the object from hash

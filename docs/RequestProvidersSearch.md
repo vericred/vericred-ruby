@@ -4,6 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **accepts_insurance** | **BOOLEAN** | Limit results to Providers who accept at least one insurance         plan.  Note that the inverse of this filter is not supported and         any value will evaluate to true | [optional] 
+**ids** | **Array&lt;Integer&gt;** | List of NPIs | [optional] 
 **min_score** | **Float** | Minimum search threshold to be included in the results | [optional] 
 **network_ids** | **Array&lt;Integer&gt;** | List of Vericred network ids | [optional] 
 **page** | **Integer** | Page number | [optional] 

@@ -477,7 +477,7 @@ module VericredClient
     # Outpatient ambulatory care center benefits summary
     attr_accessor :outpatient_ambulatory_care_center
 
-    # Are deductibles and MOOPs reset on Dec-31 (\"calendar year\") or 365 days after enrollment date (\"plan year\")?
+    # Are deductibles and MOOPs reset on Dec-31 (\"calendar year\"), 365 days after enrollment date (\"plan year\"), or are both options available (\"both\")?
     attr_accessor :plan_calendar
 
     # Prenatal care benefits summary
@@ -488,6 +488,9 @@ module VericredClient
 
     # Does the plan cover full-time, year-round, nursing facilities?
     attr_accessor :skilled_nursing_facility_365
+
+    # Percentage of essential plan benefits
+    attr_accessor :essential_health_benefits_percentage
 
 
     # Attribute mapping from ruby-style variable name to JSON key.
@@ -581,7 +584,8 @@ module VericredClient
         :'plan_calendar' => :'plan_calendar',
         :'prenatal_care' => :'prenatal_care',
         :'postnatal_care' => :'postnatal_care',
-        :'skilled_nursing_facility_365' => :'skilled_nursing_facility_365'
+        :'skilled_nursing_facility_365' => :'skilled_nursing_facility_365',
+        :'essential_health_benefits_percentage' => :'essential_health_benefits_percentage'
       }
     end
 
@@ -676,7 +680,8 @@ module VericredClient
         :'plan_calendar' => :'String',
         :'prenatal_care' => :'String',
         :'postnatal_care' => :'String',
-        :'skilled_nursing_facility_365' => :'String'
+        :'skilled_nursing_facility_365' => :'String',
+        :'essential_health_benefits_percentage' => :'Float'
       }
     end
 
@@ -1052,6 +1057,10 @@ module VericredClient
         self.skilled_nursing_facility_365 = attributes[:'skilled_nursing_facility_365']
       end
 
+      if attributes.has_key?(:'essential_health_benefits_percentage')
+        self.essential_health_benefits_percentage = attributes[:'essential_health_benefits_percentage']
+      end
+
     end
 
     # Show invalid properties with the reasons. Usually used together with valid?
@@ -1160,7 +1169,8 @@ module VericredClient
           plan_calendar == o.plan_calendar &&
           prenatal_care == o.prenatal_care &&
           postnatal_care == o.postnatal_care &&
-          skilled_nursing_facility_365 == o.skilled_nursing_facility_365
+          skilled_nursing_facility_365 == o.skilled_nursing_facility_365 &&
+          essential_health_benefits_percentage == o.essential_health_benefits_percentage
     end
 
     # @see the `==` method
@@ -1172,7 +1182,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [carrier_name, display_name, effective_date, expiration_date, identifiers, name, network_ids, network_size, plan_type, service_area_id, source, type, adult_dental, age29_rider, ambulance, benefits_summary_url, buy_link, child_dental, child_eyewear, child_eye_exam, customer_service_phone_number, durable_medical_equipment, diagnostic_test, dp_rider, drug_formulary_url, emergency_room, family_drug_deductible, family_drug_moop, family_medical_deductible, family_medical_moop, fp_rider, generic_drugs, habilitation_services, hios_issuer_id, home_health_care, hospice_service, hsa_eligible, id, imaging, individual_drug_deductible, individual_drug_moop, individual_medical_deductible, individual_medical_moop, inpatient_birth, inpatient_facility, inpatient_mental_health, inpatient_physician, inpatient_substance, in_network_ids, level, logo_url, non_preferred_brand_drugs, on_market, off_market, out_of_network_coverage, out_of_network_ids, outpatient_facility, outpatient_mental_health, outpatient_physician, outpatient_substance, plan_market, preferred_brand_drugs, prenatal_postnatal_care, preventative_care, premium_subsidized, premium, premium_source, primary_care_physician, rehabilitation_services, skilled_nursing, specialist, specialty_drugs, urgent_care, actuarial_value, chiropractic_services, coinsurance, embedded_deductible, gated, imaging_center, imaging_physician, lab_test, mail_order_rx, nonpreferred_generic_drug_share, nonpreferred_specialty_drug_share, outpatient_ambulatory_care_center, plan_calendar, prenatal_care, postnatal_care, skilled_nursing_facility_365].hash
+      [carrier_name, display_name, effective_date, expiration_date, identifiers, name, network_ids, network_size, plan_type, service_area_id, source, type, adult_dental, age29_rider, ambulance, benefits_summary_url, buy_link, child_dental, child_eyewear, child_eye_exam, customer_service_phone_number, durable_medical_equipment, diagnostic_test, dp_rider, drug_formulary_url, emergency_room, family_drug_deductible, family_drug_moop, family_medical_deductible, family_medical_moop, fp_rider, generic_drugs, habilitation_services, hios_issuer_id, home_health_care, hospice_service, hsa_eligible, id, imaging, individual_drug_deductible, individual_drug_moop, individual_medical_deductible, individual_medical_moop, inpatient_birth, inpatient_facility, inpatient_mental_health, inpatient_physician, inpatient_substance, in_network_ids, level, logo_url, non_preferred_brand_drugs, on_market, off_market, out_of_network_coverage, out_of_network_ids, outpatient_facility, outpatient_mental_health, outpatient_physician, outpatient_substance, plan_market, preferred_brand_drugs, prenatal_postnatal_care, preventative_care, premium_subsidized, premium, premium_source, primary_care_physician, rehabilitation_services, skilled_nursing, specialist, specialty_drugs, urgent_care, actuarial_value, chiropractic_services, coinsurance, embedded_deductible, gated, imaging_center, imaging_physician, lab_test, mail_order_rx, nonpreferred_generic_drug_share, nonpreferred_specialty_drug_share, outpatient_ambulatory_care_center, plan_calendar, prenatal_care, postnatal_care, skilled_nursing_facility_365, essential_health_benefits_percentage].hash
     end
 
     # Builds the object from hash
