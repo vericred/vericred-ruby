@@ -5,10 +5,10 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **accepts_insurance** | **BOOLEAN** | Limit results to Providers who accept at least one insurance         plan.  Note that the inverse of this filter is not supported and         any value will evaluate to true | [optional] 
 **ids** | **Array&lt;Integer&gt;** | List of NPIs | [optional] 
-**min_score** | **Float** | Minimum search threshold to be included in the results | [optional] 
 **network_ids** | **Array&lt;Integer&gt;** | List of Vericred network ids | [optional] 
 **page** | **Integer** | Page number | [optional] 
 **per_page** | **Integer** | Number of records to return per page | [optional] 
+**plan_ids** | **Array&lt;String&gt;** | List of hios ids and contract codes | [optional] 
 **polygon** | **Integer** | Define a custom search polygon, mutually exclusive with zip_code search | [optional] 
 **radius** | **Integer** | Radius (in miles) to use to limit results | [optional] 
 **search_term** | **String** | String to search by | [optional] 

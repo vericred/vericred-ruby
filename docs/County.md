@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **Integer** | Primary key | [optional] 
 **fips_code** | **String** | State FIPS code | [optional] 
+**id** | **Integer** | Primary key | [optional] 
 **name** | **String** | Human-readable name | [optional] 
 **state_code** | **String** | Two-character state code | [optional] 
 **state_id** | **Integer** | state relationship | [optional] 

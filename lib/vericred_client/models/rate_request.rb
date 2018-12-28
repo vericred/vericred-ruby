@@ -1,17 +1,15 @@
 =begin
 #Vericred API
 
-#Vericred's API allows you to search for Health Plans that a specific doctor
-accepts.
-
 ## Getting Started
+
+## Signing Up
 
 Visit our [Developer Portal](https://developers.vericred.com) to
 create an account.
 
-Once you have created an account, you can create one Application for
-Production and another for our Sandbox (select the appropriate Plan when
-you create the Application).
+Once you have created an account, you can create one Application for your
+Production environment and another for a Sandbox (select the appropriate Plan when you create the Application).
 
 ## SDKs
 
@@ -32,9 +30,9 @@ a `Vericred-Api-Key` header.
 Vericred's API default to the latest version.  However, if you need a specific
 version, you can request it with an `Accept-Version` header.
 
-The current version is `v3`.  Previous versions are `v1` and `v2`.
+The current version is `v4`.  We also support `v2` and `v3`
 
-`curl -H 'Vericred-Api-Key: YOUR_KEY' -H 'Accept-Version: v2' "https://api.vericred.com/providers?search_term=Foo&zip_code=11215"`
+`curl -H 'Vericred-Api-Key: YOUR_KEY' -H 'Accept-Version: v3' "https://api.vericred.com/providers?search_term=Foo&zip_code=11215"`
 
 ## Pagination
 
@@ -47,11 +45,13 @@ For example, to display 5 results per page and view the second page of a
 
 ## Sideloading
 
-When we return multiple levels of an object graph (e.g. `Provider`s and their `State`s
-we sideload the associated data.  In this example, we would provide an Array of
-`State`s and a `state_id` for each provider.  This is done primarily to reduce the
-payload size since many of the `Provider`s will share a `State`
+When we return multiple levels of an object graph (e.g. `Provider`s and their
+`State`s we typically the associated data.  In this example, we would
+provide an Array of `State`s and a `state_id` for each provider.  This is
+done primarily to reduce the payload size since many of the `Provider`s
+will share a `State`
 
+### Simplified Example
 ```
 {
   providers: [{ id: 1, state_id: 1}, { id: 2, state_id: 1 }],
@@ -87,8 +87,7 @@ For example, let's take a request that returns the following JSON by default
 ```
 
 To limit our results to only return the fields we care about, we specify the
-`select` query string parameter for the corresponding fields in the JSON
-document.
+`select` in the query string for a `GET` or the body for a `POST`.
 
 In this case, we want to select `name` and `phone` from the `provider` key,
 so we would add the parameters `select=provider.name,provider.phone`.
@@ -115,7 +114,18 @@ The response would be
 }
 ```
 
-## Benefits summary format
+# Plan and Rate Data
+
+Vericred's Plan and Rate Data let you search and quote Major Medical and Ancillary Insurance Plans in a given area for a particular family in the Individual Market or a group of families in the Small Group Market.  Vericred provides the relevant data via this API and via our Bulk Format (documented [below](#Bulk Plan and Rate Data))
+
+## Plans
+
+A Plan defines a set of Benefits available to its purchaser.  For example, a Major Medical Plan would specify cost-share Benefits for services like a Primary Care Provider visit, a Specialist visit or an Emergency Room visit.  A Dental Plan might specify Benefits for Periodontics and Fluroride Treatments.  The Benefits for each Product type ([Major Medical](#header-major-medical), [Dental](#header-dental), and [Vision](#header-vision)) are documented below.
+
+### Benefits Format
+
+Benefits for Plans can be quite complex.  With the goals of capturing and standardizing the complexity while retaining a human-readable format, we have developed a [Bakus-Naur Form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form)(BNF) context-free grammar, with which we present Benefits.
+
 Benefit cost-share strings are formatted to capture:
  * Network tiers
  * Compound or conditional cost-share
@@ -198,6 +208,684 @@ space                     ::= /[ \t]/+
 ```
 
 
+### Major Medical
+
+Vericred's data covers all Major Medical Plans available in the Individual and Small Groups (2-50 or 2-100) Markets in the US.  These Plans are governed by CMS and are ACA-compliant.  We do not include certain Plans that fall outside of the ACA, for example, Faith-Based Plans or Short-Term Medical Plans
+
+We support the following Benefits Fields for Major Medical Plans.  These represent the vast majority of fields available on a [Summary of Benefits and Coverage](https://www.healthcare.gov/health-care-law-protections/summary-of-benefits-and-coverage/)
+
+The following are the appropriate Benefit Fields for Major Medical:
+
+- ambulance
+- child\_eye\_exam
+- child\_eyewear
+- chiropractic\_services
+- diagnostic\_test
+- durable\_medical\_equipment
+- emergency\_room
+- family\_drug\_deductible
+- family\_drug\_moop
+- family\_medical\_deductible
+- family\_medical\_moop
+- generic\_drugs
+- habilitation\_services
+- home\_health\_care
+- hospice\_service
+- imaging\_center
+- imaging\_physician
+- individual\_drug\_deductible
+- individual\_drug\_moop
+- individual\_medical\_deductible
+- individual\_medical\_moop
+- inpatient\_birth
+- inpatient\_facility
+- inpatient\_mental\_health
+- inpatient\_physician
+- inpatient\_substance
+- lab\_test
+- non\_preferred\_brand\_drugs
+- nonpreferred\_generic\_drug\_share
+- nonpreferred\_specialty\_drug\_share
+- outpatient\_ambulatory\_care\_center
+- outpatient\_facility
+- outpatient\_mental\_health
+- outpatient\_physician
+- outpatient\_substance
+- postnatal\_care
+- preferred\_brand\_drugs
+- prenatal\_care
+- preventative\_care
+- primary\_care\_physician
+- rehabilitation\_services
+- skilled\_nursing
+- specialist
+- specialty\_drugs
+- urgent\_care
+
+### Dental
+
+Dental benefits are less standardized than [Major Medical](#header-major-medical).  Because of this, we have captured benefits for the most commonly specified services and procedures.  If a Plan only specifies cost-share for "Major", "Minor", "Elective", etc, we determine the category for each of the benefits that we support and display the appropriate value for its category.
+
+To view the technical documentation, [click here](#dental-plans).
+
+The following are the supported Benefit Fields for Dental:
+
+- bridges
+- crowns
+- denture\_relines\_rebases
+- denture\_repair\_and\_adjustments
+- dentures
+- emergency\_treatment
+- endodontics
+- family\_annual\_max
+- family\_deductible
+- fluoride\_treatment
+- implants
+- individual\_annual\_max
+- individual\_deductible
+- inlays
+- onlays
+- oral\_exam
+- oral\_surgery
+- orthodontics\_adult
+- orthodontics\_child
+- periodontal\_maintenance
+- periodontics
+- prophylaxis\_cleaning
+- radiograph\_bitewings
+- radiograph\_other
+- restoration\_fillings
+- sealant
+- simple\_extraction
+- space\_maintainers
+
+### Vision
+
+Vision benefits are similar in structure to [Dental](#header-dental).  Again, when benefits are broken out by category, we determine the appropriate category for each service or procedure and display the approprate value for its category.
+
+To view the technical documentation, [click here](#vision-plans).
+
+The following are the supported Benefit Fields for Vision:
+
+- eye\_exam
+- retinal\_imaging
+- frame
+- eyeglass\_lenses\_single\_vision
+- eyeglass\_lenses\_bifocal
+- eyeglass\_lenses\_trifocal
+- eyeglass\_lenses\_lenticular
+- uv\_coating
+- tint
+- standard\_antireflective\_coating
+- premium\_antireflective\_coating
+- standard\_polycarbonate\_lenses\_child
+- standard\_polycarbonate\_lenses\_adult
+- standard\_progressive\_lenses
+- premium\_progressive\_lenses
+- standard\_scratch\_resistance
+- polarized\_lenses
+- photochromatic\_lenses
+- standard\_contact\_lens\_fit\_and\_follow\_up
+- premium\_contact\_lens\_fit\_and\_follow\_up
+- contact\_lenses\_conventional
+- contact\_lenses\_disposable
+- contact\_lenses\_medically\_necessary
+- laser\_vision\_correction
+- additional\_pairs\_of\_eyeglasses
+
+## Rates
+
+Rates are returned from the API as a part of [Quoting](#header-quoting).  We calculate Rates in one of two ways.
+
+### Sheet Rates
+When a Carrier supplies us with Sheet Rates, we display *exactly* the value provided to us.  For example, in the Major Medical market, most Carriers provide a single rate for each combination of Applicant age and tobacco status in a given [Rating Area](#header-rating-areas).  For example, in Austin, TX, a 21-year-old non-tobacco-user may be $312.41 per month while a 22-year-old tobacco-user may be $401.75 per month.  Certain Vision and Dental Carriers supply Sheet Rates as well, though it is less common.
+
+### Rate Factors
+Certain [Major Medical](#header-major-medical) Carriers and most [Vision](#header-vision) and [Dental](#header-dental) Carriers supply Rate Factors.  The attributes on which the factors are based are the same as [Sheet Rates](#header-sheet-rates) for the [Major Medical](#header-major-medical) market (due to restrictions on what factors may be used in ACA Plans, which limit the possible factors to age and tobacco status).
+
+In [Dental](#header-dental) and [Vision](#header-vision), the types of [Rate Factors](#header-rate-factors) are more varied.  For example, SIC Code and Group size in the Group market and Gender in the Individual Market are commonly used [Rate Factors](#header-rate-factors)
+
+Other common [Rate Factors](#header-rate-factors) for [Dental](#header-dental) and [Vision](#header-vision) products are Geographic and "Trend" (enrollment date) Factors.  In [Major Medical](#header-major-medical), these types of variance are handled by CMS-defined [Rating Areas](#header-rating-areas).
+
+In order to calculate a Rate using [Rate Factors](#header-rate-factors), the following methodology is applied:
+
+```
+B = Base Rate
+f = Rate Factor Function 1
+f' = Rate Factor Function 2
+
+B * f(x) * f'(y) [* f''(z)] ... = n
+```
+
+## Rating Areas
+For [Major Medical](#header-major-medical) products, [CMS](https://www.cms.gov/) defines [Rating Areas](https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/state-gra.html).  Under the ACA, *all* [Rate Factors](#header-rate-factors) in a Rating Area must be identical for a given time period.  E.g. in Arizona, the rate for a 21-year-old non-tobacco user must be identical in all counties contained in Rating Area 1 (Mohave, Coconino, Apache, and Navajo), but *may* be different than the rate for a 21-year-old non-tobacco user in all counties Rating Area 2 (Yavapai county only) for a given year in the Individual Market and a given quartern in the Small Group market.
+
+[Rating Areas](#header-rating-areas) are defined either by County, Zip Code or both, depending on the State.  Because of this variance, all API endpoints that require a [Location](#header-specifying-the-location) require both `zip_code` and `fips_code` (a county code).  [Bulk Data](#bulkplanandratedata) for [Rating Areas](#bulkratingareas) and [Service Areas](#bulkserviceareas) also specifies locations using both `zip_code` and `fips_code`.
+
+*Rating Areas do not apply to products other than [Major Medical](#header-major-medical)*
+
+## Service Areas
+CMS mandates that [Major Medical](#header-major-medical) Rates be defined by [Rating Areas](#header-rating-areas), which themselves define a geography in which Plans are offered.  Carriers often choose *not* to offer a Plan in and entire [Rating Area](#header-rating-areas) due to network coverage or other factors.  Instead, the Carrier would define a [Service Area](#header-service-areas) that specifies where a given Plan is offered.
+
+Each Plan is available in a single [Service Area](#header-service-areas) and each [Service Area](#header-service-areas) is defined by either County, Zip Code, or both, depending on the Carrier.  Because of this variance, all API endpoints that require a [Location](#header-specifying-the-location) require both `zip_code` and `fips_code` (a county code). [Bulk Data](#bulkplanandratedata) for [Rating Areas](#bulkratingareas) and [Service Areas](#bulkserviceareas) also specifies locations using both `zip_code` and `fips_code`.
+
+In [Dental](#header-dental) and [Vision](#header-vision) plans, we use a [Service Area](#header-service-areas) to define availability as well, although it typically mirrors a Geographic [Rate Factor](#header-rate-factors).
+
+# Quoting
+
+One of the primary use-cases for the Vericred API is to run Quotes to determine the Rate for a given family (in the Individual Market) or group (in the Small Group Market).  We support quoting across [Major Medical](#header-major-medical), [Vision](#header-vision), and [Dental](#header-dental).  In both cases, the process of generating a Quote is broken out into several steps:
+
+1. Find all available [Plans](#header-plans) in the relevent [Service Areas](#header-service-areas) for the family or group.
+1. Using [Business Rules](#header-business-rules) for each [Plan](#header-plans), determine if the family or group is eligible for that [Plan](#header-plans).
+1. Using [Business Rules](#header-business-rules) for each [Plan](#header-plans), determine which members of the family or which members of each family in the group should be considered for Rating.
+1. Using the [Sheet Rates](#header-sheet-rates) or [Rate Factors](#header-rate-factors) for each [Plan](#header-plans), determine the Rate the family, or for each family in the group.
+1. If running a [Composite](#compositerates) quote, determine the portion of the total Rate that each family will pay.
+
+## Individual Quotes
+An Individual Quote is one for Plans that are available to a particular family, outside the context of their Employer.  In the [Major Medical](#header-major-medical) market, many of these Plans are available on [Healthcare.gov](https://www.healthcare.gov) or the State-Based Exchange for non-Healthcare.gov states.  The API supports both on-market and off-market Plans.
+
+For details on Major Medical Quoting API calls see [below](#medicalplans-medicalplans-post)
+
+### Specifying the Location
+In order to determine which plans are [available](#header-service-areas) and the [rate](#header-rating-areas) for each Plan, you must specify a location.  When creating a [Quote](#header-quoting) for the Individual Market, that information is contained in the `POST` body of the request:
+```
+POST /plans/medical/search
+{
+  ...
+  "zip_code": "11201",
+  "fips_code": "36047"
+  ...
+}
+
+```
+
+### Specifying Applicants
+Applicants are the members of the family being quoted and are specified in the `POST` body of the request.
+```
+POST /plans/medical/search
+{
+  ...
+  "applicants": [
+    {
+      "age": 34,
+      "smoker": true,
+      "child": false
+    },
+    {
+      "age": 32,
+      "smoker": false,
+      "child": false
+    },
+    {
+      "age": 4,
+      "smoker": false,
+      "child": true
+    }
+  ]
+  ...
+}
+```
+
+### Specifying Enrollment Date
+The `enrollment_date` determines which [Plans](#header-plans) and [Rates](#header-rates) are returned.  Specifying an `enrollment_date` in the past allows you to calculate historical data as far back as 2014.
+
+### Plan Benefits
+Plan Benefits are returned in the response for [Individual Quotes](#individualquotes)
+```
+POST /plans/medical/search
+{
+  ...
+}
+
+Response:
+{
+  "plans": [
+    {
+      ...
+      "individual_medical_deductible": "$5,000",
+      "family_medical_deductible": "$10,000"
+      ...
+    }
+
+  ]
+}
+
+```
+
+### Premiums
+The value for the family being quoted is returned in the `premium` field.  If no [Applicants](#specifyingapplicants) are provided, the `premium` field will be `0`
+
+### Major Medical Quotes
+In order to [Quote](#header-quoting) [Major Medical](#header-major-medical) Plans, send a `POST` to `/plans/medical/search`.  In addition, the `age`, `smoker` and `child` attributes of each Applicant must be present.
+
+#### Subsidies
+On-market ([Healthcare.gov](https://www.healthcare.gov) and State-Based Exchange) [Major Medical](#header-major-medical) Plans are eligible for government subsidies.  The subsidy calculation is based on the percentage of the family's income that the IRS has designated as "affordable" for that family and the Second Lowest-Cost Silver Plan available to that family.
+
+In order to calculate subsidies for a family the following parameters must be supplied:
+```
+POST /plans/medical/search
+{
+  ...
+  "household_size": 4,
+  "household_income": 40000
+  ...
+}
+```
+
+The amount that the family will pay after subsidy is returned in the `premium_subsidized` field for each plan.
+
+##### Subsidy Calculation
+Here is how subsidies are calculated.  This is fully handled by the Vericred API, but the steps are enumerated below for clarity.
+
+1. Determine the percentage of the [Federal Poverty Level](https://aspe.hhs.gov/poverty-guidelines) for the family based on the household size and income.
+1. Reference the [CMS table](https://www.irs.gov/pub/irs-drop/rp-17-36.pdf) to determine the appropriate percentage of income for the family to spend on healthcare.
+1. Multiply that value by the family's income.  This is the total amount that the family can spend on healthcare for the year, after the subsidy.
+1. Find the cost of the Second Least-Expensive Silver Plan available to the family, accounting for the percentage of premium that goes to [Essential Health Benefits](https://www.healthcare.gov/glossary/essential-health-benefits/)
+1. Calculate the difference in price between the amount the family should spend on healthcare and the Second Least-Expensive Silver Plan's premium.  This is the subsidy.
+1. Apply the subsidy to all on-market Plans available to the family.  The subsidized premium can never be below $0 (for example, a low-cost Bronze Plan may be less expensive than the subsidy)
+
+#### Cost Sharing Reduction Plans
+[Cost Sharing Reduction (CSR)](https://www.healthcare.gov/glossary/cost-sharing-reduction/) Plans are available to lower income families and offer enhanced benefits for certain Silver Plans at the same cost as the non-CSR Plans available to higher-income families.
+
+If a family is eligible for CSR Plans, the Vericred API will return the relevant Plan in place of the non-CSR version.
+
+In order to include CSR Plans where applicable, the following parameters must be supplied:
+```
+POST /plans/medical/search
+{
+  ...
+  "household_size": 4,
+  "household_income": 40000
+  ...
+}
+```
+
+### Dental Quotes
+Quoting [Dental](#header-dental) Plans for a family requires slightly different parameters for [Applicants](#specifyingapplicants), due to the method with which Plans are [rated](#header-rate-factors).  The folloiwng example contains the require parameters:
+```
+POST /plans/dental/search
+{
+  ...
+  "applicants": [
+    {
+      "age": 34,
+      "gender": "M",
+      "child": false
+    },
+    {
+      "age": 32,
+      "gender": "F",
+      "child": false
+    },
+    {
+      "age": 4,
+      "gender": "M",
+      "child": true
+    }
+  ]
+  ...
+}
+```
+
+Note that in contrast to [Major Medical Quotes](#majormedicalquotes), [Dental Quotes](#dentalquotes) require `gender`, but *do not* require `smoker`.
+
+Also note that [Subsidies](#subsidies) and [Cost Sharing Reduction](#costsharingreductionplans) are *not* relevant for [Dental Quotes](#dentalquotes).
+
+### Vision Quotes
+
+Quoting [Vision](#header-vision) Plans for a family requires slightly different parameters for [Applicants](#specifyingapplicants), due to the method with which Plans are [rated](#header-rate-factors).  The folloiwng example contains the require parameters:
+```
+POST /plans/vision/search
+{
+  ...
+  "applicants": [
+    {
+      "age": 34,
+      "gender": "M",
+      "child": false
+    },
+    {
+      "age": 32,
+      "gender": "F",
+      "child": false
+    },
+    {
+      "age": 4,
+      "gender": "M",
+      "child": true
+    }
+  ]
+  ...
+}
+```
+
+Note that in contrast to [Major Medical Quotes](#majormedicalquotes), [Vision Quotes](#visionquotes) require `gender`, but *do not* require `smoker`.
+
+Also note that [Subsidies](#subsidies) and [Cost Sharing Reduction](#costsharingreductionplans) are *not* relevant for [Vision Quotes](#visionquotes).
+
+## Quotes for Groups
+A Group Quote finds [Plans](#header-plans) and [Rates](#header-rates) for a group of employees for a small business.  Different [Plans](#header-plans) are available to small groups than are available in [Individual Quoting](#individualquotes).  In addition, [Business Rules](#header-business-rules) that apply across multiple families or based upon employer attributes such as [SIC](https://en.wikipedia.org/wiki/Standard_Industrial_Classification) code factor into rates and availability.
+
+In addition, due to performance requirements and for enhanced auditing, [Group Quotes](#groupquotes) are persisted across requests.  This means that a given [Quote](#groupquotes) can be retrieved after it has been created.
+
+### Identifiers
+In order to make it easier to cross-reference local copies of data with [Quotes](#header-creating-a-quote) and other data in the Vericred API, most entities allow for the specification of an `external_id` field.  You can use this to store a primary or natural key from your system in order to easily match records returned from the API with records in your system.
+
+### Specifying the Group
+Creating a group is the first step in [Group Quoting](#groupquoting).  The API requires that certain information such as `sic_code`, and `chamber_association` be provided and returns a the attributes and `id` for the newly created `Group`
+
+Full documentation is available [below](#groupscreate)
+
+### Specifying the Locations
+When creating a `Group`, you must also specify one or more `Location`s. Of those `Location`s specified, one must be `primary`.  That `Location` is used to calculate Plan eligibility using the relevant [Service Areas](#header-service-areas).  Some Carriers use secondary `Location`s to determine eligibility as well, which is why those must be specified as well.
+
+```
+POST /groups
+{
+  "group": {
+    ...
+  },
+  "locations": [
+    {
+      ...
+      "zip_code": "11201",
+      "fips_code": "36047",
+      "primary": true
+      ...
+    }
+  ]
+}
+```
+
+### Specifying the Census
+A Census is the collection of `Member`s contained in the `Group`.  The attributes of each `Member` and his or her `Dependent`s determine the [Rate](#header-rates) for the `Group` as a whole.  Certain attributes of the `Member` are important for calculating [Rates](#header-rates) and applying [Business Rules](#header-business-rules).  For example, the `Member`'s home address and in which office he or she works are relevant for certain [Business Rules](#header-business-rules).
+
+#### Dependent Relationships
+The `Dependent`s for a given `Member` also factor into the [Rates](#header-rates) and application of [Business Rules](#header-business-rules).  For example, certain [Plans](#header-plans) cover only `Dependent`s of particular types and/or only `Dependent`s of a particular type who live in the same household as the primary `Member`
+
+Valid Dependent Relationships:
+- `adopted_child`
+- `child`
+- `court_appointed_guardian`
+- `dependent_of_dependent`
+- `ex_spouse`
+- `foster_child`
+- `grand_child`
+- `guardian`
+- `life_partner`
+- `other`
+- `sibling`
+- `sponsored_dependent`
+- `spouse`
+- `step_child`
+- `ward`
+
+```
+POST
+
+/groups/{id}/members
+{
+  "members": [
+    ...
+    {
+      "cobra": false,
+      "date_of_birth": "1980-01-01",
+      "fips_code": "36047"
+      "gender": "M",
+      "last_used_tobacco": "2017-01-01",
+      "location_id": :location_id
+      "retiree": false,
+      "zip_code": "11201",
+      "dependents": [
+        ...
+        {
+          "relationship": "child",
+          "same_household": true
+        }
+        ...
+      ]
+    }
+    ...
+  ]
+}
+
+```
+
+### Creating a Quote
+Once the [Census](#header-specifying-the-census) has been created, we can generate a `Quote` for the `Group`.
+
+#### Major Medical Quotes
+To generate a [Major Medical](#header-major-medical) Quote, specify the `product_line` of `Quote` as `medical`
+
+```
+POST /groups/{id}/quotes
+{
+  ...
+  "product_line": "medical"
+  ...
+}
+```
+
+#### Dental Quotes
+To generate a [Dental](#header-dental) Quote, specify the `product_line` of `Quote` as `dental`
+
+```
+POST /groups/{id}/quotes
+{
+  ...
+  "product_line": "dental"
+  ...
+}
+```
+
+#### Vision Quotes
+To generate a [Vision](#header-vision) Quote, specify the `product_line` of `Quote` as `vision`
+
+```
+POST /groups/{id}/quotes
+{
+  ...
+  "product_line": "vision"
+  ...
+}
+```
+
+### Retrieving Aggregate Rates
+Once you have created a [Quote](#header-creating-a-quote), you can retrieve its aggregate [Rates](#header-rates).  [Rates](#header-rates) are broken down by `Member` and `Dependent`, so that you can show the final cost in different scenarios where an employer might cover a different percentage of `Member` and `Dependent` costs.
+
+```
+GET /quotes/{id}/rates
+
+Response
+{
+  "rates": [
+    ...
+    {
+      "plan_id": "12345NY6789012",
+      "total_premium": 2800.0,
+      "member_premium": 1000.0,
+      "dependent_premium": 1800.0,
+      "id": "123abc"
+    }
+    ...
+  ]
+}
+```
+
+
+#### Loading Plan Data
+Aggregate [Rates](#header-rates) responses *do not* include [Plan](#header-plans) details in order to keep the payload small.  [Plan](#header-plans) data can be retrieved in one of two ways:
+
+Loading the [Plan](#header-plans) from the API:
+```
+GET /plans/{id}
+
+Response:
+{
+  "plans": [
+    ...
+    {
+      ...
+      "individual_medical_deductible": "$5,000",
+      "family_medical_deductible": "$10,000",
+      ...
+    }
+    ...
+
+  ]
+}
+```
+Pulling in [Bulk Plan Data](#bulkplans) and matching up [Plans](#header-plans) by their `id`.
+
+### Retrieving Member-Level Rates
+In order to retrieve the exact [Rate](#header-rates) for each `Member` and their `Dependents` for given [Plan](#header-plans), you can load Member-Level `Rates`.
+
+```
+GET /rates/{id}/member_rates
+
+Response
+{
+  "member_rates": [
+  ...
+  {
+    "id": "123abc",
+    "member_id": "234def",
+    "member_external_id": "externally-supplied-id",
+    "member_premium": 500.0,
+    "dependent_premium": 600.0,
+    "total_premium": 1100.0,
+  }
+  ...
+  ]
+}
+
+```
+
+Note that *all* `MemberRate`s are for one particular [Plan](#header-plans) - the one referenced by the parent [Rate](#header-rates).
+
+### Business Rules
+Vericred works with our Carrier partners to acquire and apply Business Rules that can affect either [Plan](#header-plans) availability or the way in which `Member`s and `Dependent`s are rated.  For example, one Carrier's Business Rules might specify that `Member`s and `Dependent`s who have used tobacco in the past 4 months are considered "tobacco-users", while another's may specify that period to be 1 year.
+
+These rules are applied transparently during the [Quoting](#header-quoting) process and *do not* require any additional action or input on your part.
+
+For a full accounting of Business Rules and a list of Carriers whose Business Rules are applied, please contact support@vericred.com
+
+### Composite Rates
+Composite Rates are commonly used in [Major Medical](#header-major-medical), [Dental](#header-dental), and [Vision](#header-vision) [Plans](#header-plans) to simplify operations by charging each family the weighted average of the `Group`'s total premium.  The most common methodology is as follows:
+
+1. Calculate the [Rates](#header-rates) for the entire `Group` using [Sheet Rates](#header-sheet-rates) or [Rate Factors](#header-rate-factors) as appropriate
+1. Categorize each Family within the Group.  The categorization differs depending on whether the Composite Rate is 2, 3, or 4-tier
+1. Multiply the number of Families in each category by the constant for that category.  These constants are provided to Vericred by the Carrier.  This determines the total number of "Rating Units"
+1. Divide the total premium calculated in Step 1 by the total number of Rating Units to get the price per Rating Unit
+1. The [Rate](#header-rates) each Family pays is the constant for that Family's category multiplied by the price per Rating Unit.
+
+You can request that a [Quote](#header-quoting) be calculated using Composite Rates when creating it:
+```
+POST /quotes
+{
+  ...
+  "rating_method": "4_tier_composite"
+  ...
+}
+```
+If no Composite Rates methodology is available, the Vericred API will return standard age-banded Rates.
+
+# Network and Provider Data
+
+A `Provider` is an individual or organization in the medical profession.  For example, an individual doctor is a `Provider` as are certain clinics and hospitals.
+
+`Provider`s are related to `Network`s.  A `Network` is a collection of `Provider`s that are under a particular contract with a given `Carrier`.  A given `Carrier` will often have multiple `Network`s.  For example, there may be a large national `Network` as well as several smaller regional `Network`s.
+
+Each `Plan` has a `Network`.  A consumer who visits a `Provider` typically incurs fewer costs when visiting a `Provider` in the `Network` covered by his or her `Plan`.  The `premium` for a `Plan` is often proportional to the size of its `Network`
+
+## Finding Providers
+In order to determine if a particular `Plan` covers a given `Provider`, you must first identify the `Provider`.  To do so, use the [Provider Search API endpoint](#providers-providers-post) and specify some search criteria:
+
+```
+POST /providers/search
+{
+  "search_term": "foo",
+  "zip_code": "11201"
+}
+```
+
+The API will return an ordered list of `Provider`s who match the query along with their names, addresses, and other demographic data.  The `id` field returned refers to the `Provider`'s [NPI number](https://www.cms.gov/Regulations-and-Guidance/Administrative-Simplification/NationalProvIdentStand/).  This is the key that is used to identify the `Provider` across different API endpoints.
+
+## Finding Networks
+
+A `Network` is a collection of `Provider`s that are under a particular contract with a given `Carrier`.  A given `Carrier` will often have multiple `Network`s.  For example, there may be a large national `Network` as well as several smaller regional `Network`s.
+
+The API supports searching for `Networks` by Carrier, market and state.  For more details view the [endpoint documentation](#networks-networks-get)
+
+## Matching Providers to Networks
+In order to determine if a `Provider` is covered by a user's `Plan`, you will need to map the `Provider` to a `Network`.  There are several methods to do this using the API
+
+### Using Plan Search
+You can specify one or more `npi` values in the [`plan` search](#majormedicalplans-majormedicalplans-post).  To do so, include a list of `providers` in the request
+```
+POST /plans/medical/search
+{
+  ...
+  "providers": [
+    { "npi": 1234567890 },
+    { "npi": 2345678901 }
+  ]
+  ...
+}
+
+The response will then return a list of `in_network_ids` and `out_of_network_ids` for each `Plan`
+
+```
+{
+  "plans": [
+    ...
+    {
+      ...
+      "id": "12345NY1234567",
+      "in_network_ids": [1234567890],
+      "out_of_network_ids": [1234567890]
+      ...
+    },
+    {
+      ...
+      "id": "12345NY2345678",
+      "in_network_ids": [1234567890, 1234567890],
+      "out_of_network_ids": []
+      ...
+    }
+    ...
+  ]
+}
+
+Simply reference the `Provider` in question by its `id` for each `Plan` to see if that `Provider` is in-network for the `Plan`.
+
+### Matching by Plan ID
+Given a `Provider`'s `id`, you can retrieve all of his or her `hios_ids`
+
+For more details see the [endpoint documentation](#providers-providers-get)
+
+```
+GET /providers/1234567890
+{
+  "provider": {
+    ...
+    "hios_ids": [
+      ...
+      "12345NY1234567"
+      ...
+    ]
+    ...
+  }
+}
+```
+
+The returned `hios_ids` can be used to cross-reference a `Plan`
+
+### Matching by Network
+Once you have an ID returned from the [`Network` search endpoint](#networks-networks-get), you can cross-reference it with the `network_ids` returned from both the [`Provider` search](#providers-providers-post) and [`Provider` details](#providers-providers-get) endpoints.
+
+This is useful for large group data or when you are not dealing with `Plan`s directly, but rather at the `Network` level.
+
 
 OpenAPI spec version: 1.0.0
 
@@ -222,18 +910,6 @@ require 'date'
 module VericredClient
 
   class RateRequest
-    # The external id of the plan
-    attr_accessor :external_id
-
-    # The effective date of the rate
-    attr_accessor :effective_date
-
-    # The expiration date of the rate
-    attr_accessor :expiration_date
-
-    # The natural key for the rating area of the  rate
-    attr_accessor :rating_area_natural_key
-
     # The age 0 non-tobacco rate for the plan
     attr_accessor :age_0
 
@@ -242,57 +918,6 @@ module VericredClient
 
     # The age 1 non-tobacco rate for the plan
     attr_accessor :age_1
-
-    # The age 1 tobacco rate for the plan
-    attr_accessor :age_1_tobacco
-
-    # The age 2 non-tobacco rate for the plan
-    attr_accessor :age_2
-
-    # The age 2 tobacco rate for the plan
-    attr_accessor :age_2_tobacco
-
-    # The age 3 non-tobacco rate for the plan
-    attr_accessor :age_3
-
-    # The age 3 tobacco rate for the plan
-    attr_accessor :age_3_tobacco
-
-    # The age 4 non-tobacco rate for the plan
-    attr_accessor :age_4
-
-    # The age 4 tobacco rate for the plan
-    attr_accessor :age_4_tobacco
-
-    # The age 5 non-tobacco rate for the plan
-    attr_accessor :age_5
-
-    # The age 5 tobacco rate for the plan
-    attr_accessor :age_5_tobacco
-
-    # The age 6 non-tobacco rate for the plan
-    attr_accessor :age_6
-
-    # The age 6 tobacco rate for the plan
-    attr_accessor :age_6_tobacco
-
-    # The age 7 non-tobacco rate for the plan
-    attr_accessor :age_7
-
-    # The age 7 tobacco rate for the plan
-    attr_accessor :age_7_tobacco
-
-    # The age 8 non-tobacco rate for the plan
-    attr_accessor :age_8
-
-    # The age 8 tobacco rate for the plan
-    attr_accessor :age_8_tobacco
-
-    # The age 9 non-tobacco rate for the plan
-    attr_accessor :age_9
-
-    # The age 9 tobacco rate for the plan
-    attr_accessor :age_9_tobacco
 
     # The age 10 non-tobacco rate for the plan
     attr_accessor :age_10
@@ -354,6 +979,12 @@ module VericredClient
     # The age 19 tobacco rate for the plan
     attr_accessor :age_19_tobacco
 
+    # The age 1 tobacco rate for the plan
+    attr_accessor :age_1_tobacco
+
+    # The age 2 non-tobacco rate for the plan
+    attr_accessor :age_2
+
     # The age 20 non-tobacco rate for the plan
     attr_accessor :age_20
 
@@ -413,6 +1044,12 @@ module VericredClient
 
     # The age 29 tobacco rate for the plan
     attr_accessor :age_29_tobacco
+
+    # The age 2 tobacco rate for the plan
+    attr_accessor :age_2_tobacco
+
+    # The age 3 non-tobacco rate for the plan
+    attr_accessor :age_3
 
     # The age 30 non-tobacco rate for the plan
     attr_accessor :age_30
@@ -474,6 +1111,12 @@ module VericredClient
     # The age 39 tobacco rate for the plan
     attr_accessor :age_39_tobacco
 
+    # The age 3 tobacco rate for the plan
+    attr_accessor :age_3_tobacco
+
+    # The age 4 non-tobacco rate for the plan
+    attr_accessor :age_4
+
     # The age 40 non-tobacco rate for the plan
     attr_accessor :age_40
 
@@ -533,6 +1176,12 @@ module VericredClient
 
     # The age 49 tobacco rate for the plan
     attr_accessor :age_49_tobacco
+
+    # The age 4 tobacco rate for the plan
+    attr_accessor :age_4_tobacco
+
+    # The age 5 non-tobacco rate for the plan
+    attr_accessor :age_5
 
     # The age 50 non-tobacco rate for the plan
     attr_accessor :age_50
@@ -594,6 +1243,12 @@ module VericredClient
     # The age 59 tobacco rate for the plan
     attr_accessor :age_59_tobacco
 
+    # The age 5 tobacco rate for the plan
+    attr_accessor :age_5_tobacco
+
+    # The age 6 non-tobacco rate for the plan
+    attr_accessor :age_6
+
     # The age 60 non-tobacco rate for the plan
     attr_accessor :age_60
 
@@ -630,34 +1285,64 @@ module VericredClient
     # The age 65 tobacco rate for the plan
     attr_accessor :age_65_tobacco
 
+    # The age 6 tobacco rate for the plan
+    attr_accessor :age_6_tobacco
+
+    # The age 7 non-tobacco rate for the plan
+    attr_accessor :age_7
+
+    # The age 7 tobacco rate for the plan
+    attr_accessor :age_7_tobacco
+
+    # The age 8 non-tobacco rate for the plan
+    attr_accessor :age_8
+
+    # The age 8 tobacco rate for the plan
+    attr_accessor :age_8_tobacco
+
+    # The age 9 non-tobacco rate for the plan
+    attr_accessor :age_9
+
+    # The age 9 tobacco rate for the plan
+    attr_accessor :age_9_tobacco
+
+    # The tier child_only rate for the plan
+    attr_accessor :child_only
+
+    # The effective date of the rate
+    attr_accessor :effective_date
+
+    # The expiration date of the rate
+    attr_accessor :expiration_date
+
+    # The external id of the plan
+    attr_accessor :external_id
+
+    # The tier family rate for the plan
+    attr_accessor :family
+
+    # The natural key for the rating area of the  rate
+    attr_accessor :rating_area_natural_key
+
+    # The tier single rate for the plan
+    attr_accessor :single
+
+    # The tier single_and_children rate for the plan
+    attr_accessor :single_and_children
+
+    # The tier single_and_spouse rate for the plan
+    attr_accessor :single_and_spouse
+
+    # The document source type of the rate
+    attr_accessor :source
+
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'external_id' => :'external_id',
-        :'effective_date' => :'effective_date',
-        :'expiration_date' => :'expiration_date',
-        :'rating_area_natural_key' => :'rating_area_natural_key',
         :'age_0' => :'age_0',
         :'age_0_tobacco' => :'age_0_tobacco',
         :'age_1' => :'age_1',
-        :'age_1_tobacco' => :'age_1_tobacco',
-        :'age_2' => :'age_2',
-        :'age_2_tobacco' => :'age_2_tobacco',
-        :'age_3' => :'age_3',
-        :'age_3_tobacco' => :'age_3_tobacco',
-        :'age_4' => :'age_4',
-        :'age_4_tobacco' => :'age_4_tobacco',
-        :'age_5' => :'age_5',
-        :'age_5_tobacco' => :'age_5_tobacco',
-        :'age_6' => :'age_6',
-        :'age_6_tobacco' => :'age_6_tobacco',
-        :'age_7' => :'age_7',
-        :'age_7_tobacco' => :'age_7_tobacco',
-        :'age_8' => :'age_8',
-        :'age_8_tobacco' => :'age_8_tobacco',
-        :'age_9' => :'age_9',
-        :'age_9_tobacco' => :'age_9_tobacco',
         :'age_10' => :'age_10',
         :'age_10_tobacco' => :'age_10_tobacco',
         :'age_11' => :'age_11',
@@ -678,6 +1363,8 @@ module VericredClient
         :'age_18_tobacco' => :'age_18_tobacco',
         :'age_19' => :'age_19',
         :'age_19_tobacco' => :'age_19_tobacco',
+        :'age_1_tobacco' => :'age_1_tobacco',
+        :'age_2' => :'age_2',
         :'age_20' => :'age_20',
         :'age_20_tobacco' => :'age_20_tobacco',
         :'age_21' => :'age_21',
@@ -698,6 +1385,8 @@ module VericredClient
         :'age_28_tobacco' => :'age_28_tobacco',
         :'age_29' => :'age_29',
         :'age_29_tobacco' => :'age_29_tobacco',
+        :'age_2_tobacco' => :'age_2_tobacco',
+        :'age_3' => :'age_3',
         :'age_30' => :'age_30',
         :'age_30_tobacco' => :'age_30_tobacco',
         :'age_31' => :'age_31',
@@ -718,6 +1407,8 @@ module VericredClient
         :'age_38_tobacco' => :'age_38_tobacco',
         :'age_39' => :'age_39',
         :'age_39_tobacco' => :'age_39_tobacco',
+        :'age_3_tobacco' => :'age_3_tobacco',
+        :'age_4' => :'age_4',
         :'age_40' => :'age_40',
         :'age_40_tobacco' => :'age_40_tobacco',
         :'age_41' => :'age_41',
@@ -738,6 +1429,8 @@ module VericredClient
         :'age_48_tobacco' => :'age_48_tobacco',
         :'age_49' => :'age_49',
         :'age_49_tobacco' => :'age_49_tobacco',
+        :'age_4_tobacco' => :'age_4_tobacco',
+        :'age_5' => :'age_5',
         :'age_50' => :'age_50',
         :'age_50_tobacco' => :'age_50_tobacco',
         :'age_51' => :'age_51',
@@ -758,6 +1451,8 @@ module VericredClient
         :'age_58_tobacco' => :'age_58_tobacco',
         :'age_59' => :'age_59',
         :'age_59_tobacco' => :'age_59_tobacco',
+        :'age_5_tobacco' => :'age_5_tobacco',
+        :'age_6' => :'age_6',
         :'age_60' => :'age_60',
         :'age_60_tobacco' => :'age_60_tobacco',
         :'age_61' => :'age_61',
@@ -769,37 +1464,33 @@ module VericredClient
         :'age_64' => :'age_64',
         :'age_64_tobacco' => :'age_64_tobacco',
         :'age_65' => :'age_65',
-        :'age_65_tobacco' => :'age_65_tobacco'
+        :'age_65_tobacco' => :'age_65_tobacco',
+        :'age_6_tobacco' => :'age_6_tobacco',
+        :'age_7' => :'age_7',
+        :'age_7_tobacco' => :'age_7_tobacco',
+        :'age_8' => :'age_8',
+        :'age_8_tobacco' => :'age_8_tobacco',
+        :'age_9' => :'age_9',
+        :'age_9_tobacco' => :'age_9_tobacco',
+        :'child_only' => :'child_only',
+        :'effective_date' => :'effective_date',
+        :'expiration_date' => :'expiration_date',
+        :'external_id' => :'external_id',
+        :'family' => :'family',
+        :'rating_area_natural_key' => :'rating_area_natural_key',
+        :'single' => :'single',
+        :'single_and_children' => :'single_and_children',
+        :'single_and_spouse' => :'single_and_spouse',
+        :'source' => :'source'
       }
     end
 
     # Attribute type mapping.
     def self.swagger_types
       {
-        :'external_id' => :'String',
-        :'effective_date' => :'String',
-        :'expiration_date' => :'String',
-        :'rating_area_natural_key' => :'String',
         :'age_0' => :'Float',
         :'age_0_tobacco' => :'Float',
         :'age_1' => :'Float',
-        :'age_1_tobacco' => :'Float',
-        :'age_2' => :'Float',
-        :'age_2_tobacco' => :'Float',
-        :'age_3' => :'Float',
-        :'age_3_tobacco' => :'Float',
-        :'age_4' => :'Float',
-        :'age_4_tobacco' => :'Float',
-        :'age_5' => :'Float',
-        :'age_5_tobacco' => :'Float',
-        :'age_6' => :'Float',
-        :'age_6_tobacco' => :'Float',
-        :'age_7' => :'Float',
-        :'age_7_tobacco' => :'Float',
-        :'age_8' => :'Float',
-        :'age_8_tobacco' => :'Float',
-        :'age_9' => :'Float',
-        :'age_9_tobacco' => :'Float',
         :'age_10' => :'Float',
         :'age_10_tobacco' => :'Float',
         :'age_11' => :'Float',
@@ -820,6 +1511,8 @@ module VericredClient
         :'age_18_tobacco' => :'Float',
         :'age_19' => :'Float',
         :'age_19_tobacco' => :'Float',
+        :'age_1_tobacco' => :'Float',
+        :'age_2' => :'Float',
         :'age_20' => :'Float',
         :'age_20_tobacco' => :'Float',
         :'age_21' => :'Float',
@@ -840,6 +1533,8 @@ module VericredClient
         :'age_28_tobacco' => :'Float',
         :'age_29' => :'Float',
         :'age_29_tobacco' => :'Float',
+        :'age_2_tobacco' => :'Float',
+        :'age_3' => :'Float',
         :'age_30' => :'Float',
         :'age_30_tobacco' => :'Float',
         :'age_31' => :'Float',
@@ -860,6 +1555,8 @@ module VericredClient
         :'age_38_tobacco' => :'Float',
         :'age_39' => :'Float',
         :'age_39_tobacco' => :'Float',
+        :'age_3_tobacco' => :'Float',
+        :'age_4' => :'Float',
         :'age_40' => :'Float',
         :'age_40_tobacco' => :'Float',
         :'age_41' => :'Float',
@@ -880,6 +1577,8 @@ module VericredClient
         :'age_48_tobacco' => :'Float',
         :'age_49' => :'Float',
         :'age_49_tobacco' => :'Float',
+        :'age_4_tobacco' => :'Float',
+        :'age_5' => :'Float',
         :'age_50' => :'Float',
         :'age_50_tobacco' => :'Float',
         :'age_51' => :'Float',
@@ -900,6 +1599,8 @@ module VericredClient
         :'age_58_tobacco' => :'Float',
         :'age_59' => :'Float',
         :'age_59_tobacco' => :'Float',
+        :'age_5_tobacco' => :'Float',
+        :'age_6' => :'Float',
         :'age_60' => :'Float',
         :'age_60_tobacco' => :'Float',
         :'age_61' => :'Float',
@@ -911,7 +1612,24 @@ module VericredClient
         :'age_64' => :'Float',
         :'age_64_tobacco' => :'Float',
         :'age_65' => :'Float',
-        :'age_65_tobacco' => :'Float'
+        :'age_65_tobacco' => :'Float',
+        :'age_6_tobacco' => :'Float',
+        :'age_7' => :'Float',
+        :'age_7_tobacco' => :'Float',
+        :'age_8' => :'Float',
+        :'age_8_tobacco' => :'Float',
+        :'age_9' => :'Float',
+        :'age_9_tobacco' => :'Float',
+        :'child_only' => :'Float',
+        :'effective_date' => :'String',
+        :'expiration_date' => :'String',
+        :'external_id' => :'String',
+        :'family' => :'Float',
+        :'rating_area_natural_key' => :'String',
+        :'single' => :'Float',
+        :'single_and_children' => :'Float',
+        :'single_and_spouse' => :'Float',
+        :'source' => :'String'
       }
     end
 
@@ -923,22 +1641,6 @@ module VericredClient
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}){|(k,v), h| h[k.to_sym] = v}
 
-      if attributes.has_key?(:'external_id')
-        self.external_id = attributes[:'external_id']
-      end
-
-      if attributes.has_key?(:'effective_date')
-        self.effective_date = attributes[:'effective_date']
-      end
-
-      if attributes.has_key?(:'expiration_date')
-        self.expiration_date = attributes[:'expiration_date']
-      end
-
-      if attributes.has_key?(:'rating_area_natural_key')
-        self.rating_area_natural_key = attributes[:'rating_area_natural_key']
-      end
-
       if attributes.has_key?(:'age_0')
         self.age_0 = attributes[:'age_0']
       end
@@ -949,74 +1651,6 @@ module VericredClient
 
       if attributes.has_key?(:'age_1')
         self.age_1 = attributes[:'age_1']
-      end
-
-      if attributes.has_key?(:'age_1_tobacco')
-        self.age_1_tobacco = attributes[:'age_1_tobacco']
-      end
-
-      if attributes.has_key?(:'age_2')
-        self.age_2 = attributes[:'age_2']
-      end
-
-      if attributes.has_key?(:'age_2_tobacco')
-        self.age_2_tobacco = attributes[:'age_2_tobacco']
-      end
-
-      if attributes.has_key?(:'age_3')
-        self.age_3 = attributes[:'age_3']
-      end
-
-      if attributes.has_key?(:'age_3_tobacco')
-        self.age_3_tobacco = attributes[:'age_3_tobacco']
-      end
-
-      if attributes.has_key?(:'age_4')
-        self.age_4 = attributes[:'age_4']
-      end
-
-      if attributes.has_key?(:'age_4_tobacco')
-        self.age_4_tobacco = attributes[:'age_4_tobacco']
-      end
-
-      if attributes.has_key?(:'age_5')
-        self.age_5 = attributes[:'age_5']
-      end
-
-      if attributes.has_key?(:'age_5_tobacco')
-        self.age_5_tobacco = attributes[:'age_5_tobacco']
-      end
-
-      if attributes.has_key?(:'age_6')
-        self.age_6 = attributes[:'age_6']
-      end
-
-      if attributes.has_key?(:'age_6_tobacco')
-        self.age_6_tobacco = attributes[:'age_6_tobacco']
-      end
-
-      if attributes.has_key?(:'age_7')
-        self.age_7 = attributes[:'age_7']
-      end
-
-      if attributes.has_key?(:'age_7_tobacco')
-        self.age_7_tobacco = attributes[:'age_7_tobacco']
-      end
-
-      if attributes.has_key?(:'age_8')
-        self.age_8 = attributes[:'age_8']
-      end
-
-      if attributes.has_key?(:'age_8_tobacco')
-        self.age_8_tobacco = attributes[:'age_8_tobacco']
-      end
-
-      if attributes.has_key?(:'age_9')
-        self.age_9 = attributes[:'age_9']
-      end
-
-      if attributes.has_key?(:'age_9_tobacco')
-        self.age_9_tobacco = attributes[:'age_9_tobacco']
       end
 
       if attributes.has_key?(:'age_10')
@@ -1099,6 +1733,14 @@ module VericredClient
         self.age_19_tobacco = attributes[:'age_19_tobacco']
       end
 
+      if attributes.has_key?(:'age_1_tobacco')
+        self.age_1_tobacco = attributes[:'age_1_tobacco']
+      end
+
+      if attributes.has_key?(:'age_2')
+        self.age_2 = attributes[:'age_2']
+      end
+
       if attributes.has_key?(:'age_20')
         self.age_20 = attributes[:'age_20']
       end
@@ -1177,6 +1819,14 @@ module VericredClient
 
       if attributes.has_key?(:'age_29_tobacco')
         self.age_29_tobacco = attributes[:'age_29_tobacco']
+      end
+
+      if attributes.has_key?(:'age_2_tobacco')
+        self.age_2_tobacco = attributes[:'age_2_tobacco']
+      end
+
+      if attributes.has_key?(:'age_3')
+        self.age_3 = attributes[:'age_3']
       end
 
       if attributes.has_key?(:'age_30')
@@ -1259,6 +1909,14 @@ module VericredClient
         self.age_39_tobacco = attributes[:'age_39_tobacco']
       end
 
+      if attributes.has_key?(:'age_3_tobacco')
+        self.age_3_tobacco = attributes[:'age_3_tobacco']
+      end
+
+      if attributes.has_key?(:'age_4')
+        self.age_4 = attributes[:'age_4']
+      end
+
       if attributes.has_key?(:'age_40')
         self.age_40 = attributes[:'age_40']
       end
@@ -1337,6 +1995,14 @@ module VericredClient
 
       if attributes.has_key?(:'age_49_tobacco')
         self.age_49_tobacco = attributes[:'age_49_tobacco']
+      end
+
+      if attributes.has_key?(:'age_4_tobacco')
+        self.age_4_tobacco = attributes[:'age_4_tobacco']
+      end
+
+      if attributes.has_key?(:'age_5')
+        self.age_5 = attributes[:'age_5']
       end
 
       if attributes.has_key?(:'age_50')
@@ -1419,6 +2085,14 @@ module VericredClient
         self.age_59_tobacco = attributes[:'age_59_tobacco']
       end
 
+      if attributes.has_key?(:'age_5_tobacco')
+        self.age_5_tobacco = attributes[:'age_5_tobacco']
+      end
+
+      if attributes.has_key?(:'age_6')
+        self.age_6 = attributes[:'age_6']
+      end
+
       if attributes.has_key?(:'age_60')
         self.age_60 = attributes[:'age_60']
       end
@@ -1467,6 +2141,74 @@ module VericredClient
         self.age_65_tobacco = attributes[:'age_65_tobacco']
       end
 
+      if attributes.has_key?(:'age_6_tobacco')
+        self.age_6_tobacco = attributes[:'age_6_tobacco']
+      end
+
+      if attributes.has_key?(:'age_7')
+        self.age_7 = attributes[:'age_7']
+      end
+
+      if attributes.has_key?(:'age_7_tobacco')
+        self.age_7_tobacco = attributes[:'age_7_tobacco']
+      end
+
+      if attributes.has_key?(:'age_8')
+        self.age_8 = attributes[:'age_8']
+      end
+
+      if attributes.has_key?(:'age_8_tobacco')
+        self.age_8_tobacco = attributes[:'age_8_tobacco']
+      end
+
+      if attributes.has_key?(:'age_9')
+        self.age_9 = attributes[:'age_9']
+      end
+
+      if attributes.has_key?(:'age_9_tobacco')
+        self.age_9_tobacco = attributes[:'age_9_tobacco']
+      end
+
+      if attributes.has_key?(:'child_only')
+        self.child_only = attributes[:'child_only']
+      end
+
+      if attributes.has_key?(:'effective_date')
+        self.effective_date = attributes[:'effective_date']
+      end
+
+      if attributes.has_key?(:'expiration_date')
+        self.expiration_date = attributes[:'expiration_date']
+      end
+
+      if attributes.has_key?(:'external_id')
+        self.external_id = attributes[:'external_id']
+      end
+
+      if attributes.has_key?(:'family')
+        self.family = attributes[:'family']
+      end
+
+      if attributes.has_key?(:'rating_area_natural_key')
+        self.rating_area_natural_key = attributes[:'rating_area_natural_key']
+      end
+
+      if attributes.has_key?(:'single')
+        self.single = attributes[:'single']
+      end
+
+      if attributes.has_key?(:'single_and_children')
+        self.single_and_children = attributes[:'single_and_children']
+      end
+
+      if attributes.has_key?(:'single_and_spouse')
+        self.single_and_spouse = attributes[:'single_and_spouse']
+      end
+
+      if attributes.has_key?(:'source')
+        self.source = attributes[:'source']
+      end
+
     end
 
     # Show invalid properties with the reasons. Usually used together with valid?
@@ -1487,30 +2229,9 @@ module VericredClient
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          external_id == o.external_id &&
-          effective_date == o.effective_date &&
-          expiration_date == o.expiration_date &&
-          rating_area_natural_key == o.rating_area_natural_key &&
           age_0 == o.age_0 &&
           age_0_tobacco == o.age_0_tobacco &&
           age_1 == o.age_1 &&
-          age_1_tobacco == o.age_1_tobacco &&
-          age_2 == o.age_2 &&
-          age_2_tobacco == o.age_2_tobacco &&
-          age_3 == o.age_3 &&
-          age_3_tobacco == o.age_3_tobacco &&
-          age_4 == o.age_4 &&
-          age_4_tobacco == o.age_4_tobacco &&
-          age_5 == o.age_5 &&
-          age_5_tobacco == o.age_5_tobacco &&
-          age_6 == o.age_6 &&
-          age_6_tobacco == o.age_6_tobacco &&
-          age_7 == o.age_7 &&
-          age_7_tobacco == o.age_7_tobacco &&
-          age_8 == o.age_8 &&
-          age_8_tobacco == o.age_8_tobacco &&
-          age_9 == o.age_9 &&
-          age_9_tobacco == o.age_9_tobacco &&
           age_10 == o.age_10 &&
           age_10_tobacco == o.age_10_tobacco &&
           age_11 == o.age_11 &&
@@ -1531,6 +2252,8 @@ module VericredClient
           age_18_tobacco == o.age_18_tobacco &&
           age_19 == o.age_19 &&
           age_19_tobacco == o.age_19_tobacco &&
+          age_1_tobacco == o.age_1_tobacco &&
+          age_2 == o.age_2 &&
           age_20 == o.age_20 &&
           age_20_tobacco == o.age_20_tobacco &&
           age_21 == o.age_21 &&
@@ -1551,6 +2274,8 @@ module VericredClient
           age_28_tobacco == o.age_28_tobacco &&
           age_29 == o.age_29 &&
           age_29_tobacco == o.age_29_tobacco &&
+          age_2_tobacco == o.age_2_tobacco &&
+          age_3 == o.age_3 &&
           age_30 == o.age_30 &&
           age_30_tobacco == o.age_30_tobacco &&
           age_31 == o.age_31 &&
@@ -1571,6 +2296,8 @@ module VericredClient
           age_38_tobacco == o.age_38_tobacco &&
           age_39 == o.age_39 &&
           age_39_tobacco == o.age_39_tobacco &&
+          age_3_tobacco == o.age_3_tobacco &&
+          age_4 == o.age_4 &&
           age_40 == o.age_40 &&
           age_40_tobacco == o.age_40_tobacco &&
           age_41 == o.age_41 &&
@@ -1591,6 +2318,8 @@ module VericredClient
           age_48_tobacco == o.age_48_tobacco &&
           age_49 == o.age_49 &&
           age_49_tobacco == o.age_49_tobacco &&
+          age_4_tobacco == o.age_4_tobacco &&
+          age_5 == o.age_5 &&
           age_50 == o.age_50 &&
           age_50_tobacco == o.age_50_tobacco &&
           age_51 == o.age_51 &&
@@ -1611,6 +2340,8 @@ module VericredClient
           age_58_tobacco == o.age_58_tobacco &&
           age_59 == o.age_59 &&
           age_59_tobacco == o.age_59_tobacco &&
+          age_5_tobacco == o.age_5_tobacco &&
+          age_6 == o.age_6 &&
           age_60 == o.age_60 &&
           age_60_tobacco == o.age_60_tobacco &&
           age_61 == o.age_61 &&
@@ -1622,7 +2353,24 @@ module VericredClient
           age_64 == o.age_64 &&
           age_64_tobacco == o.age_64_tobacco &&
           age_65 == o.age_65 &&
-          age_65_tobacco == o.age_65_tobacco
+          age_65_tobacco == o.age_65_tobacco &&
+          age_6_tobacco == o.age_6_tobacco &&
+          age_7 == o.age_7 &&
+          age_7_tobacco == o.age_7_tobacco &&
+          age_8 == o.age_8 &&
+          age_8_tobacco == o.age_8_tobacco &&
+          age_9 == o.age_9 &&
+          age_9_tobacco == o.age_9_tobacco &&
+          child_only == o.child_only &&
+          effective_date == o.effective_date &&
+          expiration_date == o.expiration_date &&
+          external_id == o.external_id &&
+          family == o.family &&
+          rating_area_natural_key == o.rating_area_natural_key &&
+          single == o.single &&
+          single_and_children == o.single_and_children &&
+          single_and_spouse == o.single_and_spouse &&
+          source == o.source
     end
 
     # @see the `==` method
@@ -1634,7 +2382,7 @@ module VericredClient
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [external_id, effective_date, expiration_date, rating_area_natural_key, age_0, age_0_tobacco, age_1, age_1_tobacco, age_2, age_2_tobacco, age_3, age_3_tobacco, age_4, age_4_tobacco, age_5, age_5_tobacco, age_6, age_6_tobacco, age_7, age_7_tobacco, age_8, age_8_tobacco, age_9, age_9_tobacco, age_10, age_10_tobacco, age_11, age_11_tobacco, age_12, age_12_tobacco, age_13, age_13_tobacco, age_14, age_14_tobacco, age_15, age_15_tobacco, age_16, age_16_tobacco, age_17, age_17_tobacco, age_18, age_18_tobacco, age_19, age_19_tobacco, age_20, age_20_tobacco, age_21, age_21_tobacco, age_22, age_22_tobacco, age_23, age_23_tobacco, age_24, age_24_tobacco, age_25, age_25_tobacco, age_26, age_26_tobacco, age_27, age_27_tobacco, age_28, age_28_tobacco, age_29, age_29_tobacco, age_30, age_30_tobacco, age_31, age_31_tobacco, age_32, age_32_tobacco, age_33, age_33_tobacco, age_34, age_34_tobacco, age_35, age_35_tobacco, age_36, age_36_tobacco, age_37, age_37_tobacco, age_38, age_38_tobacco, age_39, age_39_tobacco, age_40, age_40_tobacco, age_41, age_41_tobacco, age_42, age_42_tobacco, age_43, age_43_tobacco, age_44, age_44_tobacco, age_45, age_45_tobacco, age_46, age_46_tobacco, age_47, age_47_tobacco, age_48, age_48_tobacco, age_49, age_49_tobacco, age_50, age_50_tobacco, age_51, age_51_tobacco, age_52, age_52_tobacco, age_53, age_53_tobacco, age_54, age_54_tobacco, age_55, age_55_tobacco, age_56, age_56_tobacco, age_57, age_57_tobacco, age_58, age_58_tobacco, age_59, age_59_tobacco, age_60, age_60_tobacco, age_61, age_61_tobacco, age_62, age_62_tobacco, age_63, age_63_tobacco, age_64, age_64_tobacco, age_65, age_65_tobacco].hash
+      [age_0, age_0_tobacco, age_1, age_10, age_10_tobacco, age_11, age_11_tobacco, age_12, age_12_tobacco, age_13, age_13_tobacco, age_14, age_14_tobacco, age_15, age_15_tobacco, age_16, age_16_tobacco, age_17, age_17_tobacco, age_18, age_18_tobacco, age_19, age_19_tobacco, age_1_tobacco, age_2, age_20, age_20_tobacco, age_21, age_21_tobacco, age_22, age_22_tobacco, age_23, age_23_tobacco, age_24, age_24_tobacco, age_25, age_25_tobacco, age_26, age_26_tobacco, age_27, age_27_tobacco, age_28, age_28_tobacco, age_29, age_29_tobacco, age_2_tobacco, age_3, age_30, age_30_tobacco, age_31, age_31_tobacco, age_32, age_32_tobacco, age_33, age_33_tobacco, age_34, age_34_tobacco, age_35, age_35_tobacco, age_36, age_36_tobacco, age_37, age_37_tobacco, age_38, age_38_tobacco, age_39, age_39_tobacco, age_3_tobacco, age_4, age_40, age_40_tobacco, age_41, age_41_tobacco, age_42, age_42_tobacco, age_43, age_43_tobacco, age_44, age_44_tobacco, age_45, age_45_tobacco, age_46, age_46_tobacco, age_47, age_47_tobacco, age_48, age_48_tobacco, age_49, age_49_tobacco, age_4_tobacco, age_5, age_50, age_50_tobacco, age_51, age_51_tobacco, age_52, age_52_tobacco, age_53, age_53_tobacco, age_54, age_54_tobacco, age_55, age_55_tobacco, age_56, age_56_tobacco, age_57, age_57_tobacco, age_58, age_58_tobacco, age_59, age_59_tobacco, age_5_tobacco, age_6, age_60, age_60_tobacco, age_61, age_61_tobacco, age_62, age_62_tobacco, age_63, age_63_tobacco, age_64, age_64_tobacco, age_65, age_65_tobacco, age_6_tobacco, age_7, age_7_tobacco, age_8, age_8_tobacco, age_9, age_9_tobacco, child_only, effective_date, expiration_date, external_id, family, rating_area_natural_key, single, single_and_children, single_and_spouse, source].hash
     end
 
     # Builds the object from hash

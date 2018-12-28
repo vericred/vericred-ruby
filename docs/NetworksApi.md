@@ -4,15 +4,15 @@ All URIs are relative to *https://api.vericred.com/*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create_network_comparisons**](NetworksApi.md#create_network_comparisons) | **POST** /networks/{id}/network_comparisons | Network Comparisons
+[**create_network_comparisons**](NetworksApi.md#create_network_comparisons) | **POST** /networks/{id}/network_comparisons | Compare Multiple Networks
 [**list_networks**](NetworksApi.md#list_networks) | **GET** /networks | Networks
-[**show_network**](NetworksApi.md#show_network) | **GET** /networks/{id} | Network Details
+[**show_network**](NetworksApi.md#show_network) | **GET** /networks/{id} | Display a Network
 
 
 # **create_network_comparisons**
 > NetworkComparisonResponse create_network_comparisons(id, body)
 
-Network Comparisons
+Compare Multiple Networks
 
 Compare provider counts in a given area between a base network and one or more comparison networks.  #### Comparing Networks Comparison of provider counts within a radius requires that you provide a `zip_code` and `radius` to use as a search area.  The response returns the total number of unique `Providers` in the Base `Network` (i.e. those who are not present in the Comparison `Network`), The number of unique `Provider`s in the Comparison `Network` (i.e. those who are not present in the Base `Network`), and the count of `Provider`s who are in *both* `Network`s
 
@@ -36,7 +36,7 @@ body = VericredClient::NetworkComparisonRequest.new # NetworkComparisonRequest |
 
 
 begin
-  #Network Comparisons
+  #Compare Multiple Networks
   result = api_instance.create_network_comparisons(id, body)
   p result
 rescue VericredClient::ApiError => e
@@ -91,7 +91,9 @@ carrier_id = "33333" # String | Carrier HIOS Issuer ID
 
 opts = { 
   page: 1, # Integer | Page of paginated response
-  per_page: 1 # Integer | Responses per page
+  per_page: 1, # Integer | Responses per page
+  market: "individual", # String | Type of Plan to which this network is attached.  Possible values are `individual`, `small_group`, `individual_and_small_group`, `medicare_advantage`
+  state: "NY" # String | A state code (e.g. NY) in which the `Network` is available
 }
 
 begin
@@ -110,6 +112,8 @@ Name | Type | Description  | Notes
  **carrier_id** | **String**| Carrier HIOS Issuer ID | 
  **page** | **Integer**| Page of paginated response | [optional] 
  **per_page** | **Integer**| Responses per page | [optional] 
+ **market** | **String**| Type of Plan to which this network is attached.  Possible values are &#x60;individual&#x60;, &#x60;small_group&#x60;, &#x60;individual_and_small_group&#x60;, &#x60;medicare_advantage&#x60; | [optional] 
+ **state** | **String**| A state code (e.g. NY) in which the &#x60;Network&#x60; is available | [optional] 
 
 ### Return type
 
@@ -129,7 +133,7 @@ Name | Type | Description  | Notes
 # **show_network**
 > NetworkDetailsResponse show_network(id)
 
-Network Details
+Display a Network
 
 A network is a list of the doctors, other health care providers, and hospitals that a plan has contracted with to provide medical care to its members.
 
@@ -151,7 +155,7 @@ id = 100001 # Integer | Primary key of the network
 
 
 begin
-  #Network Details
+  #Display a Network
   result = api_instance.show_network(id)
   p result
 rescue VericredClient::ApiError => e

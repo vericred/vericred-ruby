@@ -7,6 +7,8 @@ Name | Type | Description | Notes
 **display_name** | **String** | Alternate name for the Plan | [optional] 
 **effective_date** | **String** | Effective date of coverage. | [optional] 
 **expiration_date** | **String** | Expiration date of coverage. | [optional] 
+**formulary_name** | **String** | Name of the Plan&#39;s Formulary | [optional] 
+**id** | **String** | Government-issued MedicareAdvantage plan ID | [optional] 
 **identifiers** | [**Array&lt;PlanIdentifier&gt;**](PlanIdentifier.md) | List of identifiers of this Plan | [optional] 
 **name** | **String** | Marketing name of the plan | [optional] 
 **network_ids** | **Array&lt;Integer&gt;** | List of Vericred-generated network_ids | [optional] 
@@ -14,8 +16,6 @@ Name | Type | Description | Notes
 **plan_type** | **String** | Category of the plan (e.g. EPO, HMO, PPO, POS, Indemnity, PACE, Medicare-Medicaid, HMO w/POS, Cost, FFS, MSA) | [optional] 
 **service_area_id** | **String** | Foreign key for service area | [optional] 
 **source** | **String** | Source of the plan benefit data | [optional] 
-**id** | **String** | Government-issued MedicareAdvantage plan ID | [optional] 
-**formulary_name** | **String** | Name of the Plan&#39;s Formulary | [optional] 
 **updated_at** | **String** | Time when plan was last updated | [optional] 
 
 

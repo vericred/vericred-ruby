@@ -1,0 +1,43 @@
+# VericredClient::MedicalPlanUpdate
+
+## Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**actively_marketed** | **String** | Indicates whether this plan is being actively marketed by the carrier. | [optional] 
+**actuarial_value** | **Float** | Percentage of total average costs for covered benefits that a plan will cover. | [optional] 
+**age29_rider** | **BOOLEAN** | True if the plan allows dependents up to age 29 | [optional] 
+**audience** | **String** | The medical plan audience | [optional] 
+**benefits** | [**MedicalPlanBenefits**](MedicalPlanBenefits.md) | Medical Plan Benefits | [optional] 
+**benefits_summary_url** | **String** | Link to the summary of benefits and coverage (SBC) document. | [optional] 
+**buy_link** | **String** | Link to a location to purchase the plan. | [optional] 
+**coinsurance** | **Float** | Standard cost share for most benefits | [optional] 
+**covered_ages** | **String** | allowed ages on the plan, possible values: allows adult-only, allows child-only,                allows adult and child-only, child29, requires adult | [optional] 
+**dp_rider** | **BOOLEAN** | True if plan does not cover domestic partners | [optional] 
+**drug_formulary_url** | **String** | Link to the summary of drug benefits for the plan | [optional] 
+**embedded_deductible** | **String** | Is the individual deductible for each covered person, embedded in the family deductible | [optional] 
+**essential_health_benefits_percentage** | **Float** | Percentage of essential plan benefits | [optional] 
+**external_id** | **String** | Medical Plan External Identifier | [optional] 
+**external_ids** | [**Array&lt;PlanIdentifier&gt;**](PlanIdentifier.md) | Medical Plan External Identifiers | [optional] 
+**family_tier** | **BOOLEAN** | True if plan is in a fixed family tier state | [optional] 
+**fp_rider** | **BOOLEAN** | True if plan does not cover family planning | [optional] 
+**gated** | **BOOLEAN** | Does the plan&#39;s network require a physician referral? | [optional] 
+**hsa_eligible** | **BOOLEAN** | Is the plan HSA eligible? | [optional] 
+**issuer_vericred_id** | **String** | The issuer vericred id | [optional] 
+**key_benefits_complete** | **BOOLEAN** | Indicates whether the plan has meaningful descriptions for these benefits:                individual_medical_deductible, family_medical_deductible, individual_medical_moop, family_medical_moop,                primary_care_physician. | [optional] 
+**level** | **String** | Plan metal grouping (e.g. platinum, gold, silver, etc) | [optional] 
+**mail_order_rx** | **Float** | Multiple of the standard Rx cost share for orders filled via mail order | [optional] 
+**market** | **String** | Market for plan | [optional] 
+**name** | **String** | The medical plan name | [optional] 
+**plan_calendar** | **String** | Are deductibles and MOOPs reset on Dec-31 (\&quot;calendar year\&quot;), 365 day(s) after enrollment date (\&quot;plan year\&quot;), or are both options available (\&quot;both\&quot;)? | [optional] 
+**plan_market** | **String** | Market in which the plan is offered (on_marketplace, shop, etc) | [optional] 
+**plan_type** | **String** | Category of the plan (e.g. EPO, HMO, PPO, POS, Indemnity, PACE, Medicare-Medicaid, HMO w/POS, Cost, FFS, MSA) | [optional] 
+**private_exchange** | **String** | Plan private exchange | [optional] 
+**privileged_data** | **BOOLEAN** | TRUE if plan data is Privileged | [optional] 
+**sbc_name** | **String** | Name of the SBC | [optional] 
+**service_area_external_key** | **String** | The external identifier for the plan service area | [optional] 
+**skilled_nursing_facility_365** | **String** | Does the plan cover full-time, year-round, nursing facilities? | [optional] 
+**source** | **String** | Source of the plan benefit data | [optional] 
+**state_code** | **String** | State code | [optional] 
+**year** | **Integer** | Plan year | [optional] 
+
+
